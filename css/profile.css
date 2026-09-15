@@ -12,3 +12,5 @@
 
 /* Research-site extension: typography follows Renfaut Visual Identity Guide v1.1. */
 body{font-family:Aptos,"Segoe UI",system-ui,-apple-system,sans-serif;color:#2B2B2B}.snapshot-header__identity h1,.section-title,.archetype-hero__name{font-family:"Aptos Display",Aptos,"Segoe UI",sans-serif}.journey-card a.snapshot-button{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+
+.profile-contact{margin:.45rem 0 .75rem;font-size:.78rem;line-height:1.35;color:#403E4D}.profile-contact a{color:inherit;font-weight:700;text-decoration:underline;text-underline-offset:2px}

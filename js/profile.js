@@ -139,7 +139,9 @@ function buildArchetypeIconCandidates(configurationName, configuredIcon){
     'assets/icons/',
     'assets/'
   ];
+  const official = names.map(name => `https://renfaut.org/assets/icons/archetypes/${name}`);
   return uniqueCandidates([
+    ...official,
     ...folders.flatMap(folder => names.map(name => `${folder}${name}`)),
     configuredIcon
   ]).map(absoluteAsset);
@@ -159,7 +161,9 @@ function buildPrincipleIconCandidates(code, configuredIcon){
     'assets/icons/',
     'assets/'
   ];
+  const official = names.map(name => `https://renfaut.org/assets/icons/principles/${name}`);
   return uniqueCandidates([
+    ...official,
     configuredIcon,
     ...folders.flatMap(folder => names.map(name => `${folder}${name}`))
   ]).map(absoluteAsset);
@@ -190,6 +194,7 @@ function loadFallbackImage(image, candidates, options={}){
   let index = 0;
   image.hidden = false;
   image.style.display = 'block';
+  image.referrerPolicy = 'no-referrer';
 
   const tryNext = () => {
     if(index < candidates.length){
