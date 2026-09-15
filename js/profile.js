@@ -249,6 +249,9 @@ function renderIdentity(results){
   const participant = results.participant || results.demographics || {};
   const fullName = firstValue(results.name, participant.name, [participant.firstName, participant.lastName].filter(Boolean).join(' '), 'Your Name');
   $('participantName').textContent = String(fullName).toUpperCase();
+  const identifier = firstValue(results.participant?.identifier, results.demographics?.identifier, localStorage.getItem('riseParticipantIdentifier'), sessionStorage.getItem('riseParticipantIdentifier'));
+  const identifierEl = $('participantIdentifierDisplay');
+  if(identifierEl) identifierEl.textContent = identifier ? `Participant Identifier: ${identifier}` : '';
   $('reportDate').textContent = firstValue(results.date, participant.date, new Intl.DateTimeFormat('en-US',{month:'long',year:'numeric'}).format(new Date()));
   loadFallbackImage($('riseLogo'), buildLogoCandidates(), { diagnosticName:'R.I.S.E. Index logo' });
 }
