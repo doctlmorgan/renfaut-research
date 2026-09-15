@@ -27,3 +27,10 @@ Research demographic mappings used by the site include age (`entry.1022132287`),
 
 
 Version 4 updates: monochrome research landing treatment; country dropdown; removed contact-consent choice; optional email now indicates contact preference.
+
+## Apps Script response writer
+The website now posts to the deployed Google Apps Script web app and waits for a `postMessage` success signal before showing the completion confirmation. Use `research-writer.gs` as the Apps Script code for the deployed web app, then update the existing deployment to a new version. The `/exec` URL configured in `rise.html` is:
+
+https://script.google.com/macros/s/AKfycbwQK1upfemXMccIEnarPyog3UCwe7eD65dZvWYmN6lVWCR_ReykRDHZ6pGXnXp6EqGl/exec
+
+The response sheet stores metadata followed by Q01-Q81 and ATTN01-ATTN02 in separate columns.

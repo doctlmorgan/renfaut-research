@@ -25,7 +25,7 @@
 <header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><img alt="Renfaut™" src="https://renfaut.org/assets/logos/renfaut-wordmark.png"/></a><div class="research-label">R.I.S.E. Index™ Research</div></div></header>
 <main>
 <section class="hero"><div class="container"><p class="eyebrow">R.I.S.E. Index™ Research Inventory</p><h1>Before you begin</h1><p class="lead">Please respond according to <strong>how you typically lead</strong>, not how you hope to lead or how you believe you should respond. There are no right or wrong answers.</p></div></section>
-<form action="https://docs.google.com/forms/d/e/1FAIpQLScio-Pb6P9dIrnXk86wgFHQcCl56Z0tsNX_fEi_oAtjOOQZeA/formResponse" id="riseForm" method="POST" target="hidden_iframe"><input name="submit" type="hidden" value="Submit"/>
+<form action="https://script.google.com/macros/s/AKfycbwQK1upfemXMccIEnarPyog3UCwe7eD65dZvWYmN6lVWCR_ReykRDHZ6pGXnXp6EqGl/exec" id="riseForm" method="POST" target="submission_iframe"><input name="submit" type="hidden" value="Submit"/><input id="researchPayload" name="payload" type="hidden"/>
 <input id="researchStartTime" name="entry.1185653219" type="hidden"/>
 <input id="researchEndTime" name="entry.1149550426" type="hidden"/>
 <input id="researchElapsedSeconds" name="entry.825649838" type="hidden"/>
@@ -389,7 +389,7 @@
 <div class="question-body"><h3 id="statement-81">I am becoming more intentional in how I create conditions for equity, liberation, and collective flourishing.</h3><div aria-labelledby="statement-81" class="response-scale" role="radiogroup"><label class="response-option"><input name="entry.498872366" required="" type="radio" value="Not at all like me"/><span aria-hidden="true" class="response-dot"></span><span class="response-label">Not at all like me</span></label><label class="response-option"><input name="entry.498872366" required="" type="radio" value="Not much like me"/><span aria-hidden="true" class="response-dot"></span><span class="response-label">Not much like me</span></label><label class="response-option"><input name="entry.498872366" required="" type="radio" value="Somewhat like me"/><span aria-hidden="true" class="response-dot"></span><span class="response-label">Somewhat like me</span></label><label class="response-option"><input name="entry.498872366" required="" type="radio" value="Very much like me"/><span aria-hidden="true" class="response-dot"></span><span class="response-label">Very much like me</span></label></div><p aria-live="polite" class="question-error">Please select a response before continuing.</p></div>
 </article></div>
 </section></div><div class="part-controls"><button class="secondary" id="backPart" type="button">Back</button><div class="status" id="partStatus">Complete all statements in this part to continue.</div><button class="primary" id="nextPart" type="button">Continue</button><button class="primary" hidden="" id="submitInventory" type="submit">Submit Inventory</button></div></div></div></section>
-</form><iframe id="hidden_iframe" name="hidden_iframe" style="display:none"></iframe>
+</form><iframe id="submission_iframe" name="submission_iframe" style="display:none"></iframe>
 </main>
 <div class="confirmation" id="confirmation"><div class="confirmation-card"><h2>Thank you.</h2><p>Your R.I.S.E. Index™ response has been sent and your Leadership Profile is ready.</p><div class="identifier-box"><strong>Save your Participant Identifier</strong><div class="identifier-value" id="confirmationIdentifierValue"></div><small>Use this code if you contact Renfaut later about your response or results.</small></div><div class="surveyswap-popup" hidden="" id="surveySwapPopup"><strong>SurveySwap completion code</strong><div class="surveyswap-code">X3DG-OL6E-7KYR</div><small>Keep this code. When you view your Leadership Profile, SurveySwap will also open in a new tab so you can complete your credit.</small></div><a class="primary" href="profile.html" id="profileLink" style="display:inline-flex;text-decoration:none">View My Leadership Profile</a></div></div>
 <script src="js/rise-spec.js"></script><script src="js/scoring-engine.js"></script>
@@ -419,10 +419,122 @@ document.getElementById('participantSector')?.addEventListener('change',e=>docum
 startBtn.addEventListener('click',()=>{if(!demographicsValid())return;startedAt=new Date();document.getElementById('researchStartTime').value=startedAt.toISOString();sessionStorage.setItem('riseStartedAt',startedAt.toISOString());sessionStorage.setItem('riseParticipantIdentifier',document.getElementById('participantIdentifier').value.trim());inventoryShell.hidden=false;document.querySelector('.preflight').hidden=true;showPart(0);});
 document.querySelectorAll('.item-step input[type=radio],.attention-check input[type=radio]').forEach(r=>r.addEventListener('change',()=>{r.closest('.question-card').classList.remove('missing');updateProgress()}));
 document.getElementById('nextPart').addEventListener('click',()=>{if(validatePart(currentPart))showPart(currentPart+1)});document.getElementById('backPart').addEventListener('click',()=>showPart(currentPart-1));
-function participantData(){const val=n=>form.querySelector(`[name="${n}"]`)?.value?.trim()||'';return{identifier:val('entry.79383809'),name:val('entry.723280880'),email:val('entry.912272113'),age:val('entry.1022132287'),country:val('entry.984504931'),consent:consentValue(),role:val('entry.850283824'),sector:val('entry.372153283'),leadershipYears:val('entry.1692425384')}}
-function saveResults(){const results=window.RISE_SCORING_ENGINE.compute(itemSteps,participantData());localStorage.setItem('riseLatestResults',JSON.stringify(results));localStorage.setItem('riseResults',JSON.stringify(results));sessionStorage.setItem('riseLatestResults',JSON.stringify(results));return results}
-form.addEventListener('submit',e=>{if(!validatePart(currentPart)){e.preventDefault();return}if(answeredCount()!==totalItems || attentionSteps.some(q=>!q.querySelector('input[type=radio]:checked'))){e.preventDefault();alert('Please complete every statement and attention check before submitting.');return}const end=new Date();const start=startedAt||new Date(sessionStorage.getItem('riseStartedAt')||end);document.getElementById('researchEndTime').value=end.toISOString();document.getElementById('researchElapsedSeconds').value=Math.max(0,Math.round((end-start)/1000));try{saveResults();submitting=true;document.getElementById('submitInventory').disabled=true;document.getElementById('submitInventory').textContent='Submitting…';}catch(err){e.preventDefault();alert('Your responses could not be scored. Please review the inventory and try again.');console.error(err)}});
-document.getElementById('hidden_iframe').addEventListener('load',()=>{if(!submitting)return;submitting=false;sessionStorage.setItem('riseSubmissionStatus','sent');const id=document.getElementById('participantIdentifier').value.trim();document.getElementById('confirmationIdentifierValue').textContent=id;const link=document.getElementById('profileLink');link.href='profile.html?source='+encodeURIComponent(source);document.getElementById('surveySwapPopup').hidden=!isSurveySwap;document.getElementById('confirmation').classList.add('show')});
+function participantData(){
+  const val=n=>form.querySelector(`[name="${n}"]`)?.value?.trim()||'';
+  return{
+    identifier:val('entry.79383809'),
+    email:val('entry.912272113'),
+    age:val('entry.1022132287'),
+    country:val('entry.984504931'),
+    consent:consentValue(),
+    role:val('entry.850283824'),
+    sector:val('entry.372153283'),
+    leadershipYears:val('entry.1692425384')
+  }
+}
+function checkedValues(name){return [...form.querySelectorAll(`[name="${name}"]:checked`)].map(el=>el.value)}
+function selectedGender(){
+  const vals=checkedValues('entry.1083444680');
+  const other=document.querySelector('[name="entry.1083444680.other_option_response"]')?.value?.trim();
+  return other?vals.filter(v=>v!=='__other_option__').concat(other).join('; '):vals.filter(v=>v!=='__other_option__').join('; ');
+}
+function selectedRace(){
+  const vals=checkedValues('entry.1285176183');
+  const other=document.querySelector('[name="entry.1285176183.other_option_response"]')?.value?.trim();
+  return other?vals.filter(v=>v!=='__other_option__').concat(other).join('; '):vals.filter(v=>v!=='__other_option__').join('; ');
+}
+function resolvedSector(){
+  const select=document.getElementById('participantSector');
+  const other=document.getElementById('sectorSelfDescribeText')?.value?.trim();
+  return select?.value==='__other_option__' ? (other||'Self-described') : (select?.value||'');
+}
+function saveResults(){
+  const results=window.RISE_SCORING_ENGINE.compute(itemSteps,participantData());
+  localStorage.setItem('riseLatestResults',JSON.stringify(results));
+  localStorage.setItem('riseResults',JSON.stringify(results));
+  sessionStorage.setItem('riseLatestResults',JSON.stringify(results));
+  return results
+}
+function buildResearchPayload(end,start){
+  const responses={};
+  itemSteps.forEach((step,i)=>{
+    const chosen=step.querySelector('input[type=radio]:checked');
+    responses[`Q${String(i+1).padStart(2,'0')}`]=chosen?chosen.value:'';
+  });
+  attentionSteps.forEach((step,i)=>{
+    const chosen=step.querySelector('input[type=radio]:checked');
+    responses[`ATTN${String(i+1).padStart(2,'0')}`]=chosen?chosen.value:'';
+  });
+  return {
+    participantIdentifier:document.getElementById('participantIdentifier').value.trim(),
+    startTime:start.toISOString(),
+    endTime:end.toISOString(),
+    elapsedSeconds:Math.max(0,Math.round((end-start)/1000)),
+    age:document.getElementById('participantAge').value,
+    country:document.getElementById('participantCountry').value,
+    role:document.getElementById('participantRole').value.trim(),
+    sector:resolvedSector(),
+    leadershipYears:document.getElementById('leadershipYears').value,
+    gender:selectedGender(),
+    race:selectedRace(),
+    email:document.getElementById('participantEmail')?.value?.trim()||'',
+    source:source,
+    responses:responses
+  };
+}
+let submissionTimer=null;
+form.addEventListener('submit',e=>{
+  if(!validatePart(currentPart)){e.preventDefault();return}
+  if(answeredCount()!==totalItems || attentionSteps.some(q=>!q.querySelector('input[type=radio]:checked'))){
+    e.preventDefault();alert('Please complete every statement and attention check before submitting.');return
+  }
+  const end=new Date();
+  const start=startedAt||new Date(sessionStorage.getItem('riseStartedAt')||end);
+  document.getElementById('researchEndTime').value=end.toISOString();
+  document.getElementById('researchElapsedSeconds').value=Math.max(0,Math.round((end-start)/1000));
+  try{
+    saveResults();
+    const payload=buildResearchPayload(end,start);
+    document.getElementById('researchPayload').value=JSON.stringify(payload);
+    submitting=true;
+    document.getElementById('submitInventory').disabled=true;
+    document.getElementById('submitInventory').textContent='Saving responses…';
+    clearTimeout(submissionTimer);
+    submissionTimer=setTimeout(()=>{
+      if(!submitting)return;
+      submitting=false;
+      document.getElementById('submitInventory').disabled=false;
+      document.getElementById('submitInventory').textContent='Submit Inventory';
+      alert('We could not confirm that your responses were saved. Your answers are still on this page. Please try submitting again.');
+    },20000);
+  }catch(err){
+    e.preventDefault();
+    alert('Your responses could not be prepared for submission. Please review the inventory and try again.');
+    console.error(err)
+  }
+});
+window.addEventListener('message',event=>{
+  const data=event.data||{};
+  if(data.type==='rise-write-success' && submitting){
+    clearTimeout(submissionTimer);
+    submitting=false;
+    sessionStorage.setItem('riseSubmissionStatus','saved');
+    const id=document.getElementById('participantIdentifier').value.trim();
+    document.getElementById('confirmationIdentifierValue').textContent=id;
+    const link=document.getElementById('profileLink');
+    link.href='profile.html?source='+encodeURIComponent(source);
+    document.getElementById('surveySwapPopup').hidden=!isSurveySwap;
+    document.getElementById('confirmation').classList.add('show');
+    document.getElementById('submitInventory').textContent='Saved';
+  }else if(data.type==='rise-write-error' && submitting){
+    clearTimeout(submissionTimer);
+    submitting=false;
+    document.getElementById('submitInventory').disabled=false;
+    document.getElementById('submitInventory').textContent='Submit Inventory';
+    alert('Your responses were not saved. Please try again. If the problem continues, contact lee.morgan@renfaut.org.');
+    console.error('Research writer error:',data.error||'Unknown error');
+  }
+});
 document.getElementById('profileLink').addEventListener('click',()=>{if(isSurveySwap){window.open('https://surveyswap.io/s/X3DG-OL6E-7KYR','_blank','noopener');}});
 showPart(0);syncContactPreference();
 </script>
