@@ -25,7 +25,7 @@
 <header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><img alt="Renfaut™" src="https://renfaut.org/assets/logos/renfaut-wordmark.png"/></a><div class="research-label">R.I.S.E. Index™ Research</div></div></header>
 <main>
 <section class="hero"><div class="container"><p class="eyebrow">R.I.S.E. Index™ Research Inventory</p><h1>Before you begin</h1><p class="lead">Please respond according to <strong>how you typically lead</strong>, not how you hope to lead or how you believe you should respond. There are no right or wrong answers.</p></div></section>
-<form action="https://script.google.com/macros/s/AKfycbwQK1upfemXMccIEnarPyog3UCwe7eD65dZvWYmN6lVWCR_ReykRDHZ6pGXnXp6EqGl/exec" id="riseForm" method="POST" target="submission_iframe"><input name="submit" type="hidden" value="Submit"/><input id="researchPayload" name="payload" type="hidden"/>
+<form action="https://script.google.com/macros/s/AKfycbyn5uKPPhOIvhXBnqurEgnpufmsmq5M903-sEhdPQnl6p_Fh5SgEEt_qEqhSzzeTXrV/exec" id="riseForm" method="POST" target="submission_iframe"><input name="submit" type="hidden" value="Submit"/><input id="researchPayload" name="payload" type="hidden"/>
 <input id="researchStartTime" name="entry.1185653219" type="hidden"/>
 <input id="researchEndTime" name="entry.1149550426" type="hidden"/>
 <input id="researchElapsedSeconds" name="entry.825649838" type="hidden"/>
@@ -391,7 +391,7 @@
 </section></div><div class="part-controls"><button class="secondary" id="backPart" type="button">Back</button><div class="status" id="partStatus">Complete all statements in this part to continue.</div><button class="primary" id="nextPart" type="button">Continue</button><button class="primary" hidden="" id="submitInventory" type="submit">Submit Inventory</button></div></div></div></section>
 </form><iframe id="submission_iframe" name="submission_iframe" style="display:none"></iframe>
 </main>
-<div class="confirmation" id="confirmation"><div class="confirmation-card"><h2>Thank you.</h2><p>Your R.I.S.E. Index™ response has been sent and your Leadership Profile is ready.</p><div class="identifier-box"><strong>Save your Participant Identifier</strong><div class="identifier-value" id="confirmationIdentifierValue"></div><small>Use this code if you contact Renfaut later about your response or results.</small></div><div class="surveyswap-popup" hidden="" id="surveySwapPopup"><strong>SurveySwap completion code</strong><div class="surveyswap-code">X3DG-OL6E-7KYR</div><small>Keep this code. When you view your Leadership Profile, SurveySwap will also open in a new tab so you can complete your credit.</small></div><a class="primary" href="profile.html" id="profileLink" style="display:inline-flex;text-decoration:none">View My Leadership Profile</a></div></div>
+<div class="confirmation" id="confirmation"><div class="confirmation-card"><h2>Thank you.</h2><p>Your R.I.S.E. Index™ response has been sent and your Leadership Profile is ready.</p><div class="identifier-box"><strong>Save your Participant Identifier</strong><div class="identifier-value" id="confirmationIdentifierValue"></div><small>Use this code if you contact Renfaut later about your response or results.</small></div><div class="surveyswap-popup" hidden="" id="surveySwapPopup"><strong>SurveySwap completion code</strong><div class="surveyswap-code">X3DG-OL6E-7KYR</div><small>Copy or save this code before viewing your Leadership Profile. Use it in SurveySwap to receive your credit.</small></div><a class="primary" href="profile.html" id="profileLink" style="display:inline-flex;text-decoration:none">View My Leadership Profile</a></div></div>
 <script src="js/rise-spec.js"></script><script src="js/scoring-engine.js"></script>
 <script>
 const form=document.getElementById('riseForm');
@@ -535,7 +535,7 @@ window.addEventListener('message',event=>{
     console.error('Research writer error:',data.error||'Unknown error');
   }
 });
-document.getElementById('profileLink').addEventListener('click',()=>{if(isSurveySwap){window.open('https://surveyswap.io/s/X3DG-OL6E-7KYR','_blank','noopener');}});
+
 showPart(0);syncContactPreference();
 </script>
 </body></html>
