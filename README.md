@@ -31,6 +31,11 @@ Version 4 updates: monochrome research landing treatment; country dropdown; remo
 ## Apps Script response writer
 The website now posts to the deployed Google Apps Script web app and waits for a `postMessage` success signal before showing the completion confirmation. Use `research-writer.gs` as the Apps Script code for the deployed web app, then update the existing deployment to a new version. The `/exec` URL configured in `rise.html` is:
 
-https://script.google.com/macros/s/AKfycbwQK1upfemXMccIEnarPyog3UCwe7eD65dZvWYmN6lVWCR_ReykRDHZ6pGXnXp6EqGl/exec
+https://script.google.com/macros/s/AKfycbyn5uKPPhOIvhXBnqurEgnpufmsmq5M903-sEhdPQnl6p_Fh5SgEEt_qEqhSzzeTXrV/exec
 
 The response sheet stores metadata followed by Q01-Q81 and ATTN01-ATTN02 in separate columns.
+
+
+## v9 update
+- SurveySwap completion code remains in the verified-submission popup.
+- Viewing the Leadership Profile no longer opens SurveySwap automatically in another tab.

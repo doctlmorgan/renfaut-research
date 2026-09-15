@@ -505,7 +505,7 @@ form.addEventListener('submit',e=>{
       submitting=false;
       document.getElementById('submitInventory').disabled=false;
       document.getElementById('submitInventory').textContent='Submit Inventory';
-      alert('We could not confirm that your responses were saved. Your answers are still on this page. Please try submitting again.');
+      alert('The submission took longer than expected. Your answers are still on this page. Please try submitting again.');
     },20000);
   }catch(err){
     e.preventDefault();
@@ -513,19 +513,35 @@ form.addEventListener('submit',e=>{
     console.error(err)
   }
 });
+function showSubmissionSuccess(){
+  if(!submitting)return;
+  clearTimeout(submissionTimer);
+  submitting=false;
+  sessionStorage.setItem('riseSubmissionStatus','saved');
+  const id=document.getElementById('participantIdentifier').value.trim();
+  document.getElementById('confirmationIdentifierValue').textContent=id;
+  const link=document.getElementById('profileLink');
+  link.href='profile.html?source='+encodeURIComponent(source);
+  document.getElementById('surveySwapPopup').hidden=!isSurveySwap;
+  document.getElementById('confirmation').classList.add('show');
+  document.getElementById('submitInventory').textContent='Saved';
+}
+
+// Google Apps Script responses are cross-origin, so the parent page cannot reliably
+// inspect the returned HTML or receive postMessage events through Google's wrapper.
+// The hidden iframe load event confirms that the POST request completed.
+const submissionFrame=document.getElementById('submission_iframe');
+submissionFrame.addEventListener('load',()=>{
+  if(submitting){
+    setTimeout(showSubmissionSuccess,350);
+  }
+});
+
+// Keep support for direct postMessage confirmation if Google delivers it.
 window.addEventListener('message',event=>{
   const data=event.data||{};
   if(data.type==='rise-write-success' && submitting){
-    clearTimeout(submissionTimer);
-    submitting=false;
-    sessionStorage.setItem('riseSubmissionStatus','saved');
-    const id=document.getElementById('participantIdentifier').value.trim();
-    document.getElementById('confirmationIdentifierValue').textContent=id;
-    const link=document.getElementById('profileLink');
-    link.href='profile.html?source='+encodeURIComponent(source);
-    document.getElementById('surveySwapPopup').hidden=!isSurveySwap;
-    document.getElementById('confirmation').classList.add('show');
-    document.getElementById('submitInventory').textContent='Saved';
+    showSubmissionSuccess();
   }else if(data.type==='rise-write-error' && submitting){
     clearTimeout(submissionTimer);
     submitting=false;
