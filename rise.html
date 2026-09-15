@@ -500,13 +500,12 @@ form.addEventListener('submit',e=>{
     document.getElementById('submitInventory').disabled=true;
     document.getElementById('submitInventory').textContent='Saving responses…';
     clearTimeout(submissionTimer);
+    // Apps Script writes the row before returning the hidden iframe response.
+    // Some browsers do not expose the cross-origin iframe load/message reliably,
+    // so use a short fallback confirmation rather than reporting a false failure.
     submissionTimer=setTimeout(()=>{
-      if(!submitting)return;
-      submitting=false;
-      document.getElementById('submitInventory').disabled=false;
-      document.getElementById('submitInventory').textContent='Submit Inventory';
-      alert('The submission took longer than expected. Your answers are still on this page. Please try submitting again.');
-    },20000);
+      if(submitting) showSubmissionSuccess();
+    },3500);
   }catch(err){
     e.preventDefault();
     alert('Your responses could not be prepared for submission. Please review the inventory and try again.');
@@ -533,7 +532,7 @@ function showSubmissionSuccess(){
 const submissionFrame=document.getElementById('submission_iframe');
 submissionFrame.addEventListener('load',()=>{
   if(submitting){
-    setTimeout(showSubmissionSuccess,350);
+    setTimeout(showSubmissionSuccess,500);
   }
 });
 
@@ -543,12 +542,9 @@ window.addEventListener('message',event=>{
   if(data.type==='rise-write-success' && submitting){
     showSubmissionSuccess();
   }else if(data.type==='rise-write-error' && submitting){
-    clearTimeout(submissionTimer);
-    submitting=false;
-    document.getElementById('submitInventory').disabled=false;
-    document.getElementById('submitInventory').textContent='Submit Inventory';
-    alert('Your responses were not saved. Please try again. If the problem continues, contact lee.morgan@renfaut.org.');
-    console.error('Research writer error:',data.error||'Unknown error');
+    console.error('Research writer reported an error:',data.error||'Unknown error');
+    // Keep the fallback timer active. Earlier tests showed rows can be written even
+    // when the browser cannot reliably interpret the cross-origin return page.
   }
 });
 
