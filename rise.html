@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="noindex,nofollow" name="robots"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>R.I.S.E. Index™ Research Inventory | Renfaut™</title>
+<meta content="Complete the R.I.S.E. Index™, a reflective leadership inventory for equity-centered practice." name="description"/>
+
+<style>
+:root {--ivory:#FAF7F2;--paper:#fffaf2;--ink:#241945;--muted:#665e73;--line:rgba(36,25,69,.14);--rr:#B31217;--ib:#E76F00;--de:#F7B500;--es:#38BFD8;--ra:#6C3FBF;--night:#2F2A56;--shadow:0 24px 70px rgba(48,38,28,.13);}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 20% 10%,#fff3df 0,transparent 28%),radial-gradient(circle at 90% 10%,rgba(56,191,216,.15),transparent 30%),var(--ivory);color:var(--ink);}
+a{color:inherit;text-decoration:none} .container{width:min(1180px,calc(100% - 44px));margin-inline:auto}
+.site-header{position:sticky;top:0;z-index:20;background:rgba(250,247,242,.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.header-inner{height:82px;display:flex;align-items:center;justify-content:space-between;gap:22px} .brand{display:flex;align-items:center;gap:12px;font-weight:900} .brand-icon{width:42px;height:42px;border-radius:12px;object-fit:cover;box-shadow:0 10px 24px rgba(36,25,69,.12)} .brand-word{height:42px;max-width:150px;object-fit:contain}
+.nav{display:flex;align-items:center;gap:28px;font-weight:800;color:#4b435f} .nav a:hover{color:var(--rr)} .nav-cta{padding:13px 22px;border-radius:999px;background:var(--rr);color:#fff!important;box-shadow:0 14px 34px rgba(179,18,23,.25)}
+.hero{padding:76px 0 42px} .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:46px;align-items:center} .eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.78rem;font-weight:900;color:#6c3fbf} h1{font-size:clamp(3rem,6.5vw,6.6rem);letter-spacing:-.075em;line-height:.9;margin:14px 0 24px} .lead{font-size:1.2rem;line-height:1.65;color:var(--muted);max-width:720px}
+.hero-art{position:relative;border-radius:40px;background:rgba(255,255,255,.62);border:1px solid var(--line);box-shadow:var(--shadow);padding:34px;overflow:hidden} .hero-art::before{content:"";position:absolute;inset:-40%;background:radial-gradient(circle,rgba(247,181,0,.18),transparent 45%);} .hero-art img{position:relative;width:100%;display:block;border-radius:24px} .hero-art p{position:relative;color:var(--muted);font-weight:700}
+.assessment-shell{padding:18px 0 90px} .assessment-card{background:rgba(255,250,242,.82);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:36px;overflow:hidden} .progress-wrap{padding:22px 24px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.45)} .progress-meta{display:flex;justify-content:space-between;gap:18px;color:var(--muted);font-weight:800;font-size:.95rem;margin-bottom:12px} .progress-track{height:12px;background:#eee6da;border-radius:999px;overflow:hidden} .progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--rr),var(--ib),var(--de),var(--es),var(--ra));border-radius:inherit;transition:width .35s ease}
+form{display:block} .steps{min-height:520px} .step{display:none;padding:46px} .step.active{display:block;animation:fade .24s ease} @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}} .step-kicker{display:flex;flex-wrap:wrap;gap:10px;align-items:center;text-transform:uppercase;letter-spacing:.12em;font-weight:950;color:var(--accent,#6C3FBF);font-size:.82rem;margin-bottom:18px} .step-kicker span{color:var(--muted);letter-spacing:.06em;text-transform:none;background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 10px}
+.step h2{font-size:clamp(1.8rem,3vw,3.2rem);line-height:1.05;letter-spacing:-.045em;margin:0 0 32px;max-width:900px} .step p{color:var(--muted);font-size:1.05rem;line-height:1.6}
+.demo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px} .field{background:rgba(255,255,255,.62);border:1px solid var(--line);border-radius:22px;padding:18px} .field.full{grid-column:1/-1} .title{display:block;font-weight:900;margin-bottom:10px;color:var(--ink)} input[type=text],input[type=email],select,textarea{width:100%;border:1px solid var(--line);border-radius:15px;padding:14px 14px;font:inherit;background:#fff;color:var(--ink)} .choice-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px} .check,.radio{display:flex;gap:9px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 12px;color:#514a5f;font-weight:700}
+.options{display:grid;grid-template-columns:repeat(4,1fr);gap:14px} .option{display:flex;min-height:112px;align-items:center;justify-content:center;text-align:center;border:2px solid var(--line);border-radius:22px;background:#fff;cursor:pointer;transition:.18s ease;padding:16px;color:#453d54;font-weight:900} .option input{position:absolute;opacity:0;pointer-events:none} .option:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 14px 30px rgba(38,32,25,.10)} .option:has(input:checked){background:linear-gradient(180deg,rgba(255,255,255,.88),rgba(255,255,255,.62));border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 14%,transparent)}
+.controls{display:flex;align-items:center;justify-content:space-between;padding:22px 46px 38px;gap:18px} button,.btn{border:0;border-radius:999px;padding:15px 24px;font-weight:950;font-size:1rem;cursor:pointer} .primary{background:var(--rr);color:#fff;box-shadow:0 14px 30px rgba(179,18,23,.22)} .secondary{background:#fff;color:var(--ink);border:1px solid var(--line)} .secondary:disabled{opacity:.35;cursor:not-allowed} .hint{color:var(--muted);font-weight:700;font-size:.95rem}
+.error{border-color:var(--rr)!important;box-shadow:0 0 0 4px rgba(179,18,23,.08)} .error-message{display:none;color:var(--rr);font-weight:900;margin-top:14px} .step.has-error .error-message{display:block}
+.review-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:26px} .review-pill{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;color:var(--muted);font-weight:800} .confirmation{display:none;position:fixed;inset:0;background:rgba(36,25,69,.62);backdrop-filter:blur(10px);z-index:80;align-items:center;justify-content:center;padding:20px} .confirmation.show{display:flex} .confirmation-card{width:min(720px,100%);background:var(--paper);border-radius:34px;box-shadow:var(--shadow);padding:42px;text-align:center;border:1px solid var(--line)} .confirmation-card img{width:70px;height:70px;border-radius:18px;object-fit:cover} .confirmation-card h2{font-size:clamp(2rem,4vw,4rem);line-height:.95;letter-spacing:-.06em;margin:22px 0 14px} .confirmation-card p{color:var(--muted);font-size:1.08rem;line-height:1.6}
+footer{padding:44px 0;border-top:1px solid var(--line);color:var(--muted)} .footer-inner{display:flex;align-items:center;justify-content:space-between;gap:20px} .footer-brand{display:flex;align-items:center;gap:10px;font-weight:950;color:var(--ink)} .footer-brand img{width:34px;height:34px;border-radius:10px;object-fit:cover}
+@media(max-width:900px){.hero-grid,.demo-grid{grid-template-columns:1fr}.nav{display:none}.options{grid-template-columns:1fr}.step{padding:30px 20px}.controls{padding:18px 20px 28px}.choice-grid{grid-template-columns:1fr}.review-list{grid-template-columns:1fr}.footer-inner{flex-direction:column;align-items:flex-start}}
+
+/* Completed responses remain fully visible and can be revised before submission. */
+.step.item-step.past,
+.step.item-step:has(input:checked){opacity:1!important;}
+.step.item-step.past .option{pointer-events:auto;}
+</style>
+<style id="rise-assessment-v2-polish">
+  /* Keep the welcome, instructions, and informed-consent language visible before the assessment. */
+  .hero{display:block!important}
+  .site-header{position:sticky;top:0;z-index:50;background:rgba(250,247,242,.94);backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(47,42,86,.10)}
+  .header-inner{min-height:64px!important;padding:8px 0!important}
+  .brand-icon{width:42px!important;height:42px!important;border-radius:12px!important}
+  .brand-word{height:34px!important;max-width:150px!important;object-fit:contain!important}
+  .nav a{font-size:.92rem!important}
+  .cta-top{padding:12px 20px!important;font-size:.95rem!important}
+  .assessment-shell{padding:18px 0 38px!important;min-height:calc(100vh - 76px)}
+  .assessment-card{border-radius:26px!important;box-shadow:0 18px 50px rgba(38,32,25,.10)!important;overflow:hidden!important}
+  .progress-wrap{padding:14px 20px!important;background:rgba(255,255,255,.75)!important}
+  .progress-meta{font-size:.86rem!important;margin-bottom:8px!important}
+  .progress-track{height:10px!important;background:#e8e1d8!important}
+  .steps{position:relative;min-height:520px;overflow:hidden;background:rgba(255,250,242,.45)}
+  .step{display:block!important;position:absolute;inset:0;padding:38px 46px 30px!important;opacity:0;transform:translateY(80px);pointer-events:none;transition:opacity .34s ease, transform .42s cubic-bezier(.22,.9,.25,1);will-change:transform,opacity;overflow:auto}
+  .step.active{opacity:1;transform:translateY(0);pointer-events:auto;animation:none!important}
+  .step.past{opacity:0;transform:translateY(-85px);pointer-events:none}
+  .step.future{opacity:0;transform:translateY(85px);pointer-events:none}
+  .item-step .step-kicker{display:none!important}
+  .step h2{font-size:clamp(1.85rem,4.2vw,4rem)!important;line-height:1.04!important;letter-spacing:-.055em!important;max-width:1050px!important;margin:0 auto 34px!important;text-align:left;color:var(--ink)}
+  .item-step h2{text-align:center!important;max-width:980px!important;margin-top:36px!important;margin-bottom:34px!important}
+  .options{grid-template-columns:repeat(4,minmax(0,1fr))!important;max-width:1220px;margin:0 auto;gap:16px!important}
+  .option{min-height:92px!important;border-radius:24px!important;background:rgba(255,255,255,.92)!important;font-size:clamp(.95rem,1.4vw,1.12rem)!important}
+  .option:has(input:checked){background:linear-gradient(135deg,rgba(179,18,23,.08),rgba(56,191,216,.08))!important;border-color:var(--accent)!important;box-shadow:0 16px 34px rgba(38,32,25,.12)!important}
+  .controls{padding:14px 28px 22px!important;background:rgba(255,255,255,.45);border-top:1px solid var(--line)}
+  .hint{font-size:.86rem!important}
+  #nextBtn{display:none}
+  .item-step.active ~ .controls #nextBtn{display:none!important}
+  footer{display:none!important}
+  @media(max-width:900px){.nav{display:none!important}.assessment-shell{padding:8px 0 20px!important}.assessment-card{border-radius:0!important;border-left:0!important;border-right:0!important}.steps{min-height:calc(100vh - 160px)}.step{padding:26px 18px 24px!important}.item-step h2{text-align:left!important;font-size:clamp(2rem,8vw,3rem)!important;margin-top:24px!important}.options{grid-template-columns:1fr!important}.option{min-height:76px!important}.controls{padding:12px 18px 18px!important}}
+</style>
+<style id="rise-assessment-all-questions">
+/* All-question assessment layout */
+.assessment-hero{display:none!important;}
+.assessment-wrap{padding:34px 0 90px!important;}
+.assessment-card{max-width:1120px!important;margin:0 auto!important;border-radius:30px!important;overflow:visible!important;background:rgba(255,252,246,.92)!important;}
+.assessment-top{position:sticky;top:0;z-index:30;background:rgba(255,252,246,.96)!important;backdrop-filter:blur(16px);border-bottom:1px solid rgba(64,62,77,.14);border-radius:30px 30px 0 0!important;padding:22px 26px 20px!important;}
+.progress-row{display:flex;align-items:center;gap:18px;}
+#progressLabel{min-width:max-content;font-size:20px!important;font-weight:900;color:#403E4D;}
+.progress-track{height:14px!important;flex:1;border-radius:999px;background:#E8E1D5!important;overflow:hidden;}
+#progressBar{height:100%;border-radius:999px;background:linear-gradient(90deg,#B31217,#E76F00,#F7B500,#38BFD8,#6C3FBF)!important;transition:width .35s ease;}
+#progressCount{min-width:90px;text-align:right;font-size:17px!important;font-weight:900;color:#403E4D;}
+.steps{min-height:0!important;padding:38px 34px 26px!important;}
+.step{position:relative!important;opacity:.24;pointer-events:auto;transform:none!important;display:block!important;visibility:visible!important;margin:70px auto!important;padding:0!important;text-align:center;transition:opacity .35s ease, transform .35s ease, filter .35s ease;max-width:900px;}
+.step.active{opacity:1;transform:scale(1.01)!important;filter:none;}
+.step.past{opacity:.20;}
+.step.future{opacity:.18;}
+.step[data-step="0"], .step:not(.item-step){opacity:1;max-width:980px;text-align:left;background:#fff;border:1px solid rgba(64,62,77,.12);border-radius:24px;padding:28px!important;margin:20px auto 54px!important;box-shadow:0 18px 48px rgba(64,62,77,.08);}
+.step.item-step .step-kicker{display:none!important;}
+.step.item-step h2{font-size:clamp(24px,3.1vw,40px)!important;line-height:1.12!important;letter-spacing:-.035em!important;max-width:850px;margin:0 auto 28px!important;color:#25164E!important;font-weight:900!important;}
+.options{display:flex!important;justify-content:center!important;align-items:center!important;gap:18px!important;flex-wrap:nowrap!important;margin:0 auto!important;}
+.option{width:auto!important;min-width:130px!important;height:auto!important;min-height:0!important;border:0!important;background:transparent!important;box-shadow:none!important;padding:0!important;display:flex!important;flex-direction:column;align-items:center;justify-content:center;color:#403E4D;cursor:pointer;}
+.option input{position:absolute;opacity:0;pointer-events:none;}
+.option span{display:flex;align-items:center;justify-content:center;text-align:center;font-size:14px!important;line-height:1.1;font-weight:900;color:#403E4D;padding-top:68px;position:relative;min-width:88px;}
+.option span::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:56px;height:56px;border-radius:50%;border:3px solid #D9D9E3;background:#fff;box-shadow:0 12px 26px rgba(64,62,77,.07);transition:all .22s ease;}
+.option:nth-child(1) span::before{width:66px;height:66px;border-color:#B31217;}
+.option:nth-child(2) span::before{width:58px;height:58px;border-color:#E76F00;}
+.option:nth-child(3) span::before{width:50px;height:50px;border-color:#38BFD8;}
+.option:nth-child(4) span::before{width:66px;height:66px;border-color:#6C3FBF;}
+.option input:checked + span::before{background:var(--accent,#B31217);border-color:var(--accent,#B31217);box-shadow:0 16px 38px rgba(64,62,77,.20);}
+.option input:checked + span::after{content:"✓";position:absolute;top:10px;left:50%;transform:translateX(-50%);font-size:28px;font-weight:900;color:white;}
+.step.active .option:hover span::before{transform:translateX(-50%) scale(1.06);}
+.controls{position:sticky;bottom:0;z-index:25;background:rgba(255,252,246,.94)!important;backdrop-filter:blur(16px);border-top:1px solid rgba(64,62,77,.12);padding:18px 28px!important;display:flex!important;justify-content:center!important;gap:18px!important;}
+#backBtn,#nextBtn{display:none!important;}
+#submitBtn{display:inline-flex!important;}
+#submitBtn:disabled{opacity:.45;cursor:not-allowed;filter:grayscale(30%);}
+.hint{font-weight:800;color:#625A75;}
+.has-error{outline:3px solid rgba(179,18,23,.25);outline-offset:8px;border-radius:20px;}
+@media(max-width:760px){.site-nav{display:none!important}.assessment-wrap{padding:18px 0 80px!important}.assessment-card{border-radius:0!important}.assessment-top{border-radius:0!important;padding:16px!important}.progress-row{gap:10px}#progressLabel{font-size:16px!important}#progressCount{font-size:14px!important;min-width:70px}.steps{padding:18px 14px!important}.step{margin:58px auto!important}.step.item-step h2{font-size:28px!important}.options{gap:8px}.option{min-width:74px!important}.option span{font-size:11px!important;min-width:66px;padding-top:56px}.option:nth-child(1) span::before,.option:nth-child(4) span::before{width:50px;height:50px}.option:nth-child(2) span::before{width:46px;height:46px}.option:nth-child(3) span::before{width:42px;height:42px}.controls{padding:14px!important;flex-direction:column}.hint{text-align:center}}
+</style>
+<style id="rise-assessment-scale-final">
+/* Final R.I.S.E. assessment scale refinement */
+.assessment-card{max-width:1180px!important;background:rgba(255,252,246,.94)!important;}
+.steps{padding:18px 24px 24px!important;}
+.step{margin:38px auto!important;max-width:980px!important;}
+.step.active{opacity:1!important;transform:scale(1)!important;}
+.step.past{opacity:.24!important;}
+.step.future{opacity:.16!important;}
+.step.item-step h2{font-size:clamp(22px,2.05vw,32px)!important;line-height:1.16!important;letter-spacing:-.025em!important;max-width:920px!important;margin:0 auto 22px!important;font-weight:850!important;}
+.response-scale{gap:22px!important;}
+.response-scale .option{min-width:128px!important;}
+.response-scale .option span{font-size:18px!important;line-height:1.12!important;font-weight:900!important;min-width:132px!important;padding-top:54px!important;color:#403E4D!important;}
+.response-scale .option span::before{width:44px!important;height:44px!important;border-width:4px!important;box-shadow:none!important;background:transparent!important;}
+.response-scale .option-not span::before{border-color:#07364A!important;}
+.response-scale .option-little span::before{border-color:#07364A!important;opacity:.82;}
+.response-scale .option-some span::before{border-color:#07364A!important;opacity:.82;}
+.response-scale .option-very span::before{border-color:#07364A!important;}
+.response-scale .option input:checked + span::before{background:#B31217!important;border-color:#B31217!important;box-shadow:0 14px 34px rgba(179,18,23,.20)!important;}
+.response-scale .option input:checked + span::after{top:6px!important;font-size:30px!important;color:#fff!important;}
+.step.active .response-scale .option:hover span::before,
+.response-scale .option:hover span::before{transform:translateX(-50%) scale(1.08)!important;}
+.step.item-step:focus-within{opacity:1!important;}
+.step.item-step:has(input:checked){opacity:.38;}
+.step.item-step.active:has(input:checked){opacity:1!important;}
+.controls{padding:14px 28px!important;}
+@media(max-width:760px){
+  .steps{padding:16px 12px!important;}
+  .step{margin:34px auto!important;}
+  .step.item-step h2{font-size:24px!important;line-height:1.18!important;margin-bottom:18px!important;}
+  .response-scale{gap:8px!important;justify-content:space-between!important;}
+  .response-scale .option{min-width:0!important;flex:1!important;}
+  .response-scale .option span{font-size:12px!important;min-width:0!important;padding-top:44px!important;}
+  .response-scale .option span::before{width:34px!important;height:34px!important;border-width:3px!important;}
+  .response-scale .option input:checked + span::after{top:4px!important;font-size:24px!important;}
+}
+</style>
+<style id="rise-submit-and-google-fix">
+/* Make the final submit prompt the same visual size as assessment statements. */
+.step.review-step h2{font-size:clamp(22px,2.05vw,32px)!important;line-height:1.16!important;letter-spacing:-.025em!important;max-width:920px!important;margin:0 auto 20px!important;font-weight:850!important;text-align:center!important;color:#25164E!important;}
+.step.review-step p{max-width:760px;margin:0 auto 18px!important;text-align:center!important;}
+</style>
+<style id="renfaut-global-header-css">
+  :root{--rn-ivory:#fbf7ef;--rn-ink:#2b214f;--rn-muted:#514865;--rn-red:#b31217;--rn-line:rgba(43,33,79,.14);}
+  .rn-site-header{position:sticky;top:0;z-index:1000;background:rgba(251,247,239,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--rn-line);box-shadow:0 10px 28px rgba(43,33,79,.05);}
+  .rn-nav{width:min(1760px,calc(100% - 72px));margin:0 auto;min-height:96px;display:flex;align-items:center;justify-content:space-between;gap:28px;}
+  .rn-brand{display:flex;align-items:center;gap:14px;text-decoration:none;flex:0 0 auto;min-width:220px;color:var(--rn-ink);}
+  .rn-brand-icon{width:62px;height:62px;object-fit:contain;border-radius:18px;box-shadow:0 14px 32px rgba(43,33,79,.10);background:rgba(255,255,255,.58);}
+  .rn-brand-text{font-family:Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;font-weight:900;font-size:1.72rem;letter-spacing:-.045em;color:var(--rn-ink);line-height:1;white-space:nowrap;}
+  .rn-menu{display:flex;align-items:center;justify-content:center;gap:clamp(20px,2.2vw,38px);flex:1;}
+  .rn-menu a{position:relative;text-decoration:none;color:var(--rn-muted);font-family:Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;font-weight:850;font-size:1.08rem;line-height:1.08;letter-spacing:-.025em;white-space:nowrap;padding:18px 0 16px;}
+  .rn-menu a::after{content:"";position:absolute;left:0;right:0;bottom:7px;height:3px;border-radius:99px;background:#6c3fd6;transform:scaleX(0);transform-origin:center;transition:transform .18s ease;}
+  .rn-menu a:hover::after,.rn-menu a.active::after{transform:scaleX(1);}
+  .rn-menu a.active{color:var(--rn-ink);}
+  .rn-cta{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;background:var(--rn-red);color:#fff;border-radius:999px;padding:20px 34px;font-family:Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;font-weight:900;font-size:1.08rem;letter-spacing:-.02em;line-height:1;white-space:nowrap;box-shadow:0 18px 42px rgba(179,18,23,.22);}
+  .rn-cta:hover{transform:translateY(-1px);box-shadow:0 22px 48px rgba(179,18,23,.26);}
+  @media(max-width:1180px){.rn-nav{width:min(100% - 36px,1100px);min-height:86px;gap:18px}.rn-brand{min-width:0}.rn-brand-text{display:none}.rn-menu{gap:18px}.rn-menu a{font-size:.98rem}.rn-cta{padding:17px 22px;font-size:.98rem}}
+  @media(max-width:840px){.rn-nav{align-items:flex-start;flex-wrap:wrap;padding:14px 0 16px}.rn-brand-icon{width:50px;height:50px}.rn-menu{order:3;width:100%;justify-content:flex-start;overflow-x:auto;gap:22px;padding-bottom:2px}.rn-menu a{font-size:.96rem;padding:10px 0 12px}.rn-cta{margin-left:auto;padding:15px 18px;font-size:.92rem}.rn-site-header{position:relative}}
+</style>
+<style id="renfaut-unified-header-styles">
+  :root{--rn-purple:#2F2A56;--rn-luminal-purple:#6C3FBF;--rn-red:#B31217;--rn-ivory:#FBF7EF;--rn-line:#E7DED1;}
+  .rn-site-header.rn-unified-header{position:sticky;top:0;z-index:1000;background:rgba(251,247,239,.96)!important;backdrop-filter:blur(14px);border-bottom:1px solid var(--rn-line);box-shadow:0 8px 28px rgba(47,42,86,.06);}
+  .rn-unified-nav{min-height:96px!important;max-width:1920px;margin:0 auto!important;padding:0 56px!important;display:grid!important;grid-template-columns:minmax(245px,310px) 1fr auto!important;align-items:center!important;gap:26px!important;}
+  .rn-unified-brand{display:flex!important;align-items:center!important;gap:16px!important;text-decoration:none!important;min-width:240px!important;}
+  .rn-unified-icon{width:54px!important;height:54px!important;object-fit:contain!important;display:block!important;border-radius:15px;box-shadow:0 12px 30px rgba(179,18,23,.10);}
+  .rn-unified-wordmark{height:54px!important;width:auto!important;max-width:230px!important;object-fit:contain!important;display:block!important;background:transparent!important;}
+  .rn-unified-links{display:flex!important;align-items:center!important;justify-content:center!important;gap:30px!important;flex-wrap:nowrap!important;}
+  .rn-unified-links a,.rn-dropdown-toggle{font-family:Inter,Manrope,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif!important;font-weight:800!important;font-size:19px!important;line-height:1!important;color:var(--rn-purple)!important;text-decoration:none!important;white-space:nowrap!important;letter-spacing:-.01em!important;}
+  .rn-nav-link{position:relative;display:inline-flex!important;align-items:center!important;min-height:42px!important;padding:8px 0!important;}
+  .rn-nav-link::after,.rn-nav-dropdown>.rn-nav-link::after{content:'';position:absolute;left:0;right:0;bottom:0;height:4px;border-radius:999px;background:transparent;transition:background .18s ease, transform .18s ease;transform:scaleX(.2);}
+  .rn-nav-link:hover::after,.rn-nav-link.active::after,.rn-nav-dropdown.active>.rn-nav-link::after{background:var(--rn-luminal-purple);transform:scaleX(1);}
+  .rn-nav-dropdown{position:relative;display:inline-flex;align-items:center;}
+  .rn-dropdown-toggle::before{content:'';position:absolute;inset:0 -14px;}
+  .rn-dropdown-toggle::after{content:'▾';position:static!important;height:auto!important;background:none!important;transform:none!important;margin-left:7px;font-size:13px;color:var(--rn-luminal-purple);}
+  .rn-dropdown-menu{position:absolute;top:100%;left:50%;transform:translateX(-50%) translateY(8px);min-width:260px;background:#fff;border:1px solid rgba(47,42,86,.12);box-shadow:0 24px 50px rgba(47,42,86,.18);border-radius:22px;padding:12px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease,transform .18s ease;}
+  .rn-dropdown-menu::before{content:'';position:absolute;left:0;right:0;top:-18px;height:18px;}
+  .rn-nav-dropdown:hover .rn-dropdown-menu,.rn-nav-dropdown:focus-within .rn-dropdown-menu,.rn-nav-dropdown.open .rn-dropdown-menu{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0);}
+  .rn-dropdown-menu a{display:block!important;padding:14px 16px!important;border-radius:14px!important;font-size:16px!important;line-height:1.2!important;color:var(--rn-purple)!important;}
+  .rn-dropdown-menu a:hover{background:#F3ECFF!important;color:var(--rn-luminal-purple)!important;}
+  .rn-unified-cta{display:inline-flex!important;align-items:center!important;justify-content:center!important;min-height:60px!important;padding:0 34px!important;border-radius:999px!important;background:var(--rn-red)!important;color:#fff!important;text-decoration:none!important;font-family:Inter,Manrope,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif!important;font-weight:900!important;font-size:19px!important;line-height:1!important;white-space:nowrap!important;box-shadow:0 18px 42px rgba(179,18,23,.24)!important;border:0!important;}
+  .rn-unified-cta:hover{transform:translateY(-1px);filter:brightness(.98);}
+  .rn-menu-toggle{display:none!important;}
+  @media (max-width:1280px){.rn-unified-nav{padding:0 34px!important;grid-template-columns:auto 1fr auto!important;gap:18px!important}.rn-unified-links{gap:20px!important}.rn-unified-links a,.rn-dropdown-toggle{font-size:17px!important}.rn-unified-wordmark{height:46px!important;max-width:190px!important}.rn-unified-icon{width:48px!important;height:48px!important}.rn-unified-cta{font-size:17px!important;padding:0 24px!important;min-height:56px!important}}
+  @media (max-width:980px){.rn-unified-nav{grid-template-columns:1fr auto!important;padding:14px 20px!important;min-height:auto!important}.rn-unified-brand{min-width:0!important}.rn-unified-wordmark{height:42px!important}.rn-unified-icon{width:44px!important;height:44px!important}.rn-menu-toggle{display:inline-flex!important;align-items:center!important;justify-content:center!important;border:1px solid rgba(47,42,86,.18)!important;background:#fff!important;color:var(--rn-purple)!important;border-radius:999px!important;padding:10px 15px!important;font-weight:800!important}.rn-unified-links{grid-column:1/-1;order:3;display:none!important;flex-direction:column!important;align-items:stretch!important;overflow:visible!important;gap:0!important;padding:10px 0 4px!important}.rn-unified-header.menu-open .rn-unified-links{display:flex!important}.rn-unified-links .rn-nav-link{width:100%!important;justify-content:flex-start!important}.rn-unified-cta{grid-column:1/-1;order:4;width:100%!important;margin-top:4px!important}.rn-dropdown-menu{position:static!important;display:none!important;opacity:1!important;visibility:visible!important;pointer-events:auto!important;transform:none!important;box-shadow:none!important;border:0!important;background:rgba(255,255,255,.62)!important;margin:0 0 0 10px!important;min-width:220px!important;padding:8px!important}.rn-nav-dropdown.open .rn-dropdown-menu{display:block!important}.rn-dropdown-toggle::after{display:inline!important}}
+  @media (max-width:620px){.rn-unified-wordmark{height:34px!important;max-width:145px!important}.rn-unified-icon{width:40px!important;height:40px!important}.rn-unified-links a,.rn-dropdown-toggle{font-size:15px!important}.rn-unified-links{gap:16px!important}.rn-unified-cta{font-size:16px!important;min-height:52px!important}}
+
+.intro-card{margin-top:28px;background:rgba(255,255,255,.82);border:1px solid var(--line);border-radius:28px;padding:26px;box-shadow:0 18px 45px rgba(47,42,86,.08)}
+.intro-card h2{font-size:1.35rem;margin:0 0 12px;color:var(--purple)}
+.principle-list,.response-list{list-style:none;padding:0;margin:0 0 24px;display:grid;gap:10px}
+.principle-list li{display:grid;grid-template-columns:minmax(180px,240px) 1fr;gap:14px;align-items:start}.principle-list strong{color:var(--purple)}
+.response-list{grid-template-columns:repeat(2,minmax(0,1fr))}.response-list li{background:#fff;border:1px solid var(--line);padding:11px 14px;border-radius:14px;font-weight:800}
+.intro-note{margin-bottom:0!important}.optional{font-size:.78em;color:var(--muted);font-weight:700}.team-details[hidden],.self-describe[hidden]{display:none}.team-details small{display:block;margin-top:8px;color:var(--muted)}
+.intro-consent{display:flex;align-items:flex-start;gap:12px;margin-top:22px;padding:18px;border:1px solid rgba(108,63,191,.24);border-radius:18px;background:rgba(255,255,255,.8);font-weight:750}.intro-consent--action{display:block}.intro-consent--action p{margin:0 0 12px;line-height:1.55}.start-inventory{margin-top:4px}.required-label{color:#9b2c2c;font-size:.78em;font-weight:900;text-transform:uppercase;letter-spacing:.04em}.conditional-label{color:#7a4cc2;font-size:.78em;font-weight:900;text-transform:uppercase;letter-spacing:.03em}[hidden]{display:none!important}.demographic-intro{max-width:850px;margin:-18px 0 26px;color:var(--muted)}.final-confirmation{grid-column:1/-1;margin:4px 0 0;padding:18px;border-radius:18px;background:rgba(56,191,216,.1);border:1px solid rgba(56,191,216,.3);font-weight:850;color:var(--ink)}
+
+@media(max-width:720px){.principle-list li{grid-template-columns:1fr;gap:4px}.response-list{grid-template-columns:1fr}.intro-card{padding:20px}}
+
+</style>
+
+
+
+
+
+
+
+
+
+<link href="https://renfaut.org/assets/icons/favicon/favicon.ico" rel="icon" sizes="any"/><link href="https://renfaut.org/assets/icons/favicon/favicon.svg" rel="icon" type="image/svg+xml"/><link href="https://renfaut.org/assets/icons/favicon/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png"/><link href="https://renfaut.org/assets/icons/favicon/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png"/><link href="https://renfaut.org/assets/icons/favicon/apple-touch-icon.png" rel="apple-touch-icon"/><link href="https://renfaut.org/assets/icons/favicon/site.webmanifest" rel="manifest"/><link href="https://research.renfaut.org/rise.html" rel="canonical"/><meta content="website" property="og:type"/><meta content="https://research.renfaut.org/rise.html" property="og:url"/><meta content="Renfaut" property="og:site_name"/><meta content="Complete the R.I.S.E. Index™ | Renfaut™" property="og:title"/><meta content="Complete the R.I.S.E. Index™, a reflective leadership inventory for equity-centered practice." property="og:description"/><meta content="https://renfaut.org/assets/social/social-preview.png" property="og:image"/><meta content="https://renfaut.org/assets/social/social-preview.png" property="og:image:secure_url"/><meta content="image/png" property="og:image:type"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="summary_large_image" name="twitter:card"/><meta content="Complete the R.I.S.E. Index™ | Renfaut™" name="twitter:title"/><meta content="Complete the R.I.S.E. Index™, a reflective leadership inventory for equity-centered practice." name="twitter:description"/><meta content="https://renfaut.org/assets/social/social-preview.png" name="twitter:image"/>
+<style id="research-mode-overrides">
+body{font-family:Aptos,"Segoe UI",system-ui,-apple-system,sans-serif!important;color:#2B2B2B!important;background:#FAF7F2!important}.research-header{position:sticky;top:0;z-index:60;background:rgba(250,247,242,.96);border-bottom:1px solid rgba(64,62,77,.14);backdrop-filter:blur(12px)}.research-header__inner{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px}.research-brand img{width:158px;height:auto;display:block}.research-header span{font-weight:750;color:#403E4D}.research-intro{padding:52px 0 18px!important}.research-intro__content{max-width:900px;margin:auto}.research-intro h1{font-family:"Aptos Display",Aptos,"Segoe UI",sans-serif!important;font-size:clamp(2.5rem,6vw,4.8rem)!important;line-height:1!important;color:#403E4D!important;letter-spacing:-.045em!important;margin:10px 0 20px!important}.research-intro .lead{max-width:780px!important;color:#5b5861!important}.research-mode .intro-card{box-shadow:none!important;border-radius:24px!important}.research-mode .assessment-shell{padding-top:22px!important}.research-mode .assessment-card{background:#fff!important}.research-mode footer{background:#FAF7F2!important}.research-mode footer a{color:#403E4D;text-decoration:underline}.research-mode .confirmation-card h2{font-family:"Aptos Display",Aptos,sans-serif!important}.research-mode .confirmation-card p{color:#5b5861!important}@media(max-width:700px){.research-header span{display:none}.research-brand img{width:145px}.research-intro{padding-top:34px!important}.research-intro .intro-card{padding:20px!important}}
+</style>
+</head>
+<body class="rise-inventory-page research-mode">
+<header class="research-header"><div class="container research-header__inner"><a href="index.html" class="research-brand" aria-label="R.I.S.E. Index research home"><img src="https://renfaut.org/assets/logos/renfaut-wordmark.png" alt="Renfaut™"></a><span>R.I.S.E. Index™ Research</span></div></header>
+<main>
+<section class="hero research-intro"><div class="container"><div class="research-intro__content"><div class="eyebrow">R.I.S.E. Index™ Research Inventory</div><h1>Before you begin</h1><p class="lead">Please respond according to <strong>how you typically lead</strong>, not how you hope to lead or how you believe you should respond. There are no right or wrong answers.</p><div class="intro-card"><h2>How to complete the inventory</h2><ul class="instruction-list"><li>Think about your leadership across the situations you encounter most often rather than one isolated event.</li><li>Choose the response that best reflects what is consistently true of your current practice.</li><li>Trust your first reaction and avoid overthinking individual statements.</li><li>Select one response for every statement.</li><li>Allow approximately <strong>10–15 minutes</strong> and complete the inventory in one sitting when possible.</li></ul><h2>Consent and research use</h2><div class="intro-consent intro-consent--action"><p>Your responses will be used to generate your individual Leadership Profile and may also be used in ongoing research examining the reliability and validity of the R.I.S.E. Index™. Demographic information is used for research and analysis and does not affect your individual results.</p><p>By selecting <strong>Start Inventory</strong>, you acknowledge that you have read and understood this information and voluntarily consent to participate.</p><button class="primary start-inventory" id="startInventory" type="button">Start Inventory</button></div></div></div></div></section>
+<section class="assessment-shell" hidden="" id="inventoryShell"><div class="container"><div class="assessment-card"><div class="progress-wrap"><div class="progress-meta"><span id="progressLabel">R.I.S.E. Index™ Inventory</span><span id="progressCount">0 of 81</span></div><div class="progress-track"><div class="progress-bar" id="progressBar"></div></div></div>
+<form action="https://docs.google.com/forms/d/e/1FAIpQLSe7K7Ys5XZBkvOtnSU9Pk1WGf84V9smJyHYvV_iHZjgjVZyIA/formResponse" id="riseForm" method="POST" target="hidden_iframe">
+<input name="fvv" type="hidden" value="1"/>
+<input name="pageHistory" type="hidden" value="0,1,2,3,4,5"/>
+<input name="partialResponse" type="hidden" value="[]"/>
+<input name="submit" type="hidden" value="Submit"/>
+<div class="steps">
+<section class="step item-step" data-step="1" style="--accent:#B31217">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-1">I analyze how our policies advantage some groups and disadvantage others.</h2>
+<div aria-labelledby="statement-1" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.756581726" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.756581726" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.756581726" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.756581726" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="2" style="--accent:#B31217">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-2">I consider how historical injustices still shape conditions in my organization and community.</h2>
+<div aria-labelledby="statement-2" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1577821581" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1577821581" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1577821581" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1577821581" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="3" style="--accent:#B31217">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-3">I connect present-day inequities in our work to long-standing patterns of exclusion and harm.</h2>
+<div aria-labelledby="statement-3" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.499496920" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.499496920" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.499496920" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.499496920" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="4" style="--accent:#B31217">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-4">I can clearly identify who holds formal and informal power in my organization.</h2>
+<div aria-labelledby="statement-4" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1738793518" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1738793518" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1738793518" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1738793518" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="5" style="--accent:#B31217">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-5">I reflect on how my own social identities shape the way others experience my leadership.</h2>
+<div aria-labelledby="statement-5" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1616615387" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1616615387" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1616615387" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1616615387" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="6" style="--accent:#B31217">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-6">I actively use my positional power to redistribute voice, influence, or resources toward those most impacted.</h2>
+<div aria-labelledby="statement-6" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1914671409" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1914671409" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1914671409" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1914671409" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="7" style="--accent:#B31217">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-7">I feel able to name inequities in our organization, even when it may be uncomfortable.</h2>
+<div aria-labelledby="statement-7" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.984539253" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.984539253" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.984539253" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.984539253" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="8" style="--accent:#B31217">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-8">I speak honestly about how our work falls short of our equity commitments.</h2>
+<div aria-labelledby="statement-8" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1605591079" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1605591079" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1605591079" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1605591079" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="9" style="--accent:#B31217">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-9">I give candid feedback about equity issues to peers or supervisors when needed.</h2>
+<div aria-labelledby="statement-9" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.806207475" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.806207475" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.806207475" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.806207475" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="10" style="--accent:#B31217">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-10">I support and protect colleagues who speak truth to power about injustice.</h2>
+<div aria-labelledby="statement-10" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1616828675" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1616828675" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1616828675" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1616828675" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="11" style="--accent:#E76F00">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-11">I am comfortable when there is no clear or immediate solution to a complex problem.</h2>
+<div aria-labelledby="statement-11" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1410838492" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1410838492" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1410838492" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1410838492" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="12" style="--accent:#E76F00">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-12">I can hold multiple possibilities in mind without rushing to closure.</h2>
+<div aria-labelledby="statement-12" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.153694547" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.153694547" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.153694547" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.153694547" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="13" style="--accent:#E76F00">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-13">I view uncertainty and ambiguity as opportunities for creativity rather than as threats.</h2>
+<div aria-labelledby="statement-13" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.486264370" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.486264370" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.486264370" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.486264370" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="14" style="--accent:#E76F00">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-14">I have a grounded sense of who I am as a leader across different contexts.</h2>
+<div aria-labelledby="statement-14" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1209215093" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1209215093" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1209215093" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1209215093" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="15" style="--accent:#E76F00">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-15">I regularly reflect on how my race, gender, class, and other identities shape my leadership choices.</h2>
+<div aria-labelledby="statement-15" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1025809387" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1025809387" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1025809387" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1025809387" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="16" style="--accent:#E76F00">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-16">When I cause harm, I take responsibility and invest time and energy in repairing relationships.</h2>
+<div aria-labelledby="statement-16" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1389852438" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1389852438" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1389852438" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1389852438" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="17" style="--accent:#E76F00">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-17">I can acknowledge when I am wrong without feeling that my authority is diminished.</h2>
+<div aria-labelledby="statement-17" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1783084852" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1783084852" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1783084852" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1783084852" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="18" style="--accent:#E76F00">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-18">I adjust my approach when feedback suggests that my leadership is causing harm.</h2>
+<div aria-labelledby="statement-18" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.2022526136" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.2022526136" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.2022526136" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.2022526136" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="19" style="--accent:#F7B500">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-19">I actively interrupt policies or practices that exclude or harm marginalized groups.</h2>
+<div aria-labelledby="statement-19" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.578529663" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.578529663" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.578529663" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.578529663" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="20" style="--accent:#F7B500">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-20">I challenge narratives that deny or minimize structural racism and other forms of oppression.</h2>
+<div aria-labelledby="statement-20" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.884535297" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.884535297" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.884535297" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.884535297" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="21" style="--accent:#F7B500">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-21">I use my role to bring forward counter-narratives that center marginalized voices.</h2>
+<div aria-labelledby="statement-21" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.46909823" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.46909823" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.46909823" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.46909823" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="22" style="--accent:#F7B500">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-22">I move from statements of support to concrete actions in solidarity with marginalized communities.</h2>
+<div aria-labelledby="statement-22" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.624376681" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.624376681" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.624376681" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.624376681" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="23" style="--accent:#F7B500">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-23">I intervene when I witness microaggressions or oppressive behavior in my workplace.</h2>
+<div aria-labelledby="statement-23" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.121763557" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.121763557" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.121763557" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.121763557" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="24" style="--accent:#F7B500">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-24">I intentionally leverage my access and privilege to open opportunities for those who are excluded.</h2>
+<div aria-labelledby="statement-24" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.906242911" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.906242911" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.906242911" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.906242911" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="25" style="--accent:#F7B500">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-25">I tend to avoid difficult equity issues if they might put me at odds with colleagues.</h2>
+<div aria-labelledby="statement-25" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.586088518" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.586088518" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.586088518" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.586088518" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="26" style="--accent:#F7B500">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-26">I sometimes stay silent when harm occurs because I worry about the personal consequences.</h2>
+<div aria-labelledby="statement-26" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1926092280" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1926092280" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1926092280" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1926092280" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="27" style="--accent:#F7B500">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-27">I take specific steps to shift decision-making power and resources toward those most impacted by inequity.</h2>
+<div aria-labelledby="statement-27" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1038779574" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1038779574" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1038779574" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1038779574" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="28" style="--accent:#F7B500">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-28">I stay engaged in conversations about equity even when I feel uncomfortable.</h2>
+<div aria-labelledby="statement-28" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.371933232" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.371933232" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.371933232" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.371933232" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="29" style="--accent:#F7B500">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-29">I can receive critical feedback about my leadership without becoming defensive.</h2>
+<div aria-labelledby="statement-29" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1334350433" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1334350433" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1334350433" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1334350433" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="30" style="--accent:#F7B500">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-30">I am willing to sit with tension and disagreement as part of meaningful dialogue.</h2>
+<div aria-labelledby="statement-30" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.416767080" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.416767080" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.416767080" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.416767080" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="31" style="--accent:#38BFD8">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-31">I regularly imagine futures for our organization that go beyond small or incremental changes.</h2>
+<div aria-labelledby="statement-31" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.690946827" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.690946827" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.690946827" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.690946827" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="32" style="--accent:#38BFD8">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-32">I am open to experimental approaches that may not fit traditional ways of doing things.</h2>
+<div aria-labelledby="statement-32" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.459165604" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.459165604" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.459165604" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.459165604" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="33" style="--accent:#38BFD8">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-33">I am energized by not knowing exactly how change will unfold, as long as we are moving toward justice.</h2>
+<div aria-labelledby="statement-33" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1733251227" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1733251227" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1733251227" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1733251227" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="34" style="--accent:#38BFD8">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-34">I question organizational structures that consistently advantage some groups over others.</h2>
+<div aria-labelledby="statement-34" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1189200454" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1189200454" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1189200454" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1189200454" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="35" style="--accent:#38BFD8">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-35">When allocating resources, I prioritize those who have been most historically under-resourced.</h2>
+<div aria-labelledby="statement-35" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1969091552" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1969091552" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1969091552" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1969091552" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="36" style="--accent:#38BFD8">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-36">I revise routines and practices so that they align more fully with our equity commitments.</h2>
+<div aria-labelledby="statement-36" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.2029086760" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.2029086760" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.2029086760" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.2029086760" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="37" style="--accent:#38BFD8">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-37">I review policies to understand their potential impact on different racial, cultural, and social groups.</h2>
+<div aria-labelledby="statement-37" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.967964313" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.967964313" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.967964313" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.967964313" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="38" style="--accent:#38BFD8">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-38">I ensure that people most affected by policies have a meaningful role in shaping or revising them.</h2>
+<div aria-labelledby="statement-38" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.576241703" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.576241703" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.576241703" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.576241703" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="39" style="--accent:#38BFD8">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-39">I push for our success metrics to reflect equity and justice, not just efficiency or growth.</h2>
+<div aria-labelledby="statement-39" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.683387829" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.683387829" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.683387829" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.683387829" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="40" style="--accent:#6C3FBF">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-40">I support processes that help people heal from trauma and harm within my organization.</h2>
+<div aria-labelledby="statement-40" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.2005805355" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.2005805355" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.2005805355" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.2005805355" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="41" style="--accent:#6C3FBF">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-41">When harm occurs, I prioritize relationship repair over punishment or blame.</h2>
+<div aria-labelledby="statement-41" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1197185740" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1197185740" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1197185740" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1197185740" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="42" style="--accent:#6C3FBF">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-42">After conflict, I help facilitate collective reflection and restoration, not just individual discipline.</h2>
+<div aria-labelledby="statement-42" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.539742048" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.539742048" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.539742048" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.539742048" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="43" style="--accent:#6C3FBF">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-43">I elevate collective wellbeing over individual recognition or accolades.</h2>
+<div aria-labelledby="statement-43" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1594201180" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1594201180" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1594201180" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1594201180" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="44" style="--accent:#6C3FBF">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-44">I define success in terms of shared and community impact, not just personal achievement.</h2>
+<div aria-labelledby="statement-44" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.922780378" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.922780378" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.922780378" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.922780378" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="45" style="--accent:#6C3FBF">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-45">I celebrate distributed and shared leadership within my team or organization.</h2>
+<div aria-labelledby="statement-45" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1321993254" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1321993254" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1321993254" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1321993254" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="46" style="--accent:#6C3FBF">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-46">I support participatory approaches where community members or staff most impacted have real decision-making power.</h2>
+<div aria-labelledby="statement-46" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.677615065" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.677615065" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.677615065" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.677615065" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="47" style="--accent:#6C3FBF">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-47">I build time for reflection and relational check-ins into our work, not just tasks and deadlines.</h2>
+<div aria-labelledby="statement-47" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.2004516902" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.2004516902" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.2004516902" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.2004516902" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="48" style="--accent:#6C3FBF">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-48">I model boundaries and self-care as essential parts of sustainable equity work.</h2>
+<div aria-labelledby="statement-48" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1439874487" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1439874487" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1439874487" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1439874487" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="49" style="--accent:#6C3FBF">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-49">I advocate for structures (for example, workload, timelines, compensation) that prevent burnout in equity-centered roles.</h2>
+<div aria-labelledby="statement-49" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.4965036" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.4965036" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.4965036" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.4965036" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="50" style="--accent:#6C3FBF">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-50">I value forms of leadership that weave together rest, resistance, and collective care.</h2>
+<div aria-labelledby="statement-50" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1114336402" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1114336402" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1114336402" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1114336402" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="51" style="--accent:#B31217">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-51">I notice when organizational language hides unequal power or unequal impact.</h2>
+<div aria-labelledby="statement-51" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.855679577" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.855679577" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.855679577" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.855679577" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="52" style="--accent:#B31217">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-52">I ask whose experiences are missing when decisions are being made.</h2>
+<div aria-labelledby="statement-52" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1220091395" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1220091395" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1220091395" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1220091395" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="53" style="--accent:#B31217">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-53">I look beneath individual events to understand the conditions that produced them.</h2>
+<div aria-labelledby="statement-53" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1902605043" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1902605043" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1902605043" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1902605043" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="54" style="--accent:#B31217">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-54">I pause to examine whether my interpretation of a situation protects the status quo.</h2>
+<div aria-labelledby="statement-54" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1298155200" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1298155200" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1298155200" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1298155200" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="55" style="--accent:#B31217">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-55">I am willing to revise my assumptions when new evidence reveals a deeper pattern.</h2>
+<div aria-labelledby="statement-55" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1645922311" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1645922311" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1645922311" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1645922311" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="56" style="--accent:#E76F00">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-56">I can keep moving thoughtfully even when a path toward change is not fully clear.</h2>
+<div aria-labelledby="statement-56" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1126393798" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1126393798" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1126393798" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1126393798" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="57" style="--accent:#E76F00">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-57">I treat complexity as a reason to learn with others rather than a reason to withdraw.</h2>
+<div aria-labelledby="statement-57" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.46554131" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.46554131" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.46554131" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.46554131" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="58" style="--accent:#E76F00">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-58">I adapt my leadership when context, relationships, or conditions change.</h2>
+<div aria-labelledby="statement-58" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.356807148" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.356807148" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.356807148" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.356807148" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="59" style="--accent:#E76F00">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-59">I can let go of plans that no longer serve equity or collective wellbeing.</h2>
+<div aria-labelledby="statement-59" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.859169942" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.859169942" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.859169942" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.859169942" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="60" style="--accent:#E76F00">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-60">I make room for ideas that emerge from people closest to the work.</h2>
+<div aria-labelledby="statement-60" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.2143152949" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.2143152949" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.2143152949" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.2143152949" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="61" style="--accent:#F7B500">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-61">I am willing to raise questions that interrupt harmful assumptions or routines.</h2>
+<div aria-labelledby="statement-61" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.2078920241" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.2078920241" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.2078920241" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.2078920241" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="62" style="--accent:#F7B500">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-62">I help create space for disagreement without allowing harm to continue unchecked.</h2>
+<div aria-labelledby="statement-62" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.129750697" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.129750697" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.129750697" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.129750697" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="63" style="--accent:#F7B500">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-63">I use conflict as information about what needs attention in the system.</h2>
+<div aria-labelledby="statement-63" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.447861924" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.447861924" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.447861924" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.447861924" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="64" style="--accent:#F7B500">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-64">I support others when they take risks to name inequity.</h2>
+<div aria-labelledby="statement-64" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.24111307" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.24111307" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.24111307" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.24111307" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="65" style="--accent:#F7B500">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-65">I recognize when politeness is being used to avoid accountability.</h2>
+<div aria-labelledby="statement-65" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.580642755" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.580642755" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.580642755" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.580642755" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="66" style="--accent:#F7B500">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-66">I act when I see patterns of exclusion, even when the action may be inconvenient.</h2>
+<div aria-labelledby="statement-66" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.554477461" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.554477461" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.554477461" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.554477461" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="67" style="--accent:#38BFD8">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-67">I look for ways to redesign processes so that equity is built into how work happens.</h2>
+<div aria-labelledby="statement-67" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1597295724" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1597295724" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1597295724" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1597295724" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="68" style="--accent:#38BFD8">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-68">I ask how resources, authority, and opportunity are distributed across groups.</h2>
+<div aria-labelledby="statement-68" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.418705132" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.418705132" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.418705132" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.418705132" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="69" style="--accent:#38BFD8">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-69">I believe policies should be revisited when their effects differ across communities.</h2>
+<div aria-labelledby="statement-69" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1648910514" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1648910514" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1648910514" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1648910514" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="70" style="--accent:#38BFD8">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-70">I help move equity commitments from statements into structures, routines, and decisions.</h2>
+<div aria-labelledby="statement-70" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1074949281" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1074949281" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1074949281" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1074949281" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="71" style="--accent:#38BFD8">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-71">I seek evidence that change is shifting conditions, not only producing activity.</h2>
+<div aria-labelledby="statement-71" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.996436746" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.996436746" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.996436746" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.996436746" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="72" style="--accent:#38BFD8">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-72">I involve people most affected by a decision before the decision is finalized.</h2>
+<div aria-labelledby="statement-72" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1018735484" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1018735484" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1018735484" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1018735484" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="73" style="--accent:#6C3FBF">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-73">I help groups learn from conflict rather than simply move past it.</h2>
+<div aria-labelledby="statement-73" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.63733062" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.63733062" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.63733062" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.63733062" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="74" style="--accent:#6C3FBF">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-74">I attend to relationships as part of the work, not as separate from the work.</h2>
+<div aria-labelledby="statement-74" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.778330430" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.778330430" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.778330430" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.778330430" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="75" style="--accent:#6C3FBF">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-75">I support practices that make equity work sustainable over time.</h2>
+<div aria-labelledby="statement-75" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.237182320" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.237182320" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.237182320" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.237182320" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="76" style="--accent:#6C3FBF">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-76">I notice when urgency undermines care, reflection, or accountability.</h2>
+<div aria-labelledby="statement-76" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.839088966" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.839088966" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.839088966" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.839088966" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="77" style="--accent:#6C3FBF">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-77">I value leadership that restores connection after rupture.</h2>
+<div aria-labelledby="statement-77" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1149824658" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1149824658" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1149824658" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1149824658" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="78" style="--accent:#6C3FBF">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-78">I help teams name what needs to end so that something more just can emerge.</h2>
+<div aria-labelledby="statement-78" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.151111069" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.151111069" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.151111069" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.151111069" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="79" style="--accent:#6C3FBF">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-79">I understand renewal as an ongoing practice rather than a final destination.</h2>
+<div aria-labelledby="statement-79" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1735348821" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1735348821" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1735348821" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1735348821" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="80" style="--accent:#2F2A56">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-80">I connect what I see, what I imagine, and what I do in service of transformation.</h2>
+<div aria-labelledby="statement-80" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.1532902882" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.1532902882" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.1532902882" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.1532902882" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step item-step" data-step="81" style="--accent:#2F2A56">
+<div class="step-kicker">Reflective statement</div>
+<h2 id="statement-81">I am becoming more intentional in how I create conditions for equity, liberation, and collective flourishing.</h2>
+<div aria-labelledby="statement-81" class="options response-scale" role="radiogroup"><label class="option option-not"><input name="entry.498872366" required="" type="radio" value="Not at all like me"/><span>Not at all like me</span></label><label class="option option-little"><input name="entry.498872366" required="" type="radio" value="Not much like me"/><span>Not much like me</span></label><label class="option option-some"><input name="entry.498872366" required="" type="radio" value="Somewhat like me"/><span>Somewhat like me</span></label><label class="option option-very"><input name="entry.498872366" required="" type="radio" value="Very much like me"/><span>Very much like me</span></label></div>
+</section>
+<section class="step demographic-step" data-step="82" id="demographicStep" style="--accent:#6C3FBF"><div class="step-kicker">Final questions <span>Required and optional information</span></div>
+<h2>Participant Information</h2>
+<p class="demographic-intro" id="demographicInstructions">Name, email address, years in leadership, and sector are required for every participant. Professional role or title is required when the inventory is completed as part of a team, organization, cohort, or workshop. Gender identity and race and/or ethnicity remain optional and do not affect your individual R.I.S.E. Index™ results.</p><div aria-describedby="demographicInstructions" class="demo-grid">
+<div class="field"><label class="title" for="participantName">First &amp; Last Name <span class="required-label">Required</span></label><input autocomplete="name" id="participantName" name="entry.723280880" placeholder="Your name" required="" type="text"/></div>
+<div class="field"><label class="title" for="participantEmail">Email <span class="required-label">Required</span></label><input autocomplete="email" id="participantEmail" name="entry.912272113" placeholder="name@example.com" required="" type="email"/></div>
+<div class="field"><label class="title" for="participantRole">Professional Role or Title <span class="conditional-label">Required for team participation</span></label><input autocomplete="organization-title" id="participantRole" name="entry.850283824" placeholder="Your role or title" type="text"/></div>
+<div class="field"><label class="title" for="participantSector">Sector <span class="required-label">Required</span></label><select id="participantSector" name="entry.372153283" required=""><option value="">Select one</option><option>Philanthropy / Grantmaking</option><option>Nonprofit / Community-based organization</option><option>Higher Education / Academia</option><option>Government / Public Sector</option><option>K–12 Education</option><option>Health or Human Services</option><option>Private / Corporate</option><option>Consulting / Intermediary</option><option>Grassroots or Movement-based Organization</option><option>Prefer not to answer</option><option value="__other_option__">I prefer to self-describe</option></select><div class="self-describe" hidden="" id="sectorSelfDescribe"><label class="title" for="sectorSelfDescribeText">Please self-describe your sector <span class="optional">Optional</span></label><input id="sectorSelfDescribeText" name="entry.372153283.other_option_response" type="text"/></div></div>
+<div class="field"><label class="title" for="leadershipYears">Years in Leadership Roles <span class="required-label">Required</span></label><select id="leadershipYears" name="entry.1692425384" required=""><option value="">Select one</option><option>Less than 1 year</option><option>1–3 years</option><option>4–6 years</option><option>7–10 years</option><option>11–15 years</option><option>More than 15 years</option><option>Prefer not to answer</option></select></div>
+<div class="field full"><div class="title" id="genderLabel">Gender Identity <span class="optional">Optional · Select all that apply</span></div><div aria-labelledby="genderLabel" class="choice-grid" role="group">
+<label class="check"><input name="entry.1083444680" type="checkbox" value="Woman"/> Woman</label><label class="check"><input name="entry.1083444680" type="checkbox" value="Man"/> Man</label><label class="check"><input name="entry.1083444680" type="checkbox" value="Nonbinary"/> Nonbinary</label><label class="check"><input name="entry.1083444680" type="checkbox" value="Transgender"/> Transgender</label><label class="check"><input name="entry.1083444680" type="checkbox" value="Genderqueer / Gender non-conforming"/> Genderqueer / Gender non-conforming</label><label class="check"><input name="entry.1083444680" type="checkbox" value="Two-Spirit"/> Two-Spirit</label><label class="check"><input name="entry.1083444680" type="checkbox" value="Prefer not to answer"/> Prefer not to answer</label><label class="check"><input id="genderSelfDescribeCheck" name="entry.1083444680" type="checkbox" value="__other_option__"/> I prefer to self-describe</label></div><div class="self-describe" hidden="" id="genderSelfDescribe"><label class="title" for="genderSelfDescribeText">Please self-describe your gender identity <span class="optional">Optional</span></label><input id="genderSelfDescribeText" name="entry.1083444680.other_option_response" type="text"/></div></div>
+<div class="field full"><div class="title" id="raceLabel">Race and/or Ethnicity <span class="optional">Optional · Select all that apply</span></div><div aria-labelledby="raceLabel" class="choice-grid" role="group">
+<label class="check"><input name="entry.1285176183" type="checkbox" value="Black / African American"/> Black / African American</label><label class="check"><input name="entry.1285176183" type="checkbox" value="Latine / Latinx / Hispanic"/> Latine / Latinx / Hispanic</label><label class="check"><input name="entry.1285176183" type="checkbox" value="Native American / Indigenous / First Nations"/> Native American / Indigenous / First Nations</label><label class="check"><input name="entry.1285176183" type="checkbox" value="Asian (East, South, Southeast, Central)"/> Asian (East, South, Southeast, Central)</label><label class="check"><input name="entry.1285176183" type="checkbox" value="Middle Eastern or North African"/> Middle Eastern or North African</label><label class="check"><input name="entry.1285176183" type="checkbox" value="Pacific Islander / Native Hawaiian"/> Pacific Islander / Native Hawaiian</label><label class="check"><input name="entry.1285176183" type="checkbox" value="White / European descent"/> White / European descent</label><label class="check"><input name="entry.1285176183" type="checkbox" value="Multiracial or Multiethnic"/> Multiracial or Multiethnic</label><label class="check"><input name="entry.1285176183" type="checkbox" value="Prefer not to answer"/> Prefer not to answer</label><label class="check"><input id="raceOtherCheck" name="entry.1285176183" type="checkbox" value="__other_option__"/> I prefer to self-describe</label></div><div class="self-describe" hidden="" id="raceSelfDescribe"><label class="title" for="raceOther">Please self-describe your race or ethnicity <span class="optional">Optional</span></label><input id="raceOther" name="entry.1285176183.other_option_response" type="text"/></div></div>
+<div class="field full"><div class="title" id="teamParticipationLabel">Are you completing the R.I.S.E. Index™ as part of a team, organization, cohort, or workshop? <span class="required-label">Required</span></div><div aria-labelledby="teamParticipationLabel" class="choice-grid team-choice" role="radiogroup"><label class="radio"><input name="entry.17583083" required="" type="radio" value="No"/> No</label><label class="radio"><input name="entry.17583083" required="" type="radio" value="Yes"/> Yes</label><label class="radio"><input name="entry.17583083" required="" type="radio" value="Prefer not to answer"/> Prefer not to answer</label></div></div>
+<div class="field full team-details" hidden="" id="teamDetails"><label class="title" for="teamName">Team, organization, cohort, or workshop name <span class="optional">Optional</span></label><input id="teamName" name="entry.337079521" placeholder="Enter the name provided by your facilitator" type="text"/><small>Enter the name exactly as provided by your facilitator.</small></div>
+<p class="final-confirmation">Review your responses before submitting. Required participant information must be complete. Gender identity and race and/or ethnicity may be left blank.</p>
+</div></section>
+</div><div class="controls"><button class="secondary" id="backBtn" type="button">Back</button><div class="hint" id="hintText">Choose a response to move forward.</div><button class="primary" id="nextBtn" type="button">Next</button><button class="primary" id="submitBtn" style="display:none" type="submit">Submit Inventory</button></div></form><iframe id="hidden_iframe" name="hidden_iframe" style="display:none"></iframe></div></div></section>
+</main><footer><div class="container footer-inner"><div class="footer-brand"><span>R.I.S.E. Index™ Research</span></div><div>Renfaut™ · Created by T. Lee Morgan, Ph.D.</div></div></footer>
+<div class="confirmation" id="confirmation"><div class="confirmation-card"><img alt="Renfaut logo marker" src="https://renfaut.org/assets/logos/renfaut-icon.png"/><h2>Thank you.</h2><p>Your browser sent your R.I.S.E. Index™ responses. Your personalized Leadership Profile is ready.</p><a class="btn primary" href="profile.html">View My Leadership Profile</a><p style="margin-top:18px"><a href="https://renfaut.org" target="_blank" rel="noopener">Explore Renfaut™</a></p></div></div>
+<script src="js/rise-spec.js"></script>
+<script src="js/scoring-engine.js"></script>
+<script>
+const totalItems=81;
+const steps=[...document.querySelectorAll('.step')];
+const itemSteps=[...document.querySelectorAll('.item-step')];
+itemSteps.forEach((step,index)=>{const kicker=step.querySelector('.step-kicker');if(kicker)kicker.textContent='Reflective statement '+(index+1)+' of '+totalItems;});
+let submitted=false;
+const progressBar=document.getElementById('progressBar'), progressLabel=document.getElementById('progressLabel'), progressCount=document.getElementById('progressCount'), submitBtn=document.getElementById('submitBtn'), hintText=document.getElementById('hintText');
+function answeredCount(){return itemSteps.filter(s=>s.querySelector('input[type=radio]:checked')).length;}
+function firstUnansweredIndex(){const idx=itemSteps.findIndex(s=>!s.querySelector('input[type=radio]:checked')); return idx<0?itemSteps.length:idx;}
+function setActive(){
+  const count=answeredCount();
+  const first=firstUnansweredIndex();
+  const activeEl = first < itemSteps.length ? itemSteps[first] : steps[steps.length-1];
+  steps.forEach(s=>{s.classList.remove('active','past','future');});
+  itemSteps.forEach((s,idx)=>{s.classList.add(idx<first?'past':idx===first?'active':'future');});
+  if(first>=itemSteps.length){steps[steps.length-1].classList.add('active');}
+  const pct=Math.round((count/totalItems)*100);
+  progressBar.style.width=pct+'%';
+  progressCount.textContent=count+' of '+totalItems;
+  progressLabel.textContent='R.I.S.E. Index™ Inventory';
+  const remaining=totalItems-count;
+  hintText.textContent=remaining>0 ? remaining+' statements remaining.' : 'All reflective statements complete. Submit when ready.';
+  submitBtn.disabled=remaining>0 || !demographicsValid();
+  return activeEl;
+}
+function teamParticipationValue(){return document.querySelector('input[name="entry.17583083"]:checked')?.value || '';}
+function demographicsValid(){
+  const requiredIds=['participantName','participantEmail','participantSector','leadershipYears'];
+  if(requiredIds.some(id=>!document.getElementById(id).checkValidity())) return false;
+  if(!teamParticipationValue()) return false;
+  const role=document.getElementById('participantRole');
+  return teamParticipationValue()!=='Yes' || role.value.trim().length>0;
+}
+function validateAll(){
+  const missing=itemSteps.find(s=>!s.querySelector('input[type=radio]:checked'));
+  if(missing){missing.classList.add('has-error');missing.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>missing.classList.remove('has-error'),1600);return false;}
+  const role=document.getElementById('participantRole');
+  role.required=teamParticipationValue()==='Yes';
+  if(!demographicsValid()){
+    const firstInvalid=document.querySelector('#demographicStep :invalid') || (teamParticipationValue()==='Yes' && !role.value.trim()?role:null);
+    if(firstInvalid){firstInvalid.focus();firstInvalid.scrollIntoView({behavior:'smooth',block:'center'});}
+    return false;
+  }
+  return true;
+}
+
+document.querySelectorAll('.item-step input[type=radio]').forEach(r=>{
+  r.addEventListener('pointerdown',()=>{
+    const currentStep=r.closest('.item-step');
+    currentStep.dataset.wasAnswered=currentStep.querySelector('input[type=radio]:checked')?'true':'false';
+  });
+  r.addEventListener('change',()=>{
+    const currentStep=r.closest('.item-step');
+    const wasAnswered=currentStep.dataset.wasAnswered==='true';
+    currentStep.classList.remove('has-error');
+    setTimeout(()=>{
+      const active=setActive();
+      // Keep auto-advance for a first response, but stay in place when revising an answer.
+      if(!wasAnswered && active)active.scrollIntoView({behavior:'smooth',block:'center'});
+    },120);
+  });
+});
+
+const teamRadios=document.querySelectorAll('input[name="entry.17583083"]');
+const teamDetails=document.getElementById('teamDetails');
+const teamName=document.getElementById('teamName');
+teamRadios.forEach(r=>r.addEventListener('change',()=>{const selected=document.querySelector('input[name="entry.17583083"]:checked')?.value||'';const yes=selected==='Yes';teamDetails.hidden=!yes;if(!yes)teamName.value='';localStorage.setItem('riseTeamParticipation',selected);setActive();}));
+teamName.addEventListener('input',()=>localStorage.setItem('riseOrganizationTeamName',teamName.value));
+
+document.getElementById('raceOtherCheck').addEventListener('change',e=>{document.getElementById('raceSelfDescribe').hidden=!e.target.checked;setActive();});
+document.getElementById('genderSelfDescribeCheck').addEventListener('change',e=>{document.getElementById('genderSelfDescribe').hidden=!e.target.checked;setActive();});
+document.getElementById('participantSector').addEventListener('change',e=>{document.getElementById('sectorSelfDescribe').hidden=e.target.value!=='__other_option__';setActive();});
+document.querySelectorAll('input[name="entry.17583083"]').forEach(el=>el.addEventListener('change',()=>{
+  const role=document.getElementById('participantRole');
+  role.required=teamParticipationValue()==='Yes';
+  setActive();
+}));
+document.querySelectorAll('#demographicStep input,#demographicStep select').forEach(el=>{el.addEventListener('change',setActive);el.addEventListener('input',setActive);});
+const startInventory=document.getElementById('startInventory');
+const inventoryShell=document.getElementById('inventoryShell');
+startInventory.addEventListener('click',()=>{
+  sessionStorage.setItem('riseInventoryConsent','consented');
+  inventoryShell.hidden=false;
+  inventoryShell.scrollIntoView({behavior:'smooth',block:'start'});
+});
+function participantData(){
+  const form=document.getElementById('riseForm');
+  const value=name=>form.querySelector(`[name="${name}"]`)?.value?.trim()||'';
+  const selections=name=>[...form.querySelectorAll(`input[name="${name}"]:checked`)].map(x=>x.value);
+  const teamSelection=document.querySelector('input[name="entry.17583083"]:checked')?.value||'';
+  const genderSelections=selections('entry.1083444680').map(x=>x==='__other_option__'?'I prefer to self-describe'+(document.getElementById('genderSelfDescribeText').value.trim()?': '+document.getElementById('genderSelfDescribeText').value.trim():''):x);
+  const raceSelections=selections('entry.1285176183').map(x=>x==='__other_option__'?'I prefer to self-describe'+(document.getElementById('raceOther').value.trim()?': '+document.getElementById('raceOther').value.trim():''):x);
+  const teamYes=teamSelection==='Yes';
+  return {
+    name:value('entry.723280880'),
+    email:value('entry.912272113'),
+    role:value('entry.850283824'),
+    sector:value('entry.372153283')==='__other_option__'?(document.getElementById('sectorSelfDescribeText').value.trim()||'I prefer to self-describe'):value('entry.372153283'),
+    leadershipYears:value('entry.1692425384'),
+    gender:genderSelections.join('; '),
+    race:raceSelections,
+    teamParticipation:teamSelection,
+    teamName:teamYes?teamName.value.trim():'',
+    organization:teamYes?teamName.value.trim():''
+  };
+}
+function saveComputedResults(){
+  const results=window.RISE_SCORING_ENGINE.compute(itemSteps,participantData());
+  localStorage.setItem('riseLatestResults',JSON.stringify(results));
+  localStorage.setItem('riseResults',JSON.stringify(results));
+  sessionStorage.setItem('riseLatestResults',JSON.stringify(results));
+  return results;
+}
+document.getElementById('riseForm').addEventListener('submit',e=>{
+  if(!validateAll()){e.preventDefault();return false;}
+  try{
+    saveComputedResults();
+    submitted=true;
+    submitBtn.disabled=true;
+    submitBtn.textContent='Preparing Your Snapshot…';
+    window.riseSubmissionTimer=window.setTimeout(()=>{
+      if(!submitted)return;
+      submitted=false;
+      submitBtn.disabled=false;
+      submitBtn.textContent='Try Submission Again';
+      alert('We could not confirm that your responses were received. Your Leadership Profile remains saved in this browser, so you can try again without losing your results.');
+    },15000);
+  }catch(error){
+    e.preventDefault();
+    console.error(error);
+    alert('Your responses could not be scored. Please refresh the page and try again. '+error.message);
+    submitBtn.disabled=false;
+    submitBtn.textContent='Submit Inventory';
+    return false;
+  }
+});
+document.getElementById('hidden_iframe').addEventListener('load',()=>{
+  if(!submitted)return;
+  window.clearTimeout(window.riseSubmissionTimer);
+  sessionStorage.setItem('riseSubmissionStatus','sent');
+  window.location.href='profile.html';
+});
+setActive();
+</script>
+<script id="renfaut-dropdown-navigation">
+  (function () {
+    const header = document.querySelector('.rn-unified-header');
+    const menuToggle = header && header.querySelector('.rn-menu-toggle');
+    if (menuToggle) {
+      menuToggle.addEventListener('click', function () {
+        const isOpen = header.classList.toggle('menu-open');
+        menuToggle.setAttribute('aria-expanded', String(isOpen));
+        menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+        menuToggle.textContent = isOpen ? 'Close' : 'Menu';
+      });
+    }
+    const dropdowns = document.querySelectorAll('.rn-nav-dropdown');
+    dropdowns.forEach(function (drop) {
+      const toggle = drop.querySelector('.rn-dropdown-toggle');
+      if (!toggle) return;
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.addEventListener('click', function (event) {
+        event.preventDefault();
+        const isOpen = drop.classList.contains('open');
+        dropdowns.forEach(function (other) {
+          other.classList.remove('open');
+          const otherToggle = other.querySelector('.rn-dropdown-toggle');
+          if (otherToggle) otherToggle.setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) {
+          drop.classList.add('open');
+          toggle.setAttribute('aria-expanded', 'true');
+        }
+      });
+      drop.querySelectorAll('.rn-dropdown-menu a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          drop.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    });
+    document.addEventListener('click', function (event) {
+      if (!event.target.closest('.rn-nav-dropdown')) {
+        dropdowns.forEach(function (drop) {
+          drop.classList.remove('open');
+          const toggle = drop.querySelector('.rn-dropdown-toggle');
+          if (toggle) toggle.setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        dropdowns.forEach(function (drop) {
+          drop.classList.remove('open');
+          const toggle = drop.querySelector('.rn-dropdown-toggle');
+          if (toggle) toggle.setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+  })();
+</script>
+</body></html>
