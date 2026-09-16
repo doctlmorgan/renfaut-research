@@ -21,6 +21,17 @@
 
 .attention-check{background:#F7F4EF;border:1px solid rgba(64,62,77,.14);border-radius:14px;padding:18px 14px;margin:16px 0}.attention-badge{display:none}.attention-check .question-body h3{font-size:1rem;font-weight:700;margin-bottom:12px}.surveyswap-popup{margin:18px auto;padding:16px;border:1px solid rgba(64,62,77,.18);border-radius:14px;max-width:440px;background:#F7F4EF}.surveyswap-popup[hidden]{display:none}.surveyswap-code{font-size:1.35rem;font-weight:800;letter-spacing:.08em;color:#403E4D;margin:7px 0}.surveyswap-popup small{display:block;color:#665e73;line-height:1.45}
 </style>
+
+<style id="rise-debug-diagnostic-styles">
+#riseDebugPanel{display:none;position:fixed;right:18px;bottom:18px;z-index:9999;width:min(420px,calc(100vw - 36px));background:#fff;border:1px solid rgba(64,62,77,.22);border-radius:18px;box-shadow:0 18px 50px rgba(64,62,77,.20);padding:18px;color:#403E4D;font-family:Aptos,"Segoe UI",Arial,sans-serif}
+#riseDebugPanel.show{display:block}
+#riseDebugPanel h3{margin:0 0 8px;font-size:1rem}
+#riseDebugPanel p{margin:0 0 12px;font-size:.84rem;line-height:1.4;color:#625E69}
+#riseDebugPanel .debug-buttons{display:grid;grid-template-columns:1fr;gap:8px}
+#riseDebugPanel button{border:1px solid rgba(64,62,77,.20);background:#FAF7F2;color:#403E4D;border-radius:10px;padding:9px 11px;font-weight:700;text-align:left;cursor:pointer}
+#riseDebugPanel button:hover{background:#F1ECF8}
+#riseDebugPanel .debug-note{margin-top:10px;font-size:.78rem}
+</style>
 </head>
 <body>
 <header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><img alt="Renfaut™" src="https://renfaut.org/assets/logos/renfaut-wordmark.png"/></a><div class="research-label">R.I.S.E. Index™ Research</div></div></header>
@@ -444,5 +455,86 @@ submissionFrame.addEventListener('load',()=>{
 });
 
 showPart(0);syncContactPreference();syncGoogleOtherFields();
+</script>
+
+<div id="riseDebugPanel" aria-live="polite">
+  <h3>Google Forms diagnostic tests</h3>
+  <p>Each button opens a direct POST to the research Google Form in a new tab. Use these in order. The first test that returns Error 400 identifies the failing field group.</p>
+  <div class="debug-buttons">
+    <button type="button" data-debug-stage="1">1. Identifier only</button>
+    <button type="button" data-debug-stage="2">2. Identifier + timing</button>
+    <button type="button" data-debug-stage="3">3. Add demographics</button>
+    <button type="button" data-debug-stage="4">4. Add 81 items + attention checks</button>
+    <button type="button" data-debug-stage="5">5. Full payload</button>
+  </div>
+  <p class="debug-note">A successful Google submission should show Google’s confirmation page and add a response. Do not use these buttons with real participant data.</p>
+</div>
+
+<script id="rise-google-diagnostic">
+(function(){
+  const params=new URLSearchParams(location.search);
+  if(params.get('debug')!=='1') return;
+  const panel=document.getElementById('riseDebugPanel');
+  if(panel) panel.classList.add('show');
+  const endpoint='https://docs.google.com/forms/d/e/1FAIpQLSftL4ItejryBWf2APPAYBBAvZcx3S7Gpo279-60-gBX8ClAfg/formResponse';
+  const itemIds=['entry.756581726','entry.1577821581','entry.499496920','entry.1738793518','entry.1616615387','entry.1914671409','entry.984539253','entry.1605591079','entry.806207475','entry.1616828675','entry.1410838492','entry.153694547','entry.486264370','entry.1209215093','entry.1025809387','entry.1389852438','entry.1783084852','entry.2022526136','entry.578529663','entry.884535297','entry.46909823','entry.624376681','entry.121763557','entry.906242911','entry.586088518','entry.1926092280','entry.1038779574','entry.371933232','entry.1334350433','entry.416767080','entry.690946827','entry.459165604','entry.1733251227','entry.1189200454','entry.1969091552','entry.2029086760','entry.967964313','entry.576241703','entry.683387829','entry.2005805355','entry.1197185740','entry.539742048','entry.1594201180','entry.922780378','entry.1321993254','entry.677615065','entry.2004516902','entry.1439874487','entry.4965036','entry.1114336402','entry.855679577','entry.1220091395','entry.1902605043','entry.1298155200','entry.1645922311','entry.1126393798','entry.46554131','entry.356807148','entry.859169942','entry.2143152949','entry.2078920241','entry.129750697','entry.447861924','entry.24111307','entry.580642755','entry.554477461','entry.1597295724','entry.418705132','entry.1648910514','entry.1074949281','entry.996436746','entry.1018735484','entry.63733062','entry.778330430','entry.237182320','entry.839088966','entry.1149824658','entry.151111069','entry.1735348821','entry.1532902882','entry.498872366'];
+  function baseFields(){
+    return {
+      submit:'Submit',
+      fvv:'1',
+      pageHistory:'0,1,2,3,4,5'
+    };
+  }
+  function identifierFields(){
+    return {'entry.1185653219':'DEBUG-'+Date.now()};
+  }
+  function timingFields(){
+    const end=new Date(); const start=new Date(end.getTime()-120000);
+    return {
+      'entry.79383809':start.toISOString(),
+      'entry.1149550426':end.toISOString(),
+      'entry.825649838':'120'
+    };
+  }
+  function demographicFields(){
+    return {
+      'entry.1022132287':'25–34',
+      'entry.984504931':'Germany',
+      'entry.850283824':'Diagnostic Test',
+      'entry.372153283':'Higher Education / Academia',
+      'entry.1692425384':'7–10 years',
+      'entry.1083444680':'Woman',
+      'entry.1285176183':'Middle Eastern or North African',
+      'entry.1084504372':'I do not wish to be contacted or receive results'
+    };
+  }
+  function inventoryFields(){
+    const fields={};
+    itemIds.forEach(id=>fields[id]='Not much like me');
+    fields['entry.1084935131']='Somewhat like me';
+    fields['entry.46323698']='Not much like me';
+    return fields;
+  }
+  function merge(...objs){return Object.assign({},...objs)}
+  function post(fields){
+    const f=document.createElement('form');
+    f.method='POST'; f.action=endpoint; f.target='_blank'; f.style.display='none';
+    Object.entries(fields).forEach(([name,value])=>{
+      if(value===undefined||value===null||value==='') return;
+      const input=document.createElement('input'); input.type='hidden'; input.name=name; input.value=String(value); f.appendChild(input);
+    });
+    document.body.appendChild(f); f.submit(); setTimeout(()=>f.remove(),1000);
+  }
+  document.querySelectorAll('[data-debug-stage]').forEach(btn=>btn.addEventListener('click',()=>{
+    const stage=Number(btn.dataset.debugStage);
+    let fields=merge(baseFields(),identifierFields());
+    if(stage>=2) fields=merge(fields,timingFields());
+    if(stage>=3) fields=merge(fields,demographicFields());
+    if(stage>=4) fields=merge(fields,inventoryFields());
+    if(stage>=5) fields=merge(fields,{'entry.912272113':'diagnostic@example.com'});
+    console.log('RISE diagnostic stage',stage,fields);
+    post(fields);
+  }));
+})();
 </script>
 </body></html>
