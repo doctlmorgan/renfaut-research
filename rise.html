@@ -6,7 +6,7 @@
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <meta content="noindex,nofollow" name="robots"/>
 <title>R.I.S.E. Index™ Research Inventory | Renfaut™</title>
-<!-- Research build v15: strict Google Forms payload -->
+<!-- Research build v20: direct Apps Script response writer -->
 <meta content="Complete the R.I.S.E. Index™, an Inventory for Equity-Centered Leadership." name="description"/>
 <style>
 :root{--paper:#FAF7F2;--white:#fff;--ink:#2B2B2B;--night:#403E4D;--muted:#625E69;--line:rgba(64,62,77,.18);--rr:#B31217;--ib:#E76F00;--de:#F7B500;--es:#38BFD8;--ra:#6C3FBF;--shadow:0 18px 48px rgba(64,62,77,.10)}
@@ -26,7 +26,7 @@
 <header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><img alt="Renfaut™" src="https://renfaut.org/assets/logos/renfaut-wordmark.png"/></a><div class="research-label">R.I.S.E. Index™ Research</div></div></header>
 <main>
 <section class="hero"><div class="container"><p class="eyebrow">R.I.S.E. Index™ Research Inventory</p><h1>Before you begin</h1><p class="lead">Please respond according to <strong>how you typically lead</strong>, not how you hope to lead or how you believe you should respond. There are no right or wrong answers.</p></div></section>
-<form action="https://docs.google.com/forms/d/e/1FAIpQLSejVS1fJK5NIgWqCmNSY4mnhFcZt53_TTCeE0SoTV7AkzUFCA/formResponse" id="riseForm" method="POST" target="submission_iframe"><input name="submit" type="hidden" value="Submit"/><input name="fvv" type="hidden" value="1"/><input name="pageHistory" type="hidden" value="0,1,2,3,4,5"/>
+<form action="https://script.google.com/macros/s/AKfycbykVwR2Tceokl4CWXNLdTMBH8AUZ0GnnMDl_ARpGD2JssGgY-qB3Yg8inciTg5iz2d-/exec" id="riseForm" method="POST" target="submission_iframe"><input id="researchPayload" name="payload" type="hidden"/>
 <input id="researchStartTime" name="entry.660369198" type="hidden"/>
 <input id="researchEndTime" name="entry.1273772751" type="hidden"/>
 <input id="researchElapsedSeconds" name="entry.857315252" type="hidden"/>
@@ -214,7 +214,7 @@
 </article></div></section></div><div class="part-controls"><button class="secondary" id="backPart" type="button">Back</button><div class="status" id="partStatus">Complete all statements in this part to continue.</div><button class="primary" id="nextPart" type="button">Continue</button><button class="primary" hidden="" id="submitInventory" type="submit">Submit Inventory</button></div></div></div></section>
 </form><iframe id="submission_iframe" name="submission_iframe" style="display:none"></iframe>
 </main>
-<div class="confirmation" id="confirmation"><div class="confirmation-card"><h2>Thank you.</h2><p>Your R.I.S.E. Index™ submission has been sent to the research form and your Leadership Profile is ready.</p><div class="identifier-box"><strong>Save your Participant Identifier</strong><div class="identifier-value" id="confirmationIdentifierValue"></div><small>Use this code if you contact Renfaut later about your response or results.</small></div><div class="surveyswap-popup" hidden="" id="surveySwapPopup"><strong>SurveySwap completion code</strong><div class="surveyswap-code">X3DG-OL6E-7KYR</div><small>Copy or save this code before viewing your Leadership Profile. Use it in SurveySwap to receive your credit.</small></div><a class="primary" href="profile.html" id="profileLink" style="display:inline-flex;text-decoration:none">View My Leadership Profile</a></div></div>
+<div class="confirmation" id="confirmation"><div class="confirmation-card"><h2>Thank you.</h2><p>Your R.I.S.E. Index™ responses have been saved and your Leadership Profile is ready.</p><div class="identifier-box"><strong>Save your Participant Identifier</strong><div class="identifier-value" id="confirmationIdentifierValue"></div><small>Use this code if you contact Renfaut later about your response or results.</small></div><div class="surveyswap-popup" hidden="" id="surveySwapPopup"><strong>SurveySwap completion code</strong><div class="surveyswap-code">X3DG-OL6E-7KYR</div><small>Copy or save this code before viewing your Leadership Profile. Use it in SurveySwap to receive your credit.</small></div><a class="primary" href="profile.html" id="profileLink" style="display:inline-flex;text-decoration:none">View My Leadership Profile</a></div></div>
 <script src="js/rise-spec.js"></script><script src="js/scoring-engine.js"></script>
 <script>
 const form=document.getElementById('riseForm');
@@ -236,9 +236,9 @@ function consentValue(){const hidden=document.getElementById('contactConsentHidd
 function syncContactPreference(){const email=document.getElementById('participantEmail');const hidden=document.getElementById('contactConsentHidden');if(!email||!hidden)return;const hasEmail=email.value.trim().length>0;hidden.disabled=!hasEmail;if(hasEmail)hidden.value='I consent to be contacted for research and to receive my results';}
 function demographicsValid(){const ids=['participantIdentifier','participantAge','participantCountry','participantRole','participantSector','leadershipYears'];for(const id of ids){const el=document.getElementById(id);if(!el.checkValidity()){el.reportValidity();el.scrollIntoView({behavior:'smooth',block:'center'});return false}}const email=document.getElementById('participantEmail');if(email&&!email.checkValidity()){email.reportValidity();email.scrollIntoView({behavior:'smooth',block:'center'});return false}syncContactPreference();return true}
 document.getElementById('participantEmail')?.addEventListener('input',syncContactPreference);
-document.getElementById('raceOtherCheck')?.addEventListener('change',e=>{document.getElementById('raceSelfDescribe').hidden=!e.target.checked;syncGoogleOtherFields();});
-document.getElementById('genderSelfDescribeCheck')?.addEventListener('change',e=>{document.getElementById('genderSelfDescribe').hidden=!e.target.checked;syncGoogleOtherFields();});
-document.getElementById('participantSector')?.addEventListener('change',e=>{document.getElementById('sectorSelfDescribe').hidden=e.target.value!=='__other_option__';syncGoogleOtherFields();});
+document.getElementById('raceOtherCheck')?.addEventListener('change',e=>{document.getElementById('raceSelfDescribe').hidden=!e.target.checked;syncSelfDescribeFields();});
+document.getElementById('genderSelfDescribeCheck')?.addEventListener('change',e=>{document.getElementById('genderSelfDescribe').hidden=!e.target.checked;syncSelfDescribeFields();});
+document.getElementById('participantSector')?.addEventListener('change',e=>{document.getElementById('sectorSelfDescribe').hidden=e.target.value!=='__other_option__';syncSelfDescribeFields();});
 startBtn.addEventListener('click',()=>{if(!demographicsValid())return;startedAt=new Date();document.getElementById('researchStartTime').value=startedAt.toISOString();sessionStorage.setItem('riseStartedAt',startedAt.toISOString());sessionStorage.setItem('riseParticipantIdentifier',document.getElementById('participantIdentifier').value.trim());inventoryShell.hidden=false;document.querySelector('.preflight').hidden=true;showPart(0);});
 document.querySelectorAll('.item-step input[type=radio],.attention-check input[type=radio]').forEach(r=>r.addEventListener('change',()=>{r.closest('.question-card').classList.remove('missing');updateProgress()}));
 document.getElementById('nextPart').addEventListener('click',()=>{if(validatePart(currentPart))showPart(currentPart+1)});document.getElementById('backPart').addEventListener('click',()=>showPart(currentPart-1));
@@ -259,12 +259,14 @@ function checkedValues(name){return [...form.querySelectorAll(`[name="${name}"]:
 function selectedGender(){
   const vals=checkedValues('entry.1083444680');
   const other=document.querySelector('[name="entry.1083444680.other_option_response"]')?.value?.trim();
-  return other?vals.filter(v=>v!=='__other_option__').concat(other).join('; '):vals.filter(v=>v!=='__other_option__').join('; ');
+  const selected=vals.filter(v=>v!=='__other_option__');
+  return vals.includes('__other_option__')&&other?selected.concat(other):selected;
 }
 function selectedRace(){
   const vals=checkedValues('entry.1285176183');
   const other=document.querySelector('[name="entry.1285176183.other_option_response"]')?.value?.trim();
-  return other?vals.filter(v=>v!=='__other_option__').concat(other).join('; '):vals.filter(v=>v!=='__other_option__').join('; ');
+  const selected=vals.filter(v=>v!=='__other_option__');
+  return vals.includes('__other_option__')&&other?selected.concat(other):selected;
 }
 function resolvedSector(){
   const select=document.getElementById('participantSector');
@@ -280,10 +282,7 @@ function saveResults(){
 }
 let submissionTimer=null;
 
-// Google Forms can reject a request when an `other_option_response` field is
-// posted without its matching `__other_option__` selection. Keep those
-// response inputs disabled unless the participant actually selected Other.
-function syncGoogleOtherFields(){
+function syncSelfDescribeFields(){
   const sector=document.getElementById('participantSector');
   const sectorOther=document.getElementById('sectorSelfDescribeText');
   if(sectorOther) sectorOther.disabled=sector?.value!=='__other_option__';
@@ -297,22 +296,38 @@ function syncGoogleOtherFields(){
   if(raceOther) raceOther.disabled=!raceOtherCheck?.checked;
 }
 
-function prepareGoogleFormSubmission(){
+function buildResearchPayload(end,start){
   syncContactPreference();
-  syncGoogleOtherFields();
-
-  // Empty optional email is fine, but do not send empty self-description
-  // companion fields unless their Google Forms `Other` option is selected.
-  const sourceField=document.getElementById('researchSource');
-  if(sourceField) sourceField.value=source;
-
-  // Debug mode opens Google's response in a visible tab so a 400 can be
-  // inspected directly without changing the production participant flow.
-  form.target=(new URLSearchParams(location.search).get('debug')==='1') ? '_blank' : 'submission_iframe';
+  syncSelfDescribeFields();
+  const responses={};
+  itemSteps.forEach((item,index)=>{
+    const key=`Q${String(index+1).padStart(2,'0')}`;
+    responses[key]=item.querySelector('input[type=radio]:checked')?.value||'';
+  });
+  attentionSteps.forEach((item,index)=>{
+    const key=`ATTN${String(index+1).padStart(2,'0')}`;
+    responses[key]=item.querySelector('input[type=radio]:checked')?.value||'';
+  });
+  return{
+    participantIdentifier:document.getElementById('participantIdentifier').value.trim(),
+    startTime:start.toISOString(),
+    endTime:end.toISOString(),
+    elapsedSeconds:Math.max(0,Math.round((end-start)/1000)),
+    age:document.getElementById('participantAge').value,
+    country:document.getElementById('participantCountry').value.trim(),
+    role:document.getElementById('participantRole').value.trim(),
+    sector:resolvedSector(),
+    leadershipYears:document.getElementById('leadershipYears').value,
+    gender:selectedGender(),
+    race:selectedRace(),
+    email:document.getElementById('participantEmail').value.trim(),
+    source,
+    consent:true,
+    responses
+  };
 }
 
 form.addEventListener('submit',e=>{
-  prepareGoogleFormSubmission();
   if(!validatePart(currentPart)){e.preventDefault();return}
   if(answeredCount()!==totalItems || attentionSteps.some(q=>!q.querySelector('input[type=radio]:checked'))){
     e.preventDefault();alert('Please complete every statement and attention check before submitting.');return
@@ -322,6 +337,7 @@ form.addEventListener('submit',e=>{
   document.getElementById('researchEndTime').value=end.toISOString();
   document.getElementById('researchElapsedSeconds').value=Math.max(0,Math.round((end-start)/1000));
   try{
+    document.getElementById('researchPayload').value=JSON.stringify(buildResearchPayload(end,start));
     saveResults();
     submitting=true;
     document.getElementById('submitInventory').disabled=true;
@@ -329,10 +345,11 @@ form.addEventListener('submit',e=>{
     clearTimeout(submissionTimer);
     submissionTimer=setTimeout(()=>{
       if(!submitting)return;
-      // Keep the participant on the page if Google has not completed the iframe navigation.
+      submitting=false;
       document.getElementById('submitInventory').disabled=false;
       document.getElementById('submitInventory').textContent='Submit Inventory';
-    },20000);
+      alert('Your responses have not been confirmed as saved. Please check your connection and submit again.');
+    },30000);
   }catch(err){
     e.preventDefault();
     alert('Your responses could not be prepared for submission. Please review the inventory and try again.');
@@ -353,15 +370,31 @@ function showSubmissionSuccess(){
   document.getElementById('submitInventory').textContent='Saved';
 }
 
-// Google Forms returns its confirmation page inside the hidden iframe.
-// Once that iframe loads after submission, the POST has completed.
-const submissionFrame=document.getElementById('submission_iframe');
-submissionFrame.addEventListener('load',()=>{
-  if(submitting){
-    setTimeout(showSubmissionSuccess,350);
+window.addEventListener('message',event=>{
+  let trustedAppsScriptOrigin=false;
+  try{
+    const host=new URL(event.origin).hostname;
+    trustedAppsScriptOrigin=host==='script.googleusercontent.com'||host.endsWith('-script.googleusercontent.com');
+  }catch(err){
+    trustedAppsScriptOrigin=false;
+  }
+  if(!trustedAppsScriptOrigin || !event.data || typeof event.data!=='object')return;
+  if(event.data.type==='rise-write-success' && event.data.success===true){
+    const submittedId=document.getElementById('participantIdentifier').value.trim();
+    if(event.data.participantIdentifier && event.data.participantIdentifier!==submittedId)return;
+    showSubmissionSuccess();
+    return;
+  }
+  if(event.data.type==='rise-write-error'){
+    clearTimeout(submissionTimer);
+    submitting=false;
+    document.getElementById('submitInventory').disabled=false;
+    document.getElementById('submitInventory').textContent='Submit Inventory';
+    alert('Your responses could not be saved. Please try again.');
+    console.error(event.data.error||'Apps Script write failed');
   }
 });
 
-showPart(0);syncContactPreference();syncGoogleOtherFields();
+showPart(0);syncContactPreference();syncSelfDescribeFields();
 </script>
 </body></html>
