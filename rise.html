@@ -6,6 +6,7 @@
 <meta content="width=device-width,initial-scale=1" name="viewport"/>
 <meta content="noindex,nofollow" name="robots"/>
 <title>R.I.S.E. Index™ Research Inventory | Renfaut™</title>
+<!-- Research build v15: strict Google Forms payload -->
 <meta content="Complete the R.I.S.E. Index™, an Inventory for Equity-Centered Leadership." name="description"/>
 <style>
 :root{--paper:#FAF7F2;--white:#fff;--ink:#2B2B2B;--night:#403E4D;--muted:#625E69;--line:rgba(64,62,77,.18);--rr:#B31217;--ib:#E76F00;--de:#F7B500;--es:#38BFD8;--ra:#6C3FBF;--shadow:0 18px 48px rgba(64,62,77,.10)}
@@ -25,7 +26,7 @@
 <header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><img alt="Renfaut™" src="https://renfaut.org/assets/logos/renfaut-wordmark.png"/></a><div class="research-label">R.I.S.E. Index™ Research</div></div></header>
 <main>
 <section class="hero"><div class="container"><p class="eyebrow">R.I.S.E. Index™ Research Inventory</p><h1>Before you begin</h1><p class="lead">Please respond according to <strong>how you typically lead</strong>, not how you hope to lead or how you believe you should respond. There are no right or wrong answers.</p></div></section>
-<form action="https://docs.google.com/forms/d/e/1FAIpQLSftL4ItejryBWf2APPAYBBAvZcx3S7Gpo279-60-gBX8ClAfg/formResponse" id="riseForm" method="POST" target="submission_iframe"><input name="submit" type="hidden" value="Submit"/><input name="partialResponse" type="hidden" value="[]"/><input name="fvv" type="hidden" value="1"/><input name="pageHistory" type="hidden" value="0,1,2,3,4,5"/>
+<form action="https://docs.google.com/forms/d/e/1FAIpQLSftL4ItejryBWf2APPAYBBAvZcx3S7Gpo279-60-gBX8ClAfg/formResponse" id="riseForm" method="POST" target="submission_iframe"><input name="submit" type="hidden" value="Submit"/><input name="fvv" type="hidden" value="1"/><input name="pageHistory" type="hidden" value="0,1,2,3,4,5"/>
 <input id="researchStartTime" name="entry.79383809" type="hidden"/>
 <input id="researchEndTime" name="entry.1149550426" type="hidden"/>
 <input id="researchElapsedSeconds" name="entry.825649838" type="hidden"/>
@@ -294,7 +295,7 @@
 </article></div></section></div><div class="part-controls"><button class="secondary" id="backPart" type="button">Back</button><div class="status" id="partStatus">Complete all statements in this part to continue.</div><button class="primary" id="nextPart" type="button">Continue</button><button class="primary" hidden="" id="submitInventory" type="submit">Submit Inventory</button></div></div></div></section>
 </form><iframe id="submission_iframe" name="submission_iframe" style="display:none"></iframe>
 </main>
-<div class="confirmation" id="confirmation"><div class="confirmation-card"><h2>Thank you.</h2><p>Your R.I.S.E. Index™ response has been sent and your Leadership Profile is ready.</p><div class="identifier-box"><strong>Save your Participant Identifier</strong><div class="identifier-value" id="confirmationIdentifierValue"></div><small>Use this code if you contact Renfaut later about your response or results.</small></div><div class="surveyswap-popup" hidden="" id="surveySwapPopup"><strong>SurveySwap completion code</strong><div class="surveyswap-code">X3DG-OL6E-7KYR</div><small>Copy or save this code before viewing your Leadership Profile. Use it in SurveySwap to receive your credit.</small></div><a class="primary" href="profile.html" id="profileLink" style="display:inline-flex;text-decoration:none">View My Leadership Profile</a></div></div>
+<div class="confirmation" id="confirmation"><div class="confirmation-card"><h2>Thank you.</h2><p>Your R.I.S.E. Index™ submission has been sent to the research form and your Leadership Profile is ready.</p><div class="identifier-box"><strong>Save your Participant Identifier</strong><div class="identifier-value" id="confirmationIdentifierValue"></div><small>Use this code if you contact Renfaut later about your response or results.</small></div><div class="surveyswap-popup" hidden="" id="surveySwapPopup"><strong>SurveySwap completion code</strong><div class="surveyswap-code">X3DG-OL6E-7KYR</div><small>Copy or save this code before viewing your Leadership Profile. Use it in SurveySwap to receive your credit.</small></div><a class="primary" href="profile.html" id="profileLink" style="display:inline-flex;text-decoration:none">View My Leadership Profile</a></div></div>
 <script src="js/rise-spec.js"></script><script src="js/scoring-engine.js"></script>
 <script>
 const form=document.getElementById('riseForm');
@@ -316,9 +317,9 @@ function consentValue(){return document.getElementById('contactConsentHidden')?.
 function syncContactPreference(){const email=document.getElementById('participantEmail');const hidden=document.getElementById('contactConsentHidden');if(!email||!hidden)return;hidden.value=email.value.trim()?'I consent to be contacted for research and to receive my results':'I do not wish to be contacted or receive results';}
 function demographicsValid(){const ids=['participantIdentifier','participantAge','participantCountry','participantRole','participantSector','leadershipYears'];for(const id of ids){const el=document.getElementById(id);if(!el.checkValidity()){el.reportValidity();el.scrollIntoView({behavior:'smooth',block:'center'});return false}}const email=document.getElementById('participantEmail');if(email&&!email.checkValidity()){email.reportValidity();email.scrollIntoView({behavior:'smooth',block:'center'});return false}syncContactPreference();return true}
 document.getElementById('participantEmail')?.addEventListener('input',syncContactPreference);
-document.getElementById('raceOtherCheck')?.addEventListener('change',e=>document.getElementById('raceSelfDescribe').hidden=!e.target.checked);
-document.getElementById('genderSelfDescribeCheck')?.addEventListener('change',e=>document.getElementById('genderSelfDescribe').hidden=!e.target.checked);
-document.getElementById('participantSector')?.addEventListener('change',e=>document.getElementById('sectorSelfDescribe').hidden=e.target.value!=='__other_option__');
+document.getElementById('raceOtherCheck')?.addEventListener('change',e=>{document.getElementById('raceSelfDescribe').hidden=!e.target.checked;syncGoogleOtherFields();});
+document.getElementById('genderSelfDescribeCheck')?.addEventListener('change',e=>{document.getElementById('genderSelfDescribe').hidden=!e.target.checked;syncGoogleOtherFields();});
+document.getElementById('participantSector')?.addEventListener('change',e=>{document.getElementById('sectorSelfDescribe').hidden=e.target.value!=='__other_option__';syncGoogleOtherFields();});
 startBtn.addEventListener('click',()=>{if(!demographicsValid())return;startedAt=new Date();document.getElementById('researchStartTime').value=startedAt.toISOString();sessionStorage.setItem('riseStartedAt',startedAt.toISOString());sessionStorage.setItem('riseParticipantIdentifier',document.getElementById('participantIdentifier').value.trim());inventoryShell.hidden=false;document.querySelector('.preflight').hidden=true;showPart(0);});
 document.querySelectorAll('.item-step input[type=radio],.attention-check input[type=radio]').forEach(r=>r.addEventListener('change',()=>{r.closest('.question-card').classList.remove('missing');updateProgress()}));
 document.getElementById('nextPart').addEventListener('click',()=>{if(validatePart(currentPart))showPart(currentPart+1)});document.getElementById('backPart').addEventListener('click',()=>showPart(currentPart-1));
@@ -359,7 +360,40 @@ function saveResults(){
   return results
 }
 let submissionTimer=null;
+
+// Google Forms can reject a request when an `other_option_response` field is
+// posted without its matching `__other_option__` selection. Keep those
+// response inputs disabled unless the participant actually selected Other.
+function syncGoogleOtherFields(){
+  const sector=document.getElementById('participantSector');
+  const sectorOther=document.getElementById('sectorSelfDescribeText');
+  if(sectorOther) sectorOther.disabled=sector?.value!=='__other_option__';
+
+  const genderOtherCheck=document.getElementById('genderSelfDescribeCheck');
+  const genderOther=document.querySelector('[name="entry.1083444680.other_option_response"]');
+  if(genderOther) genderOther.disabled=!genderOtherCheck?.checked;
+
+  const raceOtherCheck=document.getElementById('raceOtherCheck');
+  const raceOther=document.querySelector('[name="entry.1285176183.other_option_response"]');
+  if(raceOther) raceOther.disabled=!raceOtherCheck?.checked;
+}
+
+function prepareGoogleFormSubmission(){
+  syncContactPreference();
+  syncGoogleOtherFields();
+
+  // Empty optional email is fine, but do not send empty self-description
+  // companion fields unless their Google Forms `Other` option is selected.
+  const sourceField=document.getElementById('researchSource');
+  if(sourceField) sourceField.value=source;
+
+  // Debug mode opens Google's response in a visible tab so a 400 can be
+  // inspected directly without changing the production participant flow.
+  form.target=(new URLSearchParams(location.search).get('debug')==='1') ? '_blank' : 'submission_iframe';
+}
+
 form.addEventListener('submit',e=>{
+  prepareGoogleFormSubmission();
   if(!validatePart(currentPart)){e.preventDefault();return}
   if(answeredCount()!==totalItems || attentionSteps.some(q=>!q.querySelector('input[type=radio]:checked'))){
     e.preventDefault();alert('Please complete every statement and attention check before submitting.');return
@@ -409,6 +443,6 @@ submissionFrame.addEventListener('load',()=>{
   }
 });
 
-showPart(0);syncContactPreference();
+showPart(0);syncContactPreference();syncGoogleOtherFields();
 </script>
 </body></html>
