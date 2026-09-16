@@ -537,4 +537,74 @@ showPart(0);syncContactPreference();syncGoogleOtherFields();
   }));
 })();
 </script>
+
+<script id="rise-diagnostic-v17">
+(function(){
+  const params=new URLSearchParams(location.search);
+  if(params.get('debug')!=='1') return;
+  const endpoint='https://docs.google.com/forms/d/e/1FAIpQLSftL4ItejryBWf2APPAYBBAvZcx3S7Gpo279-60-gBX8ClAfg/formResponse';
+  const panel=document.createElement('div');
+  panel.style.cssText='position:fixed;right:16px;bottom:16px;z-index:99999;background:#fff;border:1px solid rgba(64,62,77,.18);box-shadow:0 18px 48px rgba(64,62,77,.2);border-radius:18px;padding:16px;width:min(360px,calc(100vw - 32px));font-family:Aptos,Arial,sans-serif';
+  panel.innerHTML='<strong style="display:block;margin-bottom:8px;color:#403E4D">Submission diagnostics v17</strong><p style="margin:0 0 12px;color:#625E69;font-size:.9rem">Each button is a plain HTML form that submits directly to Google Forms in a new tab.</p>';
+
+  function addTest(label, fields){
+    const f=document.createElement('form');
+    f.action=endpoint; f.method='POST'; f.target='_blank';
+    f.style.margin='8px 0';
+    const base={fvv:'1',pageHistory:'0,1,2,3,4,5',submit:'Submit'};
+    Object.entries({...base,...fields}).forEach(([k,v])=>{
+      const values=Array.isArray(v)?v:[v];
+      values.forEach(val=>{const i=document.createElement('input');i.type='hidden';i.name=k;i.value=val;f.appendChild(i);});
+    });
+    const b=document.createElement('button');
+    b.type='submit'; b.textContent=label;
+    b.style.cssText='width:100%;border:0;border-radius:999px;padding:10px 14px;background:#403E4D;color:#fff;font-weight:700;cursor:pointer';
+    f.appendChild(b); panel.appendChild(f);
+  }
+
+  const now=new Date();
+  addTest('1 — Identifier only', {'entry.1185653219':'DEBUG-IDENTIFIER-001'});
+  addTest('2 — Identifier + timing', {
+    'entry.1185653219':'DEBUG-TIMING-001',
+    'entry.79383809':new Date(now.getTime()-120000).toISOString(),
+    'entry.1149550426':now.toISOString(),
+    'entry.825649838':'120'
+  });
+  addTest('3 — Add demographics', {
+    'entry.1185653219':'DEBUG-DEMO-001',
+    'entry.79383809':new Date(now.getTime()-120000).toISOString(),
+    'entry.1149550426':now.toISOString(),
+    'entry.825649838':'120',
+    'entry.1022132287':'18–24',
+    'entry.984504931':'Germany',
+    'entry.1083444680':'Woman',
+    'entry.850283824':'Diagnostic Test',
+    'entry.372153283':'Higher Education / Academia',
+    'entry.1692425384':'7–10 years',
+    'entry.912272113':'debug@example.com',
+    'entry.1285176183':'Middle Eastern or North African'
+  });
+
+  const itemIds=['756581726','1577821581','499496920','1738793518','1616615387','1914671409','984539253','1605591079','806207475','1616828675','1410838492','153694547','486264370','1209215093','1025809387','1389852438','1783084852','2022526136','578529663','884535297','46909823','624376681','121763557','906242911','586088518','1926092280','1038779574','371933232','1334350433','416767080','690946827','459165604','1733251227','1189200454','1969091552','2029086760','967964313','576241703','683387829','2005805355','1197185740','539742048','1594201180','922780378','1321993254','677615065','2004516902','1439874487','4965036','1114336402','855679577','1220091395','1902605043','1298155200','1645922311','1126393798','46554131','356807148','859169942','2143152949','2078920241','129750697','447861924','24111307','580642755','554477461','1597295724','418705132','1648910514','1074949281','996436746','1018735484','63733062','778330430','237182320','839088966','1149824658','151111069','1735348821','1532902882','498872366'];
+  const full={
+    'entry.1185653219':'DEBUG-FULL-001',
+    'entry.79383809':new Date(now.getTime()-120000).toISOString(),
+    'entry.1149550426':now.toISOString(),
+    'entry.825649838':'120',
+    'entry.1022132287':'18–24',
+    'entry.984504931':'Germany',
+    'entry.1083444680':'Woman',
+    'entry.850283824':'Diagnostic Test',
+    'entry.372153283':'Higher Education / Academia',
+    'entry.1692425384':'7–10 years',
+    'entry.912272113':'debug@example.com',
+    'entry.1285176183':'Middle Eastern or North African'
+  };
+  itemIds.forEach((id,i)=>full['entry.'+id]=['Not at all like me','Not much like me','Somewhat like me','Very much like me'][i%4]);
+  full['entry.1084935131']='Somewhat like me';
+  full['entry.46323698']='Somewhat like me';
+  addTest('4 — Full diagnostic payload', full);
+  document.body.appendChild(panel);
+})();
+</script>
 </body></html>
