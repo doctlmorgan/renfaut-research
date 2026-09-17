@@ -32,3 +32,9 @@ The warning/termination interface is an extension for verification testing; it i
 Brand basis
 -----------
 The build preserves the existing Luminal palette, Aptos/Aptos Display typography, Renfaut masterbrand hierarchy, and participant-facing digital design principles from the July 2026 Renfaut Visual Identity Guide v1.1.
+
+
+PARTICIPATION CREDIT UPDATE
+- SurveySwap: X3DG-OL6E-7KYR / https://surveyswap.io/s/X3DG-OL6E-7KYR
+- SurveyCircle: HQMZ-UKTN-KLGM-6UNJ / https://www.surveycircle.com
+- Both are shown at the beginning and after completion.
