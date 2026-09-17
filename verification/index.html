@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>R.I.S.E. Index™ Research | Renfaut™</title>
+<meta name="description" content="Participate in ongoing research and validation of the R.I.S.E. Index™, an Inventory for Equity-Centered Leadership.">
+<style>
+:root{
+  --paper:#FAF7F2;
+  --white:#FFFFFF;
+  --ink:#2B2B2B;
+  --night:#403E4D;
+  --muted:#625E69;
+  --line:rgba(64,62,77,.16);
+  --red:#B31217;
+  --shadow:0 18px 48px rgba(64,62,77,.10);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:Aptos,"Segoe UI",Arial,sans-serif;
+  line-height:1.5;
+}
+a{color:inherit}
+.wrap{width:min(1020px,calc(100% - 36px));margin:auto}
+
+.site-header{
+  background:rgba(250,247,242,.97);
+  border-bottom:1px solid var(--line);
+}
+.header-inner{
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+.brand img{width:145px;display:block}
+.research-label{font-weight:700;color:var(--night);font-size:.93rem}
+
+.hero{padding:42px 0 24px;text-align:center}
+.rise-logo{
+  width:min(430px,78vw);
+  height:auto;
+  display:block;
+  margin:0 auto 20px;
+}
+.eyebrow{
+  font-size:.78rem;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+  font-weight:700;
+  color:var(--night);
+  margin:0 0 8px;
+}
+h1{
+  font-family:"Aptos Display",Aptos,"Segoe UI",Arial,sans-serif;
+  font-size:clamp(1.75rem,4vw,2.4rem);
+  line-height:1.16;
+  font-weight:600;
+  color:var(--night);
+  margin:0 auto 14px;
+  max-width:760px;
+}
+.lead{
+  font-size:1.08rem;
+  color:var(--muted);
+  max-width:760px;
+  margin:0 auto;
+}
+
+.panel{
+  position:relative;
+  margin:26px auto 54px;
+  background:#F3F1F6;
+  border:1px solid var(--line);
+  border-radius:22px;
+  box-shadow:0 10px 30px rgba(64,62,77,.07);
+  overflow:hidden;
+}
+.panel::after{
+  content:"";
+  position:absolute;
+  right:-80px;
+  bottom:-115px;
+  width:430px;
+  height:300px;
+  background:url("https://www.renfaut.org/assets/illustrations/renfaut-knot.svg") center/contain no-repeat;
+  opacity:.09;
+  pointer-events:none;
+}
+.panel-inner{
+  position:relative;
+  z-index:1;
+  padding:30px;
+}
+.panel h2{
+  font-family:"Aptos Display",Aptos,"Segoe UI",Arial,sans-serif;
+  color:var(--night);
+  font-size:1.45rem;
+  margin:0 0 12px;
+}
+.panel-intro{margin:0;color:var(--ink);max-width:860px}
+.facts{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin:24px 0;
+}
+.fact{
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:18px;
+  background:rgba(255,255,255,.92);
+  min-height:128px;
+}
+.fact strong{
+  display:block;
+  color:var(--night);
+  margin-bottom:4px;
+  font-size:1rem;
+}
+.fact span{font-size:.95rem;color:var(--muted)}
+
+.cta-row{display:flex;justify-content:center;align-items:center}
+.cta{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:54px;
+  padding:0 28px;
+  border-radius:999px;
+  background:var(--red);
+  color:#fff;
+  text-decoration:none;
+  font-weight:800;
+  box-shadow:0 10px 24px rgba(179,18,23,.18);
+}
+.cta:hover{filter:brightness(.96)}
+.cta:focus-visible{outline:3px solid rgba(179,18,23,.24);outline-offset:3px}
+
+.note{
+  font-size:.9rem;
+  color:var(--muted);
+  margin:16px 0 0;
+  max-width:820px;
+}
+.footer{
+  border-top:1px solid var(--line);
+  padding:24px 0 30px;
+  color:var(--muted);
+  font-size:.9rem;
+}
+.footer .wrap{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+@media(max-width:760px){
+  .research-label{display:none}
+  .hero{padding-top:32px}
+  .rise-logo{margin-bottom:18px;width:min(360px,82vw)}
+  .panel-inner{padding:24px 20px}
+  .facts{grid-template-columns:1fr}
+  .fact{min-height:0}
+  .cta-row{display:flex;justify-content:center}
+  .cta{width:auto;max-width:100%}
+  .panel::after{right:-125px;bottom:-105px;width:360px;height:250px;opacity:.07}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html" aria-label="Renfaut Research home">
+      <img src="https://renfaut.org/assets/logos/renfaut-wordmark.png" alt="Renfaut™">
+    </a>
+    <div class="research-label">R.I.S.E. Index™ Research · Verification Build</div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <img class="rise-logo" src="https://www.renfaut.org/assets/logos/rise-index-logo-horizontal.svg" alt="R.I.S.E. Index™">
+      <h1>Explore Your Equity-Centered Leadership</h1><p style="margin:10px auto 0;max-width:760px;font-size:.88rem;font-weight:700;color:#6C3FBF;">Verification build · research testing only</p>
+      <p class="lead">
+        Complete the R.I.S.E. Index™ to explore your leadership strengths and growth opportunities.
+        Your responses also support ongoing research to strengthen this equity-centered leadership inventory.
+      </p>
+
+      <div class="panel">
+        <div class="panel-inner">
+          <h2>What participation involves</h2>
+          <p class="panel-intro">
+            Complete a reflective leadership inventory based on your current practice.
+            Your responses contribute to research examining the reliability and validity of the
+            R.I.S.E. Index™ and will also generate your individual Leadership Profile.
+          </p>
+
+          <div class="facts">
+            <div class="fact">
+              <strong>8–10 minutes</strong>
+              <span>Complete the inventory in one sitting when possible.</span>
+            </div>
+            <div class="fact">
+              <strong>Reflective responses</strong>
+              <span>Respond according to how you typically lead, not how you think you should respond.</span>
+            </div>
+            <div class="fact">
+              <strong>Leadership Profile</strong>
+              <span>Receive your personalized profile after submitting your responses.</span>
+            </div>
+          </div>
+
+          <div class="cta-row">
+            <a class="cta" href="rise.html">Continue to the R.I.S.E. Index™</a>
+          </div>
+
+          <p class="note">
+            Detailed descriptions of the Renfaut™ principles are intentionally not presented before the
+            inventory so that your responses reflect your own current practice rather than prior exposure
+            to the constructs.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <span>R.I.S.E. Index™ · Renfaut™</span>
+    <span>Created by T. Lee Morgan, Ph.D.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const source=new URLSearchParams(location.search).get("source");
+  if(source){
+    sessionStorage.setItem("riseSource",source);
+    const cta=document.querySelector(".cta");
+    if(cta)cta.href="rise.html?source="+encodeURIComponent(source);
+  }
+})();
+</script>
+
+</body>
+</html>
