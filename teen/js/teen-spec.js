@@ -1,0 +1,61 @@
+window.TEEN_RISE_SPEC = {
+  version: 'Youth 45 Pilot 2026-09',
+  itemCount: 45,
+  responseOptions: [
+    {label:'Not at all like me', value:1},
+    {label:'Not much like me', value:2},
+    {label:'Somewhat like me', value:3},
+    {label:'Very much like me', value:4}
+  ],
+  items: [
+    {order:1, master:2, id:'RR_SL_2', principle:'RR', facet:'SL', reverse:false, statement:'I understand how unfairness in the past still shapes life today.'},
+    {order:2, master:3, id:'RR_SL_3', principle:'RR', facet:'SL', reverse:true, statement:'I believe most differences between groups are caused by people’s personal choices.'},
+    {order:3, master:4, id:'RR_SL_4', principle:'RR', facet:'SL', reverse:true, statement:'When I think about why people succeed or struggle, I mostly focus on how hard they try.'},
+    {order:4, master:5, id:'RR_SL_5', principle:'RR', facet:'SL', reverse:true, statement:'I think rules and policies are usually fair to everyone.'},
+    {order:5, master:6, id:'RR_SL_6', principle:'RR', facet:'SL', reverse:false, statement:'I believe that who was included or excluded in the past helps explain differences today.'},
+    {order:6, master:7, id:'RR_PwA_1', principle:'RR', facet:'PwA', reverse:false, statement:'I can identify who has the power to make important decisions.'},
+    {order:7, master:9, id:'RR_PwA_3', principle:'RR', facet:'PwA', reverse:false, statement:'I think about ways I may have advantages that other people do not have.'},
+    {order:8, master:16, id:'RR_TTC_4', principle:'RR', facet:'TTC', reverse:false, statement:'I support people who speak up about unfairness, even when it is difficult.'},
+    {order:9, master:25, id:'RR_PwA_Identity', principle:'RR', facet:'PwA', reverse:false, statement:'I think about how my identity affects the way I relate to and work with others.'},
+
+    {order:10, master:29, id:'IB_IFC_29', principle:'IB', facet:'IFC', reverse:false, statement:'I listen carefully to people whose views challenge the way I see things.'},
+    {order:11, master:30, id:'IB_AtH_30', principle:'IB', facet:'AtH', reverse:true, statement:'I worry that admitting I was wrong will make others respect me less.'},
+    {order:12, master:33, id:'IB_AtH_33', principle:'IB', facet:'AtH', reverse:true, statement:'I rarely change my mind once I have made it up.'},
+    {order:13, master:34, id:'IB_IFC_34', principle:'IB', facet:'IFC', reverse:false, statement:'I value what people have learned from their own experiences.'},
+    {order:14, master:43, id:'IB_AtH_43', principle:'IB', facet:'AtH', reverse:false, statement:'I share opportunities so people who are often left out have a chance to take part.'},
+    {order:15, master:47, id:'IB_IFC_47', principle:'IB', facet:'IFC', reverse:false, statement:'I stay involved in important conversations even when they make me uncomfortable.'},
+    {order:16, master:54, id:'IB_NT_54', principle:'IB', facet:'NT', reverse:false, statement:'I work with others to imagine new ways to make things more fair and just.'},
+    {order:17, master:59, id:'IB_NT_59', principle:'IB', facet:'NT', reverse:false, statement:'I speak up for changing the way things work when they are unfair.'},
+    {order:18, master:61, id:'IB_AtH_61', principle:'IB', facet:'AtH', reverse:false, statement:'I support giving people affected by a decision a real say in making it.'},
+
+    {order:19, master:36, id:'DE_IrP_36', principle:'DE', facet:'IrP', reverse:false, statement:'I question beliefs and ideas behind rules or practices that may be unfair.'},
+    {order:20, master:37, id:'DE_IrP_37', principle:'DE', facet:'IrP', reverse:false, statement:'I speak up when I see harm happening.'},
+    {order:21, master:38, id:'DE_IrP_38', principle:'DE', facet:'IrP', reverse:false, statement:'I help people share stories and perspectives that are often ignored.'},
+    {order:22, master:42, id:'DE_SdP_42', principle:'DE', facet:'SdP', reverse:false, statement:'I step in when I see someone being treated in a harmful or unfair way.'},
+    {order:23, master:45, id:'DE_SdP_45', principle:'DE', facet:'SdP', reverse:false, statement:'I use the influence I have to push for what is fair and just.'},
+    {order:24, master:50, id:'DE_DD_50', principle:'DE', facet:'DD', reverse:false, statement:'I help people speak openly about difficult issues.'},
+    {order:25, master:64, id:'DE_DD_64', principle:'DE', facet:'DD', reverse:false, statement:'I check whether my actions are actually making a difference.'},
+    {order:26, master:66, id:'DE_DD_66', principle:'DE', facet:'DD', reverse:false, statement:'I look at whether people were treated fairly when I decide if it worked.'},
+    {order:27, master:68, id:'DE_DD_68', principle:'DE', facet:'DD', reverse:false, statement:'I put effort into making things right when harm happens.'},
+
+    {order:28, master:53, id:'ES_VP_53', principle:'ES', facet:'VP', reverse:false, statement:'I imagine big changes instead of only small improvements.'},
+    {order:29, master:55, id:'ES_VP_55', principle:'ES', facet:'VP', reverse:false, statement:'I use creative ideas to help make major changes.'},
+    {order:30, master:56, id:'ES_VP_56', principle:'ES', facet:'VP', reverse:false, statement:'I encourage others to think of options without worrying about what’s “possible” right now.'},
+    {order:31, master:57, id:'ES_StR_57', principle:'ES', facet:'StR', reverse:false, statement:'I act to give people most affected by a decision real power in making that decision.'},
+    {order:32, master:58, id:'ES_StR_58', principle:'ES', facet:'StR', reverse:false, statement:'I question systems and rules that keep unfair conditions going.'},
+    {order:33, master:60, id:'ES_StR_60', principle:'ES', facet:'StR', reverse:false, statement:'I work to make sure resources are shared fairly based on what people need.'},
+    {order:34, master:62, id:'ES_TPP_62', principle:'ES', facet:'TPP', reverse:false, statement:'I look at rules and policies to see whether they affect some groups unfairly.'},
+    {order:35, master:63, id:'ES_TPP_63', principle:'ES', facet:'TPP', reverse:false, statement:'I change the way things are done when they lead to unfair results.'},
+    {order:36, master:65, id:'ES_TPP_65', principle:'ES', facet:'TPP', reverse:false, statement:'I make sure people who are usually left out have real influence over decisions that affect them.'},
+
+    {order:37, master:69, id:'RA_RgO_69', principle:'RA', facet:'RgO', reverse:false, statement:'I support ways for groups to heal after harm has happened.'},
+    {order:38, master:70, id:'RA_RgO_70', principle:'RA', facet:'RgO', reverse:false, statement:'When harm happens, I focus more on repairing relationships than on punishment.'},
+    {order:39, master:71, id:'RA_RgO_71', principle:'RA', facet:'RgO', reverse:false, statement:'After conflict, I work with others to rebuild trust and relationships.'},
+    {order:40, master:72, id:'RA_ClC_72', principle:'RA', facet:'ClC', reverse:false, statement:'I care more about the group doing well than getting praise for myself.'},
+    {order:41, master:75, id:'RA_ClC_75', principle:'RA', facet:'ClC', reverse:false, statement:'I judge success by how well we make a difference together.'},
+    {order:42, master:76, id:'RA_ClC_76', principle:'RA', facet:'ClC', reverse:false, statement:'I value sharing leadership and the power to decide with others.'},
+    {order:43, master:77, id:'RA_SsP_77', principle:'RA', facet:'SsP', reverse:false, statement:'I make time to reflect, rest, and regain energy.'},
+    {order:44, master:78, id:'RA_SsP_78', principle:'RA', facet:'SsP', reverse:false, statement:'I show through my actions that taking care of yourself matters.'},
+    {order:45, master:79, id:'RA_SsP_79', principle:'RA', facet:'SsP', reverse:false, statement:'I help create ways of working that keep people from becoming exhausted or burned out.'}
+  ]
+};
