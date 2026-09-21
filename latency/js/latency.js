@@ -8,7 +8,15 @@
     segmentVisible: true,
     activeMs: 0,
     inactiveMs: 0,
-    lastFirstAnswerActiveMs: 0,
+
+    // Active time intentionally excluded from scored-item latency.
+    excludedActiveMs: 0,
+    exclusionDepth: 0,
+    exclusionStartActiveMs: 0,
+    openEvents: new Map(),
+    eventCounter: 0,
+
+    lastFirstAnswerAdjustedMs: 0,
     firstAnswered: new Set(),
     answers: {},
     itemLatencyMs: {},
@@ -36,6 +44,27 @@
     return state.activeMs;
   }
 
+  function currentAdjustedActiveMs(){
+    if(!state.started) return 0;
+    const active = currentActiveMs();
+    const openExcluded = state.exclusionDepth > 0
+      ? Math.max(0, active - state.exclusionStartActiveMs)
+      : 0;
+    return Math.max(0, active - state.excludedActiveMs - openExcluded);
+  }
+
+  function logEvent(event, details){
+    if(!state.started) return;
+    const activeOffsetMs = Math.round(currentActiveMs());
+    const adjustedActiveOffsetMs = Math.round(currentAdjustedActiveMs());
+    state.timingEvents.push(Object.assign({
+      event,
+      activeOffsetMs,
+      adjustedActiveOffsetMs,
+      wallOffsetMs: Math.max(0, now() - state.startWallMs)
+    }, details || {}));
+  }
+
   function start(startDate){
     const startMs = startDate instanceof Date ? startDate.getTime() : Number(startDate || now());
     state.started = true;
@@ -44,7 +73,12 @@
     state.segmentVisible = !document.hidden;
     state.activeMs = 0;
     state.inactiveMs = 0;
-    state.lastFirstAnswerActiveMs = 0;
+    state.excludedActiveMs = 0;
+    state.exclusionDepth = 0;
+    state.exclusionStartActiveMs = 0;
+    state.openEvents = new Map();
+    state.eventCounter = 0;
+    state.lastFirstAnswerAdjustedMs = 0;
     state.firstAnswered = new Set();
     state.answers = {};
     state.itemLatencyMs = {};
@@ -55,20 +89,82 @@
     state.orderCounter = 0;
   }
 
+  /*
+   * Starts a named interface event. When excludeFromLatency is true, active
+   * time spent in the event is removed from scored-item response latency.
+   */
+  function beginEvent(name, meta, excludeFromLatency = true){
+    if(!state.started) return null;
+
+    const token = name + ':' + (++state.eventCounter);
+    const activeAtStart = currentActiveMs();
+
+    if(excludeFromLatency){
+      if(state.exclusionDepth === 0){
+        state.exclusionStartActiveMs = activeAtStart;
+      }
+      state.exclusionDepth += 1;
+    }
+
+    state.openEvents.set(token, {
+      name,
+      meta: meta || {},
+      excludeFromLatency,
+      wallStartMs: now(),
+      activeStartMs: activeAtStart
+    });
+
+    logEvent(name + '_start', Object.assign({token}, meta || {}));
+    return token;
+  }
+
+  function endEvent(token, meta){
+    if(!state.started || !token) return;
+    const evt = state.openEvents.get(token);
+    if(!evt) return;
+
+    const activeAtEnd = currentActiveMs();
+
+    if(evt.excludeFromLatency){
+      state.exclusionDepth = Math.max(0, state.exclusionDepth - 1);
+      if(state.exclusionDepth === 0){
+        state.excludedActiveMs += Math.max(0, activeAtEnd - state.exclusionStartActiveMs);
+        state.exclusionStartActiveMs = 0;
+      }
+    }
+
+    const endMeta = Object.assign({}, evt.meta, meta || {}, {
+      token,
+      durationMs: Math.max(0, now() - evt.wallStartMs),
+      activeDurationMs: Math.max(0, activeAtEnd - evt.activeStartMs)
+    });
+
+    state.openEvents.delete(token);
+    logEvent(evt.name + '_end', endMeta);
+  }
+
+  function resetScoredBaseline(reason){
+    if(!state.started) return;
+    state.lastFirstAnswerAdjustedMs = currentAdjustedActiveMs();
+    logEvent('scored_latency_baseline_reset', {reason: reason || ''});
+  }
+
   function recordScoredResponse(step, response){
     if(!state.started) return;
     const key = 'Q' + String(step).padStart(2,'0');
+    const adjustedAtClick = currentAdjustedActiveMs();
     const activeAtClick = currentActiveMs();
     const previous = Object.prototype.hasOwnProperty.call(state.answers, key) ? state.answers[key] : null;
     const changed = previous !== null && previous !== response;
+    const isFirstAnswer = !state.firstAnswered.has(key);
 
     state.orderCounter += 1;
 
-    if(!state.firstAnswered.has(key)){
-      const latency = Math.max(0, activeAtClick - state.lastFirstAnswerActiveMs);
+    if(isFirstAnswer){
+      const latency = Math.max(0, adjustedAtClick - state.lastFirstAnswerAdjustedMs);
       state.firstAnswered.add(key);
       state.itemLatencyMs[key] = Math.round(latency);
-      state.lastFirstAnswerActiveMs = activeAtClick;
+      state.lastFirstAnswerAdjustedMs = adjustedAtClick;
       state.answerOrder.push(key);
     } else if(changed){
       state.changedResponseCount += 1;
@@ -76,11 +172,14 @@
 
     state.answers[key] = response;
     state.timingEvents.push({
+      event: 'scored_response',
       item: key,
-      response: response,
-      changed: changed,
-      firstAnswer: state.itemLatencyMs[key] !== undefined && !changed && state.timingEvents.filter(e=>e.item===key).length===0,
+      response,
+      changed,
+      firstAnswer: isFirstAnswer,
+      latencyMs: isFirstAnswer ? state.itemLatencyMs[key] : null,
       activeOffsetMs: Math.round(activeAtClick),
+      adjustedActiveOffsetMs: Math.round(adjustedAtClick),
       wallOffsetMs: Math.max(0, now() - state.startWallMs),
       order: state.orderCounter
     });
@@ -137,6 +236,7 @@
     return {
       activeSeconds: Math.round(state.activeMs/1000),
       inactiveSeconds: Math.round(state.inactiveMs/1000),
+      excludedActiveSeconds: Math.round(state.excludedActiveMs/1000),
       medianResponseLatencyMs: Math.round(median(ordered)),
       meanResponseLatencyMs: Math.round(avg),
       responseLatencySdMs: Math.round(sd),
@@ -155,5 +255,12 @@
     };
   }
 
-  window.RISE_LATENCY = { start, recordScoredResponse, snapshot };
+  window.RISE_LATENCY = {
+    start,
+    recordScoredResponse,
+    beginEvent,
+    endEvent,
+    resetScoredBaseline,
+    snapshot
+  };
 })();
