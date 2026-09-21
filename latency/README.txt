@@ -6,7 +6,7 @@ This folder is a self-contained test environment for evaluating item-level respo
 
 Endpoint
 --------
-https://script.google.com/macros/s/AKfycbxBnYHtkDpod9EQl2fkwYdDhimt8hW0pjgzvo0LXbAxhOdty62GuBUxSTXU0zVSEitz/exec
+https://script.google.com/macros/s/AKfycbwDNMWUsFyyd6aY2_pbaifLJGkj-x0RN4N0XfNNzPsYJop_oSOFrfz7QEfJLrQGSTFW/exec
 
 Destination sheet tab
 ---------------------
