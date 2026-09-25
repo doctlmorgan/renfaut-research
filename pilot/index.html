@@ -50,6 +50,11 @@ h1{font-size:clamp(1.8rem,4vw,2.45rem);line-height:1.12;font-weight:600;margin:0
 .secondary{background:var(--night);color:#fff}
 .ghost{background:transparent;color:var(--night);border:1px solid var(--line)}
 .button-row{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px}
+.full-results-callout{margin-top:24px;padding:22px;border:1px solid rgba(64,62,77,.16);border-radius:16px;background:var(--paper);text-align:left}
+.full-results-callout h3{margin:0 0 8px;font-size:1.15rem}
+.full-results-callout p{margin:0 0 14px}
+.completion-cta{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;margin-top:2px}
+.completion-note{font-size:.88rem;color:var(--muted);margin-top:12px!important;margin-bottom:0!important}
 .form-card{margin:24px auto 54px;padding:30px;max-width:900px}
 .form-card h2{font-size:1.45rem;margin:0 0 8px}.form-card .sub{color:var(--muted);margin:0 0 22px}
 .demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
@@ -201,6 +206,12 @@ h1{font-size:clamp(1.8rem,4vw,2.45rem);line-height:1.12;font-weight:600;margin:0
         <p>Your responses will contribute to the continued development and validation of the R.I.S.E. Index™ and its measurement of equity-centered leadership.</p>
         <div class="completion-id"><strong>Your participant identifier</strong><span id="completionId"></span></div>
         <p>This experimental pilot does not generate an individual R.I.S.E. Leadership Profile or archetype.</p>
+        <div class="full-results-callout">
+          <h3>Want to see your R.I.S.E. results?</h3>
+          <p>If you would like to receive your R.I.S.E. results and explore your leadership archetype, you can complete the full R.I.S.E. Index™.</p>
+          <a class="primary completion-cta" href="https://research.renfaut.org/latency/index.html">Complete the Full R.I.S.E. Index™ →</a>
+          <p class="completion-note">The full inventory is separate from this pilot and will ask you to respond to a new set of statements.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -235,7 +246,7 @@ h1{font-size:clamp(1.8rem,4vw,2.45rem);line-height:1.12;font-weight:600;margin:0
   'use strict';
 
   // Paste the deployed Google Apps Script Web App URL here after deployment.
-  const SUBMIT_URL = 'PASTE_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
+  const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbzcVfUF94vvmX8bYX-TLhX-Yy_cFYY4Ef4BkY-1Pp7s5UZTdFzw7xdwt3Q7eUTGnNM3BQ/exec';
 
   const RESPONSE_LABELS = {
     1:'Not at all like me',
