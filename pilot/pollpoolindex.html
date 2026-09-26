@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>R.I.S.E. Index™ | Leadership Inventory Pilot</title>
+<meta name="description" content="A quick leadership inventory exploring equity, change, and transformation.">
+
+<!-- Renfaut favicons -->
+<link rel="icon" type="image/svg+xml" href="../assets/icons/favicon/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/icons/favicon/favicon-16x16.png">
+<link rel="apple-touch-icon" href="../assets/icons/favicon/apple-touch-icon.png">
+<link rel="manifest" href="../assets/icons/favicon/site.webmanifest">
+
+<!-- Social sharing / Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Renfaut">
+<meta property="og:url" content="https://research.renfaut.org/pilot/">
+<meta property="og:title" content="R.I.S.E. Index™ | Leadership Inventory Pilot">
+<meta property="og:description" content="A quick leadership inventory exploring equity, change, and transformation.">
+<meta property="og:image" content="https://research.renfaut.org/pilot/site-preview.png">
+<meta property="og:image:secure_url" content="https://research.renfaut.org/pilot/site-preview.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="R.I.S.E. Index Leadership Inventory Pilot">
+
+<!-- X / Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="R.I.S.E. Index™ | Leadership Inventory Pilot">
+<meta name="twitter:description" content="A quick leadership inventory exploring equity, change, and transformation.">
+<meta name="twitter:image" content="https://research.renfaut.org/pilot/site-preview.png">
+<meta name="twitter:image:alt" content="R.I.S.E. Index Leadership Inventory Pilot">
+<style>
+:root{
+  --paper:#FAF7F2;
+  --white:#FFFFFF;
+  --ink:#2B2B2B;
+  --night:#403E4D;
+  --muted:#625E69;
+  --line:rgba(64,62,77,.16);
+  --rr:#B31217;
+  --ib:#E76F00;
+  --de:#F7B500;
+  --es:#38BFD8;
+  --ra:#6C3FBF;
+  --panel:#F3F1F6;
+  --shadow:0 18px 48px rgba(64,62,77,.10);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--paper);color:var(--ink);font-family:Aptos,"Segoe UI",Arial,sans-serif;line-height:1.5}
+button,input,select{font:inherit}
+button{cursor:pointer}
+img{max-width:100%}
+[hidden]{display:none!important}
+.wrap{width:min(980px,calc(100% - 32px));margin:auto}
+.site-header{background:rgba(250,247,242,.97);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50;backdrop-filter:blur(10px)}
+.header-inner{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand img{width:142px;display:block}
+.pilot-label{font-size:.9rem;font-weight:700;color:var(--night)}
+.hero{padding:38px 0 18px;text-align:center}
+.rise-logo{width:min(420px,78vw);display:block;margin:0 auto 18px}
+.eyebrow{margin:0 0 8px;text-transform:uppercase;letter-spacing:.1em;font-size:.77rem;font-weight:800;color:var(--ra)}
+h1,h2,h3{font-family:"Aptos Display",Aptos,"Segoe UI",Arial,sans-serif;color:var(--night)}
+h1{font-size:clamp(1.8rem,4vw,2.45rem);line-height:1.08;font-weight:700;margin:0 auto 12px;max-width:760px;color:var(--es)}\n.pilot-title-line{display:block}.pilot-title-subline{display:block;margin-top:.08em;text-transform:uppercase;letter-spacing:.08em}
+.lead{font-size:1.05rem;color:var(--muted);max-width:760px;margin:0 auto}
+.card{background:var(--white);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}
+.intro-card{margin:24px auto 54px;padding:30px;max-width:900px;text-align:left}
+.intro-card h2{font-size:1.45rem;margin:0 0 12px}.intro-card p{margin:0 0 14px}.intro-card ul{margin:14px 0 0;padding-left:1.2rem}.intro-card li{margin:.55rem 0}
+.notice{margin:18px 0;padding:16px 18px;border:1px solid rgba(108,63,191,.22);background:#FBFAFE;border-radius:14px;color:var(--night)}
+.notice strong{display:block;margin-bottom:4px}\n.surveyswap-note{margin:18px 0 0;padding:13px 16px;border-left:4px solid var(--es);background:rgba(56,191,216,.08);border-radius:0 10px 10px 0;color:var(--night);font-size:.94rem}
+.primary,.secondary,.ghost{border:0;border-radius:999px;min-height:48px;padding:0 22px;font-weight:800}
+.primary{background:var(--rr);color:#fff;box-shadow:0 10px 22px rgba(179,18,23,.18)}
+.primary:hover{filter:brightness(.97)}
+.secondary{background:var(--night);color:#fff}
+.ghost{background:transparent;color:var(--night);border:1px solid var(--line)}
+.button-row{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:22px}
+.full-results-callout{margin-top:24px;padding:22px;border:1px solid rgba(64,62,77,.16);border-radius:16px;background:var(--paper);text-align:left}
+.full-results-callout h3{margin:0 0 8px;font-size:1.15rem}
+.full-results-callout p{margin:0 0 14px}
+.completion-cta{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;margin-top:2px}
+.completion-note{font-size:.88rem;color:var(--muted);margin-top:12px!important;margin-bottom:0!important}
+.form-card{margin:24px auto 54px;padding:30px;max-width:900px}
+.form-card h2{font-size:1.45rem;margin:0 0 8px}.form-card .sub{color:var(--muted);margin:0 0 22px}
+.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.field{display:flex;flex-direction:column;gap:7px}.field.full{grid-column:1/-1}.field label{font-weight:700;color:var(--night)}.field small{color:var(--muted);font-size:.86rem}.field input,.field select{width:100%;border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px 13px;color:var(--ink);min-height:48px}.field input:focus,.field select:focus{outline:3px solid rgba(108,63,191,.15);border-color:var(--ra)}.race-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 18px;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff}.race-options label{display:flex;align-items:flex-start;gap:9px;font-weight:500;line-height:1.35}.race-options input{margin-top:3px;width:auto;min-height:auto}@media(max-width:650px){.race-options{grid-template-columns:1fr}}
+.inventory-shell{padding:20px 0 64px}
+.inventory-card{max-width:900px;margin:auto;background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);overflow:hidden}
+.inventory-top{position:sticky;top:68px;z-index:40;background:rgba(255,255,255,.97);backdrop-filter:blur(10px);padding:15px 24px 16px;border-bottom:1px solid var(--line)}
+.progress-caption{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:.86rem;font-weight:700;color:var(--night)}
+.progress-track{height:8px;background:#E8E1D5;border-radius:999px;overflow:hidden;margin-top:9px}.progress-bar{height:100%;width:0;background:var(--ra);border-radius:999px;transition:width .23s ease}
+.screen{min-height:430px;padding:40px 34px 28px;display:flex;flex-direction:column;justify-content:center}
+.screen-kicker{margin:0 0 12px;text-transform:uppercase;letter-spacing:.09em;font-size:.75rem;font-weight:800;color:var(--muted)}
+.statement{font-size:clamp(1.42rem,3vw,1.9rem);line-height:1.28;font-weight:600;margin:0 0 28px;max-width:800px}
+.scale{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.option{position:relative;display:flex;align-items:center;justify-content:center;text-align:center;min-height:72px;padding:12px 10px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--night);font-weight:700;transition:.15s ease}
+.option:hover{border-color:rgba(108,63,191,.45);background:#FCFBFE}.option input{position:absolute;opacity:0;pointer-events:none}.option.selected{border-color:var(--ra);background:#F7F3FF;box-shadow:inset 0 0 0 1px rgba(108,63,191,.15)}
+.attention .statement{color:var(--night)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 28px;border-top:1px solid var(--line);background:#FCFAF6}.nav-note{color:var(--muted);font-size:.86rem;text-align:center}.nav .ghost{min-width:106px}.continue-btn{min-width:118px}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--night);color:#fff;border-radius:999px;padding:10px 16px;font-size:.9rem;font-weight:700;z-index:120;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1}
+.modal{position:fixed;inset:0;background:rgba(64,62,77,.58);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}.modal-card{width:min(560px,100%);background:#fff;border-radius:22px;box-shadow:var(--shadow);padding:30px;text-align:center}.modal-card h2{font-size:1.5rem;margin:0 0 10px}.modal-card p{color:var(--muted);margin:0 auto 20px;max-width:470px}
+.completion{padding:54px 0 72px}.completion-card{max-width:760px;margin:auto;padding:36px;text-align:center}.completion-card h2{font-size:1.8rem;margin:0 0 12px}.completion-card p{color:var(--muted)}.completion-id{margin:20px auto;padding:14px 18px;border:1px solid var(--line);border-radius:14px;background:#FCFAF6;max-width:430px}.completion-id strong{display:block;color:var(--night)}.completion-id span{display:block;margin-top:4px;font-size:1.15rem;font-weight:800;color:var(--night);letter-spacing:.03em;word-break:break-word}
+.error{margin:16px 0 0;padding:12px 14px;background:#FFF7F5;border:1px solid rgba(179,18,23,.22);border-radius:12px;color:#8D1014;font-weight:700}
+.footer{border-top:1px solid var(--line);padding:24px 0 32px;color:var(--muted);font-size:.88rem}.footer .wrap{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+@media(max-width:760px){.pilot-label{display:none}.hero{padding-top:28px}.intro-card,.form-card{padding:22px 18px}.demo-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.screen{min-height:470px;padding:30px 18px 24px;justify-content:flex-start}.scale{grid-template-columns:1fr 1fr}.option{min-height:64px}.inventory-top{top:68px;padding-left:18px;padding-right:18px}.nav{padding:14px 18px}.nav-note{display:none}.statement{margin-bottom:22px}.completion-card{padding:26px 20px}}
+@media(max-width:430px){.wrap{width:min(100% - 20px,980px)}.scale{grid-template-columns:1fr}.option{min-height:54px}.screen{min-height:560px}.brand img{width:132px}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#" aria-label="Renfaut home">
+      <img src="https://renfaut.org/assets/logos/renfaut-wordmark.png" alt="Renfaut™">
+    </a>
+    <div class="pilot-label">R.I.S.E. Index™ Leadership Inventory Pilot</div>
+  </div>
+</header>
+
+<main>
+  <section id="welcome" class="hero">
+    <div class="wrap">
+      <img class="rise-logo" src="https://www.renfaut.org/assets/logos/rise-index-logo-horizontal.svg" alt="R.I.S.E. Index™">
+      <p class="eyebrow">Leadership Inventory Pilot</p>
+      <h1><span class="pilot-title-line">R.I.S.E. Index™</span><span class="pilot-title-subline">PILOT</span></h1>
+      <p class="lead">This developmental pilot explores how people understand and engage equity-centered leadership and organizational transformation.</p>
+
+      <div class="card intro-card">
+        <h2>Before you begin</h2>
+        <p>This pilot contains 30 R.I.S.E. statements and two attention checks. There are no right or wrong answers. Respond based on how you generally think, act, or approach situations—not how you believe you should respond.</p>
+        <div class="notice"><strong>Research and instrument development</strong>This pilot is being used to study and refine the R.I.S.E. Index™. Individual Leadership Profiles and archetypes are not generated from this experimental form.</div>
+        <ul>
+          <li>Choose the response that best reflects what is consistently true of your current practice.</li>
+          <li>Complete the inventory in one sitting when possible.</li>
+          <li>Each statement appears on its own screen and advances after your first response.</li>
+          <li>You may use Back to review or correct an earlier response.</li>
+        </ul>
+        <div class="button-row"><button class="primary" id="continueToInfo" type="button">Continue</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="participantSection" class="wrap" hidden>
+    <div class="card form-card">
+      <h2>Participant information</h2>
+      <p class="sub">These fields help us study how the pilot performs across different groups. Please choose the responses that best describe you.</p>
+      <div class="demo-grid">
+        <div class="field full">
+          <label for="participantIdentifier">Participant Identifier</label>
+          <input id="participantIdentifier" type="text" minlength="6" maxlength="20" pattern="[A-Za-z0-9-]{6,20}" autocomplete="off" spellcheck="false" placeholder="Create a code you will remember" required>
+          <small>Use 6–20 letters, numbers, or hyphens. Do not use your name, email address, birth date, or other identifying information.</small>
+        </div>
+        <div class="field">
+          <label for="age">Age Range</label>
+          <select id="age" required>
+            <option value="">Select one</option>
+            <option>Under 18</option>
+            <option>18–24</option>
+            <option>25–34</option>
+            <option>35–44</option>
+            <option>45–54</option>
+            <option>55–64</option>
+            <option>65 or older</option>
+            <option>Prefer not to answer</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="country">Country</label>
+          <input id="country" autocomplete="country-name" placeholder="Country" required>
+        </div>
+        <div class="field">
+          <label for="leadershipExperience">Leadership Experience</label>
+          <select id="leadershipExperience" required>
+            <option value="">Select one</option>
+            <option>Less than 1 year</option>
+            <option>1–3 years</option>
+            <option>4–6 years</option>
+            <option>7–10 years</option>
+            <option>11–15 years</option>
+            <option>More than 15 years</option>
+            <option>Prefer not to answer</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Gender <span style="font-weight:400">(select all that apply)</span></label>
+          <div class="race-options" id="genderOptions">
+            <label><input type="checkbox" name="gender" value="Woman"> Woman</label>
+            <label><input type="checkbox" name="gender" value="Man"> Man</label>
+            <label><input type="checkbox" name="gender" value="Nonbinary"> Nonbinary</label>
+            <label><input type="checkbox" name="gender" value="Another gender identity"> Another gender identity</label>
+            <label><input type="checkbox" name="gender" value="Prefer not to answer"> Prefer not to answer</label>
+          </div>
+        </div>
+        <div class="field full">
+          <label>Race or racial identity <span style="font-weight:400">(select all that apply)</span></label>
+          <div class="race-options" id="raceOptions">
+            <label><input type="checkbox" name="race" value="American Indian or Alaska Native"> American Indian or Alaska Native</label>
+            <label><input type="checkbox" name="race" value="Asian"> Asian</label>
+            <label><input type="checkbox" name="race" value="Black or African American"> Black or African American</label>
+            <label><input type="checkbox" name="race" value="Middle Eastern or North African"> Middle Eastern or North African</label>
+            <label><input type="checkbox" name="race" value="Native Hawaiian or Other Pacific Islander"> Native Hawaiian or Other Pacific Islander</label>
+            <label><input type="checkbox" name="race" value="White"> White</label>
+            <label><input type="checkbox" name="race" value="Another race or racial identity"> Another race or racial identity</label>
+            <label><input type="checkbox" name="race" value="Prefer not to answer"> Prefer not to answer</label>
+          </div>
+        </div>
+      </div>
+      <p class="error" id="participantError" hidden>Please complete all required participant-information fields before starting.</p>
+      <div class="button-row"><button class="ghost" id="backToWelcome" type="button">Back</button><button class="primary" id="startInventory" type="button">Start Inventory</button></div>
+    </div>
+  </section>
+
+  <section id="inventoryShell" class="inventory-shell" hidden>
+    <div class="wrap">
+      <div class="inventory-card">
+        <div class="inventory-top">
+          <div class="progress-caption"><span>Inventory progress</span><span id="progressPercent">0%</span></div>
+          <div class="progress-track" role="progressbar" aria-label="Inventory progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar" id="progressBar"></div></div>
+        </div>
+        <div id="screenHost"></div>
+        <div class="nav">
+          <button class="ghost" id="backButton" type="button">Back</button>
+          <span class="nav-note" id="navNote">Select the response that best reflects your current practice.</span>
+          <button class="secondary continue-btn" id="continueButton" type="button" hidden>Continue</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="completion" class="completion" hidden>
+    <div class="wrap">
+      <div class="card completion-card">
+        <p class="eyebrow">Pilot complete</p>
+        <h2>Thank you for participating.</h2>
+        <p>Your responses will contribute to the continued development and validation of the R.I.S.E. Index™ and its measurement of equity-centered leadership.</p>
+        <p>This experimental pilot does not generate an individual R.I.S.E. Leadership Profile or archetype.</p>
+        <div class="full-results-callout">
+          <h3>Want to see your R.I.S.E. results?</h3>
+          <p>If you would like to receive your R.I.S.E. results and explore your leadership archetype, you can complete the full R.I.S.E. Index™.</p>
+          <a class="primary completion-cta" href="https://research.renfaut.org/latency/index.html">Complete the Full R.I.S.E. Index™ →</a>
+          <p class="completion-note">The full inventory is separate from this pilot and will ask you to respond to a new set of statements.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="modal" id="straightlineModal" hidden role="dialog" aria-modal="true" aria-labelledby="straightlineTitle">
+  <div class="modal-card">
+    <h2 id="straightlineTitle">Unusual response patterns detected.</h2>
+    <p>You’ve selected the same response for several statements in a row. That may accurately reflect your experience. Before continuing, please make sure you’re considering each statement individually.</p>
+    <button class="primary" id="straightlineContinue" type="button">Continue</button>
+  </div>
+</div>
+
+<div class="modal" id="submitModal" hidden role="dialog" aria-modal="true" aria-labelledby="submitTitle">
+  <div class="modal-card">
+    <h2 id="submitTitle">Submitting your responses…</h2>
+    <p id="submitMessage">Please keep this page open for a moment.</p>
+  </div>
+</div>
+
+<div class="toast" id="toast" aria-live="polite"></div>
+
+<footer class="footer">
+  <div class="wrap">
+    <span>Renfaut™ Praxis Paradigm | T. Lee Morgan, Ph.D.</span>
+    <span>R.I.S.E. Index™ research pilot</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  // Paste the deployed Google Apps Script Web App URL here after deployment.
+  const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbxpeYDoGhAV4ExPq40my0L5mmsPm5HqrY-vwt4nXWwFgGVS97n3iEzg5MA71nnWgSmw0Q/exec';
+
+  const RESPONSE_LABELS = {
+    1:'Not at all like me',
+    2:'Not much like me',
+    3:'Somewhat like me',
+    4:'Very much like me'
+  };
+
+  const SCORED_ITEMS = {
+    RR1:'I understand how historical injustices continue to shape institutions today.',
+    RR2:'I analyze how power shapes what happens within institutions and organizations.',
+    RR3:'I can identify who has meaningful influence over important decisions.',
+    RR4:'I examine how systems and circumstances contribute to inequities that may appear to result from individual choices.',
+    RR5:'I examine whether policies that appear neutral affect groups differently.',
+    RR6:'I reflect on how my own position shapes the power, access, and opportunities available to me.',
+    IB1:'I can move forward even when there is no clear solution.',
+    IB2:'I remain open to paths that emerge differently than I expected.',
+    IB3:'I use experimentation to learn what might work when the way forward is uncertain.',
+    IB4:'I adjust how I lead when the context or circumstances change.',
+    IB5:'I can admit when I am wrong and use what I learn to change my thinking.',
+    IB6:'I value perspectives that challenge what I think I know.',
+    DE1:'I intentionally interrupt practices that exclude or disadvantage people.',
+    DE2:'I speak up when I see harm or inequity occurring.',
+    DE3:'I intervene when harm affects others, even when I am not personally affected.',
+    DE4:'I take risks to support people who have less power in a situation.',
+    DE5:'I use the influence I have to challenge inequitable practices.',
+    DE6:'I stay engaged when challenging inequity creates tension or discomfort.',
+    ES1:'I take specific actions to shift decision-making power toward people most affected by the decisions.',
+    ES2:'I work to change systems that repeatedly produce inequitable outcomes.',
+    ES3:'I work to shift resources toward people and communities experiencing inequity.',
+    ES4:'I create ways for people affected by decisions to have meaningful influence over those decisions.',
+    ES5:'I change policies or practices when they continue to produce inequitable outcomes.',
+    ES6:'I build accountability into systems so that equity commitments can be evaluated and acted upon.',
+    RA1:'I invest in repairing relationships after harm or conflict occurs.',
+    RA2:'I foster ways of working that emphasize interdependence and collective well-being.',
+    RA3:'I build reflection and renewal into ongoing equity work.',
+    RA4:'I help create ways of working that prevent people from becoming exhausted or burned out.',
+    RA5:'I use what we learn from change efforts to continually adapt how we move forward.',
+    RA6:'I revisit changes over time so they can continue to evolve with the people and conditions around them.'
+  };
+
+  // Fixed mixed presentation order; principle labels remain hidden from respondents.
+  const ITEM_ORDER = [
+    'RR2','IB1','DE3','ES4','RA3','IB6','ES2','RR5','RA1','DE5',
+    'IB4','RR1','ES6','DE2','RA5','RR3','IB3','ES1','DE6','RA2',
+    'RR6','IB5','DE1','RA6','ES3','RR4','IB2','DE4','ES5','RA4'
+  ];
+
+  const SCREENS = [];
+  ITEM_ORDER.forEach((id, idx)=>{
+    SCREENS.push({type:'scored', id, text:SCORED_ITEMS[id]});
+    if(idx === 9){
+      SCREENS.push({type:'attention', id:'AC1', text:'To show that you are reading carefully, please select Not much like me for this statement.', key:2});
+    }
+    if(idx === 20){
+      SCREENS.push({type:'attention', id:'AC2', text:'For this statement, please select Very much like me.', key:4});
+    }
+  });
+
+  const state = {
+    current:0,
+    answers:{},
+    firstLatencyMs:{},
+    shownAtMs:0,
+    overallStartedAtMs:0,
+    overallStartedAtPerf:0,
+    overallStartedAtIso:'',
+    inventoryStartedAtMs:0,
+    inventoryStartedAtPerf:0,
+    inventoryStartedAtIso:'',
+    inventoryEndedAtMs:0,
+    inventoryEndedAtPerf:0,
+    inventoryEndedAtIso:'',
+    warningCount:0,
+    warningShown:false,
+    lastWarnedSignature:'',
+    revisiting:false,
+    submitting:false
+  };
+
+  const $ = id => document.getElementById(id);
+  const welcome = $('welcome');
+  const participantSection = $('participantSection');
+  const inventoryShell = $('inventoryShell');
+  const completion = $('completion');
+  const screenHost = $('screenHost');
+  const progressBar = $('progressBar');
+  const progressPercent = $('progressPercent');
+  const progressTrack = document.querySelector('.progress-track');
+  const backButton = $('backButton');
+  const continueButton = $('continueButton');
+  const toast = $('toast');
+
+  function showToast(message){
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(()=>toast.classList.remove('show'),1200);
+  }
+
+  function selectedGenderValues(){
+    return Array.from(document.querySelectorAll('input[name="gender"]:checked')).map(el=>el.value);
+  }
+
+  function selectedRaceValues(){
+    return Array.from(document.querySelectorAll('input[name="race"]:checked')).map(el=>el.value);
+  }
+
+  function participantData(){
+    return {
+      identifier:$('participantIdentifier').value.trim(),
+      age:$('age').value.trim(),
+      country:$('country').value.trim(),
+      leadershipExperience:$('leadershipExperience').value,
+      gender:selectedGenderValues().join(' | '),
+      race:selectedRaceValues().join(' | ')
+    };
+  }
+
+  function participantValid(){
+    const fields = ['participantIdentifier','age','country','leadershipExperience'];
+    const baseValid = fields.every(id=>$(id).value.trim() !== '' && $(id).checkValidity());
+    const genderValid = selectedGenderValues().length > 0;
+    const raceValid = selectedRaceValues().length > 0;
+    const valid = baseValid && genderValid && raceValid;
+    $('participantError').hidden = valid;
+    if(!valid){
+      const first = fields.map(id=>$(id)).find(el=>!el.value.trim() || !el.checkValidity());
+      if(first) first.focus();
+      else if(!raceValid) document.querySelector('#raceOptions input').focus();
+    }
+    return valid;
+  }
+
+  function detectDevice(){
+    const ua = navigator.userAgent || '';
+    if(/iPad|Tablet|PlayBook|Silk/i.test(ua)) return 'Tablet';
+    if(/Mobi|Android|iPhone|iPod/i.test(ua)) return 'Mobile';
+    return 'Desktop';
+  }
+
+  function updateProgress(){
+    const completed = Object.keys(state.answers).length;
+    const pct = Math.round((completed / SCREENS.length) * 100);
+    progressBar.style.width = pct + '%';
+    progressPercent.textContent = pct + '%';
+    progressTrack.setAttribute('aria-valuenow', String(pct));
+  }
+
+  function renderScreen(){
+    const s = SCREENS[state.current];
+    const previous = state.answers[s.id];
+    state.revisiting = previous !== undefined;
+    state.shownAtMs = performance.now();
+
+    const choices = [1,2,3,4].map(value=>{
+      const selected = previous === value ? ' selected' : '';
+      const checked = previous === value ? ' checked' : '';
+      return `<label class="option${selected}" data-value="${value}"><input type="radio" name="currentResponse" value="${value}"${checked}><span>${RESPONSE_LABELS[value]}</span></label>`;
+    }).join('');
+
+    screenHost.innerHTML = `
+      <div class="screen${s.type === 'attention' ? ' attention' : ''}">
+        <p class="screen-kicker">${s.type === 'attention' ? 'Please read carefully' : 'Leadership statement'}</p>
+        <h2 class="statement">${s.text}</h2>
+        <div class="scale" role="radiogroup" aria-label="Response options">${choices}</div>
+      </div>`;
+
+    screenHost.querySelectorAll('.option').forEach(label=>{
+      label.addEventListener('click', ()=>{
+        const value = Number(label.dataset.value);
+        handleAnswer(s, value);
+      });
+    });
+
+    backButton.disabled = state.current === 0;
+    backButton.style.opacity = state.current === 0 ? '.45' : '1';
+    continueButton.hidden = !(state.revisiting && previous !== undefined);
+    updateProgress();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function scoredSequence(){
+    return ITEM_ORDER.filter(id=>state.answers[id] !== undefined).map(id=>state.answers[id]);
+  }
+
+  function straightlineRun(values){
+    if(!values.length) return {length:0,value:null};
+    let run = 1;
+    const last = values[values.length-1];
+    for(let i=values.length-2;i>=0;i--){
+      if(values[i] === last) run++; else break;
+    }
+    return {length:run,value:last};
+  }
+
+  function maybeStraightlineWarning(){
+    const run = straightlineRun(scoredSequence());
+    if(run.length < 8) return false;
+    const signature = run.value + ':' + run.length;
+    if(state.lastWarnedSignature === signature || state.lastWarnedSignature.startsWith(run.value + ':')) return false;
+    state.warningCount += 1;
+    state.warningShown = true;
+    state.lastWarnedSignature = signature;
+    $('straightlineModal').hidden = false;
+    return true;
+  }
+
+  function advance(){
+    if(state.current < SCREENS.length - 1){
+      state.current += 1;
+      renderScreen();
+    } else {
+      submitPilot();
+    }
+  }
+
+  function handleAnswer(screen, value){
+    const hadAnswer = state.answers[screen.id] !== undefined;
+    if(!hadAnswer){
+      state.firstLatencyMs[screen.id] = Math.max(0, Math.round(performance.now() - state.shownAtMs));
+    }
+    state.answers[screen.id] = value;
+
+    screenHost.querySelectorAll('.option').forEach(el=>el.classList.toggle('selected', Number(el.dataset.value) === value));
+    updateProgress();
+
+    if(hadAnswer || state.revisiting){
+      continueButton.hidden = false;
+      showToast('Response updated');
+      return;
+    }
+
+    setTimeout(()=>{
+      if(screen.type === 'scored' && maybeStraightlineWarning()) return;
+      advance();
+    },260);
+  }
+
+  function makeResponseId(){
+    const timePart = Date.now().toString(36).toUpperCase();
+    const randomPart = Math.random().toString(36).slice(2,8).toUpperCase();
+    return 'PILOT-' + timePart + '-' + randomPart;
+  }
+
+  function buildPayload(){
+    if(!state.inventoryEndedAtMs){
+      state.inventoryEndedAtMs = Date.now();
+      state.inventoryEndedAtPerf = performance.now();
+      state.inventoryEndedAtIso = new Date(state.inventoryEndedAtMs).toISOString();
+    }
+
+    const participant = participantData();
+    const demographicDurationSeconds = state.inventoryStartedAtPerf && state.overallStartedAtPerf
+      ? Math.max(0, Math.round((state.inventoryStartedAtPerf - state.overallStartedAtPerf) / 10) / 100)
+      : '';
+    const inventoryDurationSeconds = state.inventoryEndedAtPerf && state.inventoryStartedAtPerf
+      ? Math.max(0, Math.round((state.inventoryEndedAtPerf - state.inventoryStartedAtPerf) / 10) / 100)
+      : '';
+    const totalDurationSeconds = state.inventoryEndedAtPerf && state.overallStartedAtPerf
+      ? Math.max(0, Math.round((state.inventoryEndedAtPerf - state.overallStartedAtPerf) / 10) / 100)
+      : '';
+
+    const payload = {
+      responseId: makeResponseId(),
+      timestamp: state.inventoryEndedAtIso,
+      'Source': 'Poll Pool',
+      'Participant Identifier': participant.identifier,
+      'Age': participant.age,
+      'Race': participant.race,
+      'Gender': participant.gender,
+      'Country': participant.country,
+      'Leadership Experience': participant.leadershipExperience,
+      ITEM_ORDER: ITEM_ORDER.join('|'),
+      'Overall Start Time': state.overallStartedAtIso,
+      'Inventory Start Time': state.inventoryStartedAtIso,
+      'Inventory End Time': state.inventoryEndedAtIso,
+      'Demographic Duration Seconds': demographicDurationSeconds,
+      'Inventory Duration Seconds': inventoryDurationSeconds,
+      'Total Duration Seconds': totalDurationSeconds,
+      'Straightline Warning Shown': state.warningShown ? 'Yes' : 'No',
+      'Straightline Warning Count': state.warningCount,
+      'Device Type': detectDevice(),
+      'User Agent': navigator.userAgent || '',
+      answers:{},
+      latencies:{}
+    };
+    Object.keys(state.answers).forEach(id=>payload.answers[id] = state.answers[id]);
+    Object.keys(state.firstLatencyMs).forEach(id=>payload.latencies[id] = Math.round(state.firstLatencyMs[id]) / 1000);
+    return payload;
+  }
+
+  async function submitPilot(){
+    if(state.submitting) return;
+    const missing = SCREENS.filter(s=>state.answers[s.id] === undefined);
+    if(missing.length){
+      state.current = SCREENS.indexOf(missing[0]);
+      renderScreen();
+      showToast('Please answer this statement');
+      return;
+    }
+
+    state.submitting = true;
+    $('submitModal').hidden = false;
+    const payload = buildPayload();
+
+    if(SUBMIT_URL.indexOf('PASTE_GOOGLE_APPS_SCRIPT') === 0){
+      $('submitTitle').textContent = 'Submission endpoint not configured';
+      $('submitMessage').textContent = 'The pilot website is ready, but the Google Apps Script Web App URL still needs to be inserted in index.html before live data collection.';
+      state.submitting = false;
+      return;
+    }
+
+    try{
+      await fetch(SUBMIT_URL, {
+        method:'POST',
+        mode:'no-cors',
+        headers:{'Content-Type':'text/plain;charset=UTF-8'},
+        body:JSON.stringify(payload)
+      });
+      $('submitModal').hidden = true;
+      inventoryShell.hidden = true;
+      completion.hidden = false;
+      window.scrollTo({top:0,behavior:'smooth'});
+    }catch(err){
+      $('submitTitle').textContent = 'We could not submit your responses';
+      $('submitMessage').textContent = 'Please check your connection and try again. Your responses remain on this page.';
+      state.submitting = false;
+    }
+  }
+
+  $('continueToInfo').addEventListener('click', ()=>{
+    if(!state.overallStartedAtMs){
+      state.overallStartedAtMs = Date.now();
+      state.overallStartedAtPerf = performance.now();
+      state.overallStartedAtIso = new Date(state.overallStartedAtMs).toISOString();
+    }
+    welcome.hidden = true;
+    participantSection.hidden = false;
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+
+  $('backToWelcome').addEventListener('click', ()=>{
+    participantSection.hidden = true;
+    welcome.hidden = false;
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+
+  $('startInventory').addEventListener('click', ()=>{
+    if(!participantValid()) return;
+    participantSection.hidden = true;
+    inventoryShell.hidden = false;
+    state.inventoryStartedAtMs = Date.now();
+    state.inventoryStartedAtPerf = performance.now();
+    state.inventoryStartedAtIso = new Date(state.inventoryStartedAtMs).toISOString();
+    renderScreen();
+  });
+
+  backButton.addEventListener('click', ()=>{
+    if(state.current > 0){
+      state.current -= 1;
+      renderScreen();
+    }
+  });
+
+  continueButton.addEventListener('click', advance);
+  $('straightlineContinue').addEventListener('click', ()=>{
+    $('straightlineModal').hidden = true;
+    advance();
+  });
+})();
+</script>
+</body>
+</html>
