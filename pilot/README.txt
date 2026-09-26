@@ -70,3 +70,12 @@ AC1 correct answer = 2
 AC2 correct answer = 4
 
 Latency values are written to the sheet in seconds.
+
+
+DEMOGRAPHIC UPDATE
+------------------
+The pilot now collects only four participant demographics: Age, Race or racial identity, Gender, and Country. Prior participant identifier, role/title, sector, leadership experience, supervisory responsibility, and prior R.I.S.E. participation fields were removed from the participant-facing pilot. The Apps Script receiver automatically adds Age, Race, Gender, and Country columns to the Inventory Pilot tab if they are missing.
+
+After replacing Code.gs in Apps Script, deploy a NEW VERSION of the existing Web App deployment so the current /exec endpoint uses the updated receiver.
+
+Updated participant fields: Participant Identifier, Age, Race, Gender, Country, and Leadership Experience.

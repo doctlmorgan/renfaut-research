@@ -15,6 +15,25 @@ const PILOT_RISE_ITEMS = [
   'RA1','RA2','RA3','RA4','RA5','RA6'
 ];
 
+
+const PILOT_DEMOGRAPHIC_HEADERS = [
+  'Participant Identifier',
+  'Age',
+  'Race',
+  'Gender',
+  'Country',
+  'Leadership Experience'
+];
+
+function ensurePilotDemographicHeaders_(sheet) {
+  const lastColumn = Math.max(sheet.getLastColumn(), 1);
+  const headers = sheet.getRange(1, 1, 1, lastColumn).getValues()[0].map(v => String(v).trim());
+  const missing = PILOT_DEMOGRAPHIC_HEADERS.filter(h => !headers.includes(h));
+  if (missing.length) {
+    sheet.getRange(1, sheet.getLastColumn() + 1, 1, missing.length).setValues([missing]);
+  }
+}
+
 function doGet() {
   return ContentService
     .createTextOutput('R.I.S.E. Index Leadership Inventory Pilot receiver is running.')
@@ -27,6 +46,8 @@ function doPost(e) {
     const ss = SpreadsheetApp.openById(PILOT_SPREADSHEET_ID);
     const sheet = ss.getSheetByName(PILOT_SHEET_NAME);
     if (!sheet) throw new Error('Inventory Pilot tab not found. Run setupInventoryPilot first.');
+
+    ensurePilotDemographicHeaders_(sheet);
 
     const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0].map(String);
     const row = new Array(headers.length).fill('');
@@ -60,15 +81,14 @@ function doPost(e) {
     put('Device Type', payload.deviceType || '');
     put('User Agent', payload.userAgent || '');
 
-    // Optional participant-context columns if they exist in the sheet.
+    // Pilot participant information and demographics.
     const p = payload.participant || {};
-    put('Participant Identifier', p.participantIdentifier || '');
+    put('Participant Identifier', p.identifier || '');
+    put('Age', p.age || '');
+    put('Race', p.race || '');
+    put('Gender', p.gender || '');
     put('Country', p.country || '');
-    put('Professional Role or Title', p.role || '');
-    put('Primary Sector', p.sector || '');
     put('Leadership Experience', p.leadershipExperience || '');
-    put('Supervisory Responsibility', p.supervisoryResponsibility || '');
-    put('Previous R.I.S.E. Participation', p.priorRiseParticipation || '');
 
     sheet.appendRow(row);
 
