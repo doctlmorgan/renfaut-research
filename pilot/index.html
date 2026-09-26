@@ -4,8 +4,33 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<title>R.I.S.E. Index™ — Leadership Inventory Pilot | Renfaut™</title>
-<meta name="description" content="R.I.S.E. Index™ Leadership Inventory Pilot — research and instrument development by Renfaut™.">
+<title>R.I.S.E. Index™ | Leadership Inventory Pilot</title>
+<meta name="description" content="A quick leadership inventory exploring equity, change, and transformation.">
+
+<!-- Renfaut favicons -->
+<link rel="icon" type="image/svg+xml" href="../assets/icons/favicon/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/icons/favicon/favicon-16x16.png">
+<link rel="apple-touch-icon" href="../assets/icons/favicon/apple-touch-icon.png">
+<link rel="manifest" href="../assets/icons/favicon/site.webmanifest">
+
+<!-- Social sharing / Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Renfaut">
+<meta property="og:url" content="https://research.renfaut.org/pilot/">
+<meta property="og:title" content="R.I.S.E. Index™ | Leadership Inventory Pilot">
+<meta property="og:description" content="A quick leadership inventory exploring equity, change, and transformation.">
+<meta property="og:image" content="https://research.renfaut.org/pilot/site-preview.png">
+<meta property="og:image:secure_url" content="https://research.renfaut.org/pilot/site-preview.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="R.I.S.E. Index Leadership Inventory Pilot">
+
+<!-- X / Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="R.I.S.E. Index™ | Leadership Inventory Pilot">
+<meta name="twitter:description" content="A quick leadership inventory exploring equity, change, and transformation.">
+<meta name="twitter:image" content="https://research.renfaut.org/pilot/site-preview.png">
+<meta name="twitter:image:alt" content="R.I.S.E. Index Leadership Inventory Pilot">
 <style>
 :root{
   --paper:#FAF7F2;
@@ -441,35 +466,6 @@ h1{font-size:clamp(1.8rem,4vw,2.45rem);line-height:1.08;font-weight:700;margin:0
     return ITEM_ORDER.filter(id=>state.answers[id] !== undefined).map(id=>state.answers[id]);
   }
 
-  // Repeating-pattern diagnostics use scored items in presentation order only.
-  const PILOT_PATTERN_MIN_RUN = 12;
-  const PILOT_MAX_PATTERN_PERIOD = 4;
-  
-  function detectPilotPattern(values) {
-    let bestRun = 0;
-    let bestPeriod = '';
-  
-    for (let period = 2; period <= PILOT_MAX_PATTERN_PERIOD; period++) {
-      for (let start = 0; start <= values.length - period * 2; start++) {
-        const block = values.slice(start, start + period);
-        // Single-value runs belong to the separate straight-line detector.
-        if (new Set(block).size < 2) continue;
-  
-        let run = period;
-        while (start + run < values.length &&
-               values[start + run] === block[run % period]) {
-          run++;
-        }
-        if (run > bestRun) {
-          bestRun = run;
-          bestPeriod = period;
-        }
-      }
-    }
-  
-    return {run: bestRun, period: bestPeriod, flag: bestRun >= PILOT_PATTERN_MIN_RUN};
-  }
-
   function straightlineRun(values){
     if(!values.length) return {length:0,value:null};
     let run = 1;
@@ -572,10 +568,6 @@ h1{font-size:clamp(1.8rem,4vw,2.45rem);line-height:1.08;font-weight:700;margin:0
     };
     Object.keys(state.answers).forEach(id=>payload.answers[id] = state.answers[id]);
     Object.keys(state.firstLatencyMs).forEach(id=>payload.latencies[id] = Math.round(state.firstLatencyMs[id]) / 1000);
-    const pattern = detectPilotPattern(scoredSequence());
-    payload['Longest Pattern Run'] = pattern.run;
-    payload['Pattern Period'] = pattern.period;
-    payload['Pattern Flag'] = pattern.flag;
     return payload;
   }
 
