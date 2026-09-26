@@ -441,6 +441,35 @@ h1{font-size:clamp(1.8rem,4vw,2.45rem);line-height:1.08;font-weight:700;margin:0
     return ITEM_ORDER.filter(id=>state.answers[id] !== undefined).map(id=>state.answers[id]);
   }
 
+  // Repeating-pattern diagnostics use scored items in presentation order only.
+  const PILOT_PATTERN_MIN_RUN = 12;
+  const PILOT_MAX_PATTERN_PERIOD = 4;
+  
+  function detectPilotPattern(values) {
+    let bestRun = 0;
+    let bestPeriod = '';
+  
+    for (let period = 2; period <= PILOT_MAX_PATTERN_PERIOD; period++) {
+      for (let start = 0; start <= values.length - period * 2; start++) {
+        const block = values.slice(start, start + period);
+        // Single-value runs belong to the separate straight-line detector.
+        if (new Set(block).size < 2) continue;
+  
+        let run = period;
+        while (start + run < values.length &&
+               values[start + run] === block[run % period]) {
+          run++;
+        }
+        if (run > bestRun) {
+          bestRun = run;
+          bestPeriod = period;
+        }
+      }
+    }
+  
+    return {run: bestRun, period: bestPeriod, flag: bestRun >= PILOT_PATTERN_MIN_RUN};
+  }
+
   function straightlineRun(values){
     if(!values.length) return {length:0,value:null};
     let run = 1;
@@ -543,6 +572,10 @@ h1{font-size:clamp(1.8rem,4vw,2.45rem);line-height:1.08;font-weight:700;margin:0
     };
     Object.keys(state.answers).forEach(id=>payload.answers[id] = state.answers[id]);
     Object.keys(state.firstLatencyMs).forEach(id=>payload.latencies[id] = Math.round(state.firstLatencyMs[id]) / 1000);
+    const pattern = detectPilotPattern(scoredSequence());
+    payload['Longest Pattern Run'] = pattern.run;
+    payload['Pattern Period'] = pattern.period;
+    payload['Pattern Flag'] = pattern.flag;
     return payload;
   }
 
