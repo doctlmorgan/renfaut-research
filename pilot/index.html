@@ -125,8 +125,18 @@ h1{font-size:clamp(1.8rem,4vw,2.45rem);line-height:1.12;font-weight:600;margin:0
           <small>Use 6–20 letters, numbers, or hyphens. Do not use your name, email address, birth date, or other identifying information.</small>
         </div>
         <div class="field">
-          <label for="age">Age</label>
-          <input id="age" type="number" inputmode="numeric" min="1" max="120" placeholder="Age in years" required>
+          <label for="age">Age Range</label>
+          <select id="age" required>
+            <option value="">Select one</option>
+            <option>Under 18</option>
+            <option>18–24</option>
+            <option>25–34</option>
+            <option>35–44</option>
+            <option>45–54</option>
+            <option>55–64</option>
+            <option>65 or older</option>
+            <option>Prefer not to answer</option>
+          </select>
         </div>
         <div class="field">
           <label for="country">Country</label>
