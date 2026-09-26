@@ -248,7 +248,7 @@ h1{font-size:clamp(1.8rem,4vw,2.45rem);line-height:1.12;font-weight:600;margin:0
   'use strict';
 
   // Paste the deployed Google Apps Script Web App URL here after deployment.
-  const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbxCa5nkcmPxpUCmSONGbwCT0TWEv_cF3qfsEqTHRMqVBXtXc_UYaSU6K4yGBdlEE7y6LQ/exec';
+  const SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbxpeYDoGhAV4ExPq40my0L5mmsPm5HqrY-vwt4nXWwFgGVS97n3iEzg5MA71nnWgSmw0Q/exec';
 
   const RESPONSE_LABELS = {
     1:'Not at all like me',
@@ -488,23 +488,29 @@ h1{font-size:clamp(1.8rem,4vw,2.45rem);line-height:1.12;font-weight:600;margin:0
 
   function buildPayload(){
     const endedAt = new Date();
+    const participant = participantData();
     const payload = {
       responseId: makeResponseId(),
       timestamp: endedAt.toISOString(),
-      participant: participantData(),
-      itemOrder: ITEM_ORDER.join('|'),
-      inventoryStartTime: state.startedAtIso,
-      inventoryEndTime: endedAt.toISOString(),
-      totalDurationSeconds: Math.round((Date.now() - state.startedAtMs)/1000),
-      straightlineWarningShown: state.warningShown ? 'Yes' : 'No',
-      straightlineWarningCount: state.warningCount,
-      deviceType: detectDevice(),
-      userAgent: navigator.userAgent || '',
+      'Participant Identifier': participant.identifier,
+      'Age': participant.age,
+      'Race': participant.race,
+      'Gender': participant.gender,
+      'Country': participant.country,
+      'Leadership Experience': participant.leadershipExperience,
+      ITEM_ORDER: ITEM_ORDER.join('|'),
+      'Inventory Start Time': state.startedAtIso,
+      'Inventory End Time': endedAt.toISOString(),
+      'Total Duration Seconds': Math.round((Date.now() - state.startedAtMs)/1000),
+      'Straightline Warning Shown': state.warningShown ? 'Yes' : 'No',
+      'Straightline Warning Count': state.warningCount,
+      'Device Type': detectDevice(),
+      'User Agent': navigator.userAgent || '',
       answers:{},
-      latenciesMs:{}
+      latencies:{}
     };
     Object.keys(state.answers).forEach(id=>payload.answers[id] = state.answers[id]);
-    Object.keys(state.firstLatencyMs).forEach(id=>payload.latenciesMs[id] = state.firstLatencyMs[id]);
+    Object.keys(state.firstLatencyMs).forEach(id=>payload.latencies[id] = Math.round(state.firstLatencyMs[id]) / 1000);
     return payload;
   }
 
@@ -530,9 +536,12 @@ h1{font-size:clamp(1.8rem,4vw,2.45rem);line-height:1.12;font-weight:600;margin:0
     }
 
     try{
-      const body = new URLSearchParams();
-      body.set('payload', JSON.stringify(payload));
-      await fetch(SUBMIT_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'}, body:body.toString()});
+      await fetch(SUBMIT_URL, {
+        method:'POST',
+        mode:'no-cors',
+        headers:{'Content-Type':'text/plain;charset=UTF-8'},
+        body:JSON.stringify(payload)
+      });
       $('submitModal').hidden = true;
       inventoryShell.hidden = true;
       completion.hidden = false;
