@@ -313,8 +313,15 @@ h1{font-size:clamp(1.8rem,4vw,2.45rem);line-height:1.12;font-weight:600;margin:0
     answers:{},
     firstLatencyMs:{},
     shownAtMs:0,
-    startedAtMs:0,
-    startedAtIso:'',
+    overallStartedAtMs:0,
+    overallStartedAtPerf:0,
+    overallStartedAtIso:'',
+    inventoryStartedAtMs:0,
+    inventoryStartedAtPerf:0,
+    inventoryStartedAtIso:'',
+    inventoryEndedAtMs:0,
+    inventoryEndedAtPerf:0,
+    inventoryEndedAtIso:'',
     warningCount:0,
     warningShown:false,
     lastWarnedSignature:'',
@@ -487,11 +494,26 @@ h1{font-size:clamp(1.8rem,4vw,2.45rem);line-height:1.12;font-weight:600;margin:0
   }
 
   function buildPayload(){
-    const endedAt = new Date();
+    if(!state.inventoryEndedAtMs){
+      state.inventoryEndedAtMs = Date.now();
+      state.inventoryEndedAtPerf = performance.now();
+      state.inventoryEndedAtIso = new Date(state.inventoryEndedAtMs).toISOString();
+    }
+
     const participant = participantData();
+    const demographicDurationSeconds = state.inventoryStartedAtPerf && state.overallStartedAtPerf
+      ? Math.max(0, Math.round((state.inventoryStartedAtPerf - state.overallStartedAtPerf) / 10) / 100)
+      : '';
+    const inventoryDurationSeconds = state.inventoryEndedAtPerf && state.inventoryStartedAtPerf
+      ? Math.max(0, Math.round((state.inventoryEndedAtPerf - state.inventoryStartedAtPerf) / 10) / 100)
+      : '';
+    const totalDurationSeconds = state.inventoryEndedAtPerf && state.overallStartedAtPerf
+      ? Math.max(0, Math.round((state.inventoryEndedAtPerf - state.overallStartedAtPerf) / 10) / 100)
+      : '';
+
     const payload = {
       responseId: makeResponseId(),
-      timestamp: endedAt.toISOString(),
+      timestamp: state.inventoryEndedAtIso,
       'Participant Identifier': participant.identifier,
       'Age': participant.age,
       'Race': participant.race,
@@ -499,9 +521,12 @@ h1{font-size:clamp(1.8rem,4vw,2.45rem);line-height:1.12;font-weight:600;margin:0
       'Country': participant.country,
       'Leadership Experience': participant.leadershipExperience,
       ITEM_ORDER: ITEM_ORDER.join('|'),
-      'Inventory Start Time': state.startedAtIso,
-      'Inventory End Time': endedAt.toISOString(),
-      'Total Duration Seconds': Math.round((Date.now() - state.startedAtMs)/1000),
+      'Overall Start Time': state.overallStartedAtIso,
+      'Inventory Start Time': state.inventoryStartedAtIso,
+      'Inventory End Time': state.inventoryEndedAtIso,
+      'Demographic Duration Seconds': demographicDurationSeconds,
+      'Inventory Duration Seconds': inventoryDurationSeconds,
+      'Total Duration Seconds': totalDurationSeconds,
       'Straightline Warning Shown': state.warningShown ? 'Yes' : 'No',
       'Straightline Warning Count': state.warningCount,
       'Device Type': detectDevice(),
@@ -554,6 +579,11 @@ h1{font-size:clamp(1.8rem,4vw,2.45rem);line-height:1.12;font-weight:600;margin:0
   }
 
   $('continueToInfo').addEventListener('click', ()=>{
+    if(!state.overallStartedAtMs){
+      state.overallStartedAtMs = Date.now();
+      state.overallStartedAtPerf = performance.now();
+      state.overallStartedAtIso = new Date(state.overallStartedAtMs).toISOString();
+    }
     welcome.hidden = true;
     participantSection.hidden = false;
     window.scrollTo({top:0,behavior:'smooth'});
@@ -569,8 +599,9 @@ h1{font-size:clamp(1.8rem,4vw,2.45rem);line-height:1.12;font-weight:600;margin:0
     if(!participantValid()) return;
     participantSection.hidden = true;
     inventoryShell.hidden = false;
-    state.startedAtMs = Date.now();
-    state.startedAtIso = new Date(state.startedAtMs).toISOString();
+    state.inventoryStartedAtMs = Date.now();
+    state.inventoryStartedAtPerf = performance.now();
+    state.inventoryStartedAtIso = new Date(state.inventoryStartedAtMs).toISOString();
     renderScreen();
   });
 
