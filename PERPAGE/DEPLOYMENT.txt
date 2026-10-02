@@ -1,0 +1,6 @@
+Upload the css, assets, and latency folders together into the same destination folder (for example, PERPAGE/). Preserve this structure:
+PERPAGE/css/profile.css
+PERPAGE/assets/
+PERPAGE/latency/profile.html
+
+The existing endpoint and all inventory, scoring, timing, and profile code are unchanged. This package restores the shared stylesheet and profile images.
