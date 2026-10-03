@@ -47,11 +47,10 @@ function currentNode(){return sequence[cursor]||null;}
 function sequenceIndexForScoredStep(step){return sequence.findIndex(n=>n.classList.contains('item-step')&&Number(n.dataset.step)===Number(step));}
 function nodeAnswered(node){return !!node?.querySelector('input[type=radio]:checked');}
 function updateProgress(node){
-  const n=answeredCount();
-  progressCount.textContent=`${n} of ${totalItems} completed`;
-  progressBar.style.width=`${Math.round(n/totalItems*100)}%`;
-  if(node?.classList.contains('item-step'))progressLabel.textContent=`Statement ${node.dataset.step} of ${totalItems}`;
-  else if(node?.classList.contains('attention-check'))progressLabel.textContent='Reading check';
+  const n=sequence.filter(nodeAnswered).length;
+  progressCount.textContent=`${n} of ${sequence.length} completed`;
+  progressBar.style.width=`${Math.round(n/sequence.length*100)}%`;
+  if(node)progressLabel.textContent=`Statement ${sequence.indexOf(node)+1} of ${sequence.length}`;
   else progressLabel.textContent='Inventory complete';
 }
 function markDisplay(node){
@@ -77,7 +76,7 @@ function render(){
     backButton.disabled=false;
     nextButton.hidden=true;
     submitButton.hidden=false;
-    statusEl.textContent='All 81 statements and reading checks are complete.';
+    statusEl.textContent='All statements are complete.';
   }
   window.scrollTo({top:0,behavior:'instant'});
 }

@@ -1,6 +1,3 @@
-Upload the css, assets, and latency folders together into the same destination folder (for example, PERPAGE/). Preserve this structure:
-PERPAGE/css/profile.css
-PERPAGE/assets/
-PERPAGE/latency/profile.html
+Replace your deployed latency folder with the complete latency folder from this zip, including js and assets. The profile stylesheet is embedded in profile.html. No sibling css or assets folders are needed. Refresh the inventory before starting a new test.
 
-The existing endpoint and all inventory, scoring, timing, and profile code are unchanged. This package restores the shared stylesheet and profile images.
+The participant progress display counts 84 screens (81 scored statements plus 3 attention checks). Scoring, attention-check rules, saved research fields, endpoint, and latency measurement are unchanged.

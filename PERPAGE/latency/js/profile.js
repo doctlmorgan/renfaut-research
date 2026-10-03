@@ -134,10 +134,10 @@ function buildArchetypeIconCandidates(configurationName, configuredIcon){
     `${libraryKey}-icon.svg`
   ];
   const folders = [
-    '../assets/icons/archetypes/',
-    '../assets/archetypes/',
-    '../assets/icons/',
-    '../assets/'
+    'assets/icons/archetypes/',
+    'assets/archetypes/',
+    'assets/icons/',
+    'assets/'
   ];
   const official = names.map(name => `https://renfaut.org/assets/icons/archetypes/${name}`);
   return uniqueCandidates([
@@ -156,10 +156,10 @@ function buildPrincipleIconCandidates(code, configuredIcon){
     `${key}.svg`
   ];
   const folders = [
-    '../assets/icons/principles/',
-    '../assets/principles/',
-    '../assets/icons/',
-    '../assets/'
+    'assets/icons/principles/',
+    'assets/principles/',
+    'assets/icons/',
+    'assets/'
   ];
   const official = names.map(name => `https://renfaut.org/assets/icons/principles/${name}`);
   return uniqueCandidates([
@@ -171,7 +171,7 @@ function buildPrincipleIconCandidates(code, configuredIcon){
 
 function buildUiIconCandidates(name){
   const names = [`${name}-preview.png`,`${name}-brand.svg`,`${name}.svg`];
-  const folders = ['../assets/icons/ui/','../assets/ui/','../assets/icons/','../assets/'];
+  const folders = ['assets/icons/ui/','assets/ui/','assets/icons/','assets/'];
   return uniqueCandidates(folders.flatMap(folder => names.map(file => `${folder}${file}`))).map(absoluteAsset);
 }
 
@@ -185,7 +185,7 @@ function buildLogoCandidates(){
     'rise-index-logo-horizontal-preview.png',
     'rise-index-logo-black.svg'
   ];
-  const folders = ['../assets/logos/','../assets/'];
+  const folders = ['assets/logos/','assets/'];
   return uniqueCandidates(folders.flatMap(folder => names.map(name => `${folder}${name}`))).map(absoluteAsset);
 }
 
