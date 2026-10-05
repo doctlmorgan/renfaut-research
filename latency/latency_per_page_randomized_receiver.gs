@@ -21,6 +21,7 @@
  * - answer-order JSON
  * - raw timing-event JSON
  * - browser visibility-event JSON
+ * - start/checkpoint/final upserts for incomplete-administration tracking
  *************************************************************************/
 
 
@@ -35,7 +36,10 @@ const SHEET_NAME =
   'Latency Per-Page';
 
 const SCRIPT_VERSION =
-  'latency-per-page-randomized-v2';
+  'latency-per-page-randomized-v3-progress';
+
+const INCOMPLETE_AFTER_MINUTES =
+  120;
 
 
 /*************************************************************************
@@ -69,12 +73,22 @@ function doPost(e) {
         headers
       );
 
-    sheet.appendRow(row);
+    const writeResult =
+      upsertAdministration_(
+        sheet,
+        headers,
+        row,
+        data
+      );
 
     SpreadsheetApp.flush();
 
     return successResponse_(
-      data.participantIdentifier || ''
+      data.participantIdentifier || '',
+      data.administrationId || '',
+      data.submissionType || '',
+      data.administrationStatus || '',
+      writeResult.rowNumber
     );
 
   } catch (error) {
@@ -226,7 +240,10 @@ function getHeaders_() {
   headers.push('Response Timing JSON', 'Answer Order JSON', 'Visibility Events JSON', 'Presentation Order JSON',
     'Pattern Repetition Detected', 'Pattern Length', 'Pattern Repetitions',
     'Pattern Start Position', 'Pattern End Position', 'Maximum Pattern Repetitions',
-    'Pattern Warning Count');
+    'Pattern Warning Count',
+    'Administration ID', 'Administration Status', 'Items Completed',
+    'Last Answered Display Position', 'Last Checkpoint At', 'Submission Type',
+    'Incomplete Marked At');
   return headers;
 }
 
@@ -322,6 +339,89 @@ function ensureHeaders_(
   }
 }
 
+
+/*************************************************************************
+ * UPSERT ADMINISTRATION
+ *
+ * New administrations append one row. Start/checkpoint/final writes for
+ * the same Administration ID update that same row so partial attempts do
+ * not create duplicate rows.
+ *************************************************************************/
+
+function upsertAdministration_(sheet, headers, row, data) {
+  const adminId = String(data.administrationId || '').trim();
+
+  if (!adminId) {
+    sheet.appendRow(row);
+    return { rowNumber: sheet.getLastRow(), action: 'append_legacy' };
+  }
+
+  const adminColumn = headers.indexOf('Administration ID') + 1;
+  const submittedColumn = headers.indexOf('Submitted At') + 1;
+  const statusColumn = headers.indexOf('Administration Status') + 1;
+  const checkpointColumn = headers.indexOf('Last Checkpoint At') + 1;
+
+  let rowNumber = findAdministrationRow_(sheet, adminColumn, adminId);
+
+  if (!rowNumber) {
+    sheet.appendRow(row);
+    return { rowNumber: sheet.getLastRow(), action: 'append' };
+  }
+
+  const existing = sheet.getRange(rowNumber, 1, 1, headers.length).getValues()[0];
+  const existingStatus = String(existing[statusColumn - 1] || '').toLowerCase();
+  const incomingStatus = String(data.administrationStatus || '').toLowerCase();
+  const terminal = { completed: true, terminated: true, incomplete: true };
+
+  if (terminal[existingStatus] && !terminal[incomingStatus]) {
+    return { rowNumber: rowNumber, action: 'ignored_terminal' };
+  }
+
+  const existingCheckpoint = parseDateMs_(existing[checkpointColumn - 1]);
+  const incomingCheckpoint = parseDateMs_(data.checkpointTime || '');
+
+  if (
+    !terminal[incomingStatus] &&
+    existingCheckpoint &&
+    incomingCheckpoint &&
+    incomingCheckpoint < existingCheckpoint
+  ) {
+    return { rowNumber: rowNumber, action: 'ignored_stale' };
+  }
+
+  if (existing[submittedColumn - 1]) {
+    row[submittedColumn - 1] = existing[submittedColumn - 1];
+  }
+
+  if (existingStatus === 'incomplete' && incomingStatus === 'completed') {
+    const incompleteColumn = headers.indexOf('Incomplete Marked At') + 1;
+    if (incompleteColumn > 0) row[incompleteColumn - 1] = '';
+  }
+
+  sheet.getRange(rowNumber, 1, 1, headers.length).setValues([row]);
+  return { rowNumber: rowNumber, action: 'update' };
+}
+
+function findAdministrationRow_(sheet, adminColumn, adminId) {
+  if (sheet.getLastRow() < 2) return 0;
+
+  const finder = sheet
+    .getRange(2, adminColumn, sheet.getLastRow() - 1, 1)
+    .createTextFinder(adminId)
+    .matchEntireCell(true)
+    .findNext();
+
+  return finder ? finder.getRow() : 0;
+}
+
+function parseDateMs_(value) {
+  if (!value) return 0;
+  if (Object.prototype.toString.call(value) === '[object Date]') {
+    return value.getTime();
+  }
+  const parsed = new Date(value).getTime();
+  return isNaN(parsed) ? 0 : parsed;
+}
 
 /*************************************************************************
  * BUILD RESPONSE ROW
@@ -440,7 +540,28 @@ function buildRow_(
       valueOrBlank_(data.firstSpeedWarningItem),
 
     'Speed Warning Rule':
-      data.speedWarningRule || ''
+      data.speedWarningRule || '',
+
+    'Administration ID':
+      data.administrationId || '',
+
+    'Administration Status':
+      data.administrationStatus || '',
+
+    'Items Completed':
+      valueOrZero_(data.itemsCompleted),
+
+    'Last Answered Display Position':
+      valueOrZero_(data.lastAnsweredDisplayPosition),
+
+    'Last Checkpoint At':
+      data.checkpointTime || '',
+
+    'Submission Type':
+      data.submissionType || '',
+
+    'Incomplete Marked At':
+      data.incompleteMarkedAt || ''
   };
 
 
@@ -1028,7 +1149,11 @@ function safeJson_(
  *************************************************************************/
 
 function successResponse_(
-  participantIdentifier
+  participantIdentifier,
+  administrationId,
+  submissionType,
+  administrationStatus,
+  rowNumber
 ) {
 
   const data =
@@ -1041,6 +1166,18 @@ function successResponse_(
 
       participantIdentifier:
         participantIdentifier,
+
+      administrationId:
+        administrationId,
+
+      submissionType:
+        submissionType,
+
+      administrationStatus:
+        administrationStatus,
+
+      rowNumber:
+        rowNumber,
 
       scriptVersion:
         SCRIPT_VERSION
@@ -1132,6 +1269,75 @@ function errorResponse_(
     );
 }
 
+
+/*************************************************************************
+ * STALE IN-PROGRESS CLEANUP
+ *
+ * Run setupIncompleteCleanupTrigger() once from the Apps Script editor.
+ * It creates an hourly trigger. Any administration still marked
+ * "in_progress" after INCOMPLETE_AFTER_MINUTES with no newer checkpoint
+ * is relabeled "incomplete". This does not delete partial responses.
+ *************************************************************************/
+
+function markStaleInProgressIncomplete() {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(30000);
+
+  try {
+    const sheet = getLatencySheet_();
+    const headers = getHeaders_();
+    ensureHeaders_(sheet, headers);
+
+    if (sheet.getLastRow() < 2) return 0;
+
+    const statusIndex = headers.indexOf('Administration Status');
+    const checkpointIndex = headers.indexOf('Last Checkpoint At');
+    const incompleteIndex = headers.indexOf('Incomplete Marked At');
+    const qualityIndex = headers.indexOf('Quality Status');
+    const typeIndex = headers.indexOf('Submission Type');
+
+    const rows = sheet
+      .getRange(2, 1, sheet.getLastRow() - 1, headers.length)
+      .getValues();
+    const cutoff = Date.now() - (INCOMPLETE_AFTER_MINUTES * 60 * 1000);
+    const now = new Date();
+    const staleRows = [];
+
+    rows.forEach(function(row, index) {
+      if (String(row[statusIndex] || '').toLowerCase() !== 'in_progress') return;
+      const checkpointMs = parseDateMs_(row[checkpointIndex]);
+      if (!checkpointMs || checkpointMs > cutoff) return;
+      staleRows.push(index + 2);
+    });
+
+    staleRows.forEach(function(rowNumber) {
+      sheet.getRange(rowNumber, statusIndex + 1).setValue('incomplete');
+      sheet.getRange(rowNumber, incompleteIndex + 1).setValue(now);
+      sheet.getRange(rowNumber, qualityIndex + 1).setValue('incomplete');
+      sheet.getRange(rowNumber, typeIndex + 1).setValue('stale_cleanup');
+    });
+
+    if (staleRows.length > 0) SpreadsheetApp.flush();
+    return staleRows.length;
+  } finally {
+    try { lock.releaseLock(); } catch (e) {}
+  }
+}
+
+function setupIncompleteCleanupTrigger() {
+  const handler = 'markStaleInProgressIncomplete';
+
+  ScriptApp.getProjectTriggers().forEach(function(trigger) {
+    if (trigger.getHandlerFunction() === handler) {
+      ScriptApp.deleteTrigger(trigger);
+    }
+  });
+
+  ScriptApp.newTrigger(handler)
+    .timeBased()
+    .everyHours(1)
+    .create();
+}
 
 /*************************************************************************
  * MANUAL LATENCY TEST
@@ -1418,6 +1624,88 @@ function testLatencyWrite() {
   );
 }
 
+
+/*************************************************************************
+ * MANUAL PROGRESS / UPSERT TEST
+ *
+ * Creates one in-progress row and then updates that same row to 10 items.
+ * The test should increase the sheet by ONE row, not two.
+ *************************************************************************/
+
+function testProgressUpsert() {
+  const administrationId = 'PROGRESS-TEST-' + Date.now();
+  const start = new Date(Date.now() - 60000).toISOString();
+  const order = [];
+  const responses = {};
+  const itemLatencyMs = {};
+
+  for (let i = 1; i <= 81; i++) {
+    order.push('Q' + String(i).padStart(2, '0'));
+  }
+
+  const base = {
+    administrationId: administrationId,
+    administrationStatus: 'in_progress',
+    participantIdentifier: 'PROGRESS-TEST',
+    startTime: start,
+    endTime: '',
+    elapsedSeconds: 0,
+    age: '35-44',
+    country: 'United States',
+    englishReadingComfort: 'Very comfortable',
+    role: 'Test',
+    sector: 'Test',
+    leadershipYears: '1-5 years',
+    gender: [],
+    race: [],
+    email: '',
+    source: 'manual-test',
+    consent: true,
+    interfaceVersion: 'one-item-per-page-randomized-v3-progress',
+    speedWarningCount: 0,
+    speedWarningRule: 'calibration_only',
+    presentationOrder: order,
+    responses: responses,
+    latency: {
+      activeSeconds: 0,
+      inactiveSeconds: 0,
+      itemLatencyMs: itemLatencyMs,
+      timingEvents: [],
+      answerOrder: [],
+      visibilityEvents: []
+    }
+  };
+
+  const startPayload = Object.assign({}, base, {
+    submissionType: 'start',
+    checkpointTime: new Date(Date.now() - 50000).toISOString(),
+    itemsCompleted: 0,
+    lastAnsweredDisplayPosition: 0,
+    qualityStatus: 'in_progress'
+  });
+
+  doPost({ parameter: { payload: JSON.stringify(startPayload) } });
+
+  for (let i = 1; i <= 10; i++) {
+    const key = 'Q' + String(i).padStart(2, '0');
+    responses[key] = i % 2 ? 'Somewhat like me' : 'Very much like me';
+    itemLatencyMs[key] = 1500 + (i * 50);
+  }
+
+  const checkpointPayload = Object.assign({}, base, {
+    submissionType: 'checkpoint',
+    checkpointTime: new Date().toISOString(),
+    elapsedSeconds: 60,
+    itemsCompleted: 10,
+    lastAnsweredDisplayPosition: 10,
+    qualityStatus: 'in_progress'
+  });
+
+  doPost({ parameter: { payload: JSON.stringify(checkpointPayload) } });
+
+  Logger.log('Progress test Administration ID: ' + administrationId);
+  Logger.log('Expected: one row with Administration Status=in_progress and Items Completed=10.');
+}
 
 /*************************************************************************
  * MANUAL PERIODIC-DETECTOR TEST

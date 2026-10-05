@@ -15,6 +15,10 @@ const PATTERN_MIN_LENGTH=2;
 const PATTERN_MAX_LENGTH=6;
 const AUTO_ADVANCE_MS=260;
 const ORDER_STORAGE_KEY='riseRandomizedPresentationOrderV1';
+const CHECKPOINT_EVERY_SCORED_ITEMS=10;
+let administrationId='';
+let lastCheckpointItems=-1;
+let finalWriteStarted=false;
 let sequence=[];
 let presentationOrder=[];
 let displayPositionByStep=new Map();
@@ -61,6 +65,15 @@ const completeCard=document.getElementById('completeCard');
 const reviewBanner=document.getElementById('reviewBanner');
 
 function qKey(step){return 'Q'+String(step).padStart(2,'0');}
+function newAdministrationId(){
+  if(window.crypto?.randomUUID)return 'RISE-'+window.crypto.randomUUID();
+  const rand=Math.random().toString(36).slice(2,12);
+  return 'RISE-'+Date.now().toString(36)+'-'+rand;
+}
+function lastAnsweredDisplayPosition(){
+  const last=firstResponseSequence[firstResponseSequence.length-1];
+  return last?.displayPosition||0;
+}
 function secureShuffle(values){
   const a=values.slice();
   for(let i=a.length-1;i>0;i--){
@@ -269,6 +282,9 @@ function syncSelfDescribe(){
 startBtn.addEventListener('click',()=>{
   if(!validateParticipantInfo())return;
   syncSelfDescribe();
+  administrationId=newAdministrationId();
+  lastCheckpointItems=-1;
+  finalWriteStarted=false;
   startedAt=new Date();
   sessionStorage.setItem('riseStartedAt',startedAt.toISOString());
   window.RISE_LATENCY?.start?.(startedAt);
@@ -282,6 +298,7 @@ startBtn.addEventListener('click',()=>{
   afterPaint(()=>{
     window.RISE_LATENCY?.endEvent?.(token,{fromSequence:0,toSequence:1});
     markDisplay(currentNode());
+    saveBackgroundCheckpoint('start',true,true);
   });
 });
 backButton.addEventListener('click',()=>{if(!terminated&&cursor>0)transitionTo(cursor-1,'back');});
@@ -313,6 +330,7 @@ form.querySelectorAll('.item-step input[type=radio]').forEach(r=>r.addEventListe
         reviewEndSequenceIndex=sequenceIndexForScoredStep(step);
         runValue=null;runLength=0;
         document.getElementById('qualityWarningModal').classList.add('show');
+        saveBackgroundCheckpoint('quality_warning',true);
         return;
       }
       if(qualityWarningCount===1){
@@ -320,11 +338,13 @@ form.querySelectorAll('.item-step input[type=radio]').forEach(r=>r.addEventListe
         secondWarningItem=step;
         secondWarningType='long_string';
         secondWarningRunLength=runLength;
+        saveBackgroundCheckpoint('pre_termination',true);
         terminateInventory();
         return;
       }
     }
-    if(maybeWarnForPeriodicPattern())return;
+    if(maybeWarnForPeriodicPattern()){saveBackgroundCheckpoint('pattern_warning',true);return;}
+    if(firstResponseSequence.length%CHECKPOINT_EVERY_SCORED_ITEMS===0)saveBackgroundCheckpoint('checkpoint');
   }
   setTimeout(()=>advance('answer'),AUTO_ADVANCE_MS);
 }));
@@ -373,26 +393,33 @@ function saveResults(){
   sessionStorage.setItem('riseLatestResults',JSON.stringify(results));
   return results;
 }
-function buildPayload(statusOverride){
+function buildPayload(administrationStatus='in_progress',submissionType='checkpoint'){
   syncSelfDescribe();
-  const end=new Date();
-  const start=startedAt||new Date(sessionStorage.getItem('riseStartedAt')||end);
+  const checkpointAt=new Date();
+  const start=startedAt||new Date(sessionStorage.getItem('riseStartedAt')||checkpointAt);
+  const terminal=administrationStatus==='completed'||administrationStatus==='terminated';
   const responses={};
   itemSteps.forEach(x=>{const step=Number(x.dataset.step);responses[qKey(step)]=x.querySelector('input[type=radio]:checked')?.value||'';});
   attentionSteps.forEach((x,i)=>responses['ATTN'+String(i+1).padStart(2,'0')]=x.querySelector('input[type=radio]:checked')?.value||'');
   const p=participantData();
-  const latency=window.RISE_LATENCY?.snapshot?.()||{};
+  const rawLatency=window.RISE_LATENCY?.snapshot?.()||{};
+  const latency={...rawLatency};
+  if(!terminal)latency.timingEvents=[];
+  let qualityStatus='in_progress';
+  if(administrationStatus==='terminated')qualityStatus='terminated';
+  else if(administrationStatus==='completed')qualityStatus=qualityWarningCount>0?'completed_after_warning':(patternWarningCount>0?'completed_after_pattern_warning':'clean');
   return{
-    participantIdentifier:p.identifier,startTime:start.toISOString(),endTime:end.toISOString(),elapsedSeconds:Math.max(0,Math.round((end-start)/1000)),
+    administrationId,administrationStatus,submissionType,checkpointTime:checkpointAt.toISOString(),
+    itemsCompleted:answeredCount(),lastAnsweredDisplayPosition:lastAnsweredDisplayPosition(),
+    participantIdentifier:p.identifier,startTime:start.toISOString(),endTime:terminal?checkpointAt.toISOString():'',elapsedSeconds:Math.max(0,Math.round((checkpointAt-start)/1000)),
     activeSeconds:latency.activeSeconds,inactiveSeconds:latency.inactiveSeconds,age:p.age,country:p.country,englishReadingComfort:p.englishReadingComfort,
     role:p.role,sector:p.sector,leadershipYears:p.leadershipYears,gender:p.gender,race:p.race,email:p.email,source,consent:true,
     attentionCheck1:attentionResult(0),attentionCheck2:attentionResult(1),attentionCheck3:attentionResult(2),
     qualityWarningCount,firstWarningItem,firstWarningType,firstWarningRunLength,reviewChanges:changedAfterWarning.size,
     secondWarningItem,secondWarningType,secondWarningRunLength,
     patternRepetitionDetected,patternLength,patternRepetitions,patternStartPosition,patternEndPosition,maximumPatternRepetitions,patternWarningCount,
-    qualityStatus:statusOverride||(qualityWarningCount>0?'completed_after_warning':(patternWarningCount>0?'completed_after_pattern_warning':'clean')),
-    terminationReason:statusOverride==='terminated'?'repeated_unusual_pattern':'',
-    interfaceVersion:cfg.interfaceVersion||'one-item-per-page-randomized-v2',speedWarningCount:0,firstSpeedWarningItem:'',speedWarningRule:cfg.speedWarningRule||'calibration_only',
+    qualityStatus,terminationReason:administrationStatus==='terminated'?'repeated_unusual_pattern':'',
+    interfaceVersion:cfg.interfaceVersion||'one-item-per-page-randomized-v3-progress',speedWarningCount:0,firstSpeedWarningItem:'',speedWarningRule:cfg.speedWarningRule||'calibration_only',
     presentationOrder:presentationOrder.slice(),responses,latency
   };
 }
@@ -402,22 +429,37 @@ function postPayloadDirectly(payload){
   const f=document.createElement('form');f.method='POST';f.action=ep;f.target='submission_iframe';f.style.display='none';
   const i=document.createElement('input');i.type='hidden';i.name='payload';i.value=JSON.stringify(payload);f.appendChild(i);document.body.appendChild(f);f.submit();setTimeout(()=>f.remove(),1000);
 }
+function postPayloadBackground(payload,keepalive=false){
+  const ep=endpoint();
+  if(!ep)return;
+  const body=new URLSearchParams();
+  body.set('payload',JSON.stringify(payload));
+  fetch(ep,{method:'POST',mode:'no-cors',credentials:'omit',keepalive,body}).catch(err=>console.warn('R.I.S.E. checkpoint could not be sent.',err));
+}
+function saveBackgroundCheckpoint(reason='checkpoint',force=false,keepalive=false){
+  if(!startedAt||terminated||finalWriteStarted||!administrationId)return;
+  const completed=answeredCount();
+  if(!force&&completed===lastCheckpointItems)return;
+  if(!force&&reason==='checkpoint'&&completed%CHECKPOINT_EVERY_SCORED_ITEMS!==0)return;
+  lastCheckpointItems=completed;
+  try{postPayloadBackground(buildPayload('in_progress',reason),keepalive);}catch(err){console.warn('R.I.S.E. checkpoint preparation failed.',err);}
+}
 let submissionTimer=null;
 form.addEventListener('submit',e=>{
   e.preventDefault();
   if(terminated||submitting)return;
   if(answeredCount()!==81||attentionSteps.some(x=>!x.querySelector('input[type=radio]:checked'))){alert('Please complete every statement and reading check before submitting.');return;}
   try{
-    saveResults();submitting=true;submitButton.disabled=true;submitButton.textContent='Saving responses…';postPayloadDirectly(buildPayload());
+    saveResults();submitting=true;finalWriteStarted=true;submitButton.disabled=true;submitButton.textContent='Saving responses…';postPayloadDirectly(buildPayload('completed','final'));
     clearTimeout(submissionTimer);
-    submissionTimer=setTimeout(()=>{if(!submitting)return;submitting=false;submitButton.disabled=false;submitButton.textContent='Submit Inventory';alert('Your responses have not been confirmed as saved. Please check your connection and submit again.');},30000);
-  }catch(err){submitting=false;submitButton.disabled=false;submitButton.textContent='Submit Inventory';alert(err.message||'Your responses could not be prepared for submission.');console.error(err);}
+    submissionTimer=setTimeout(()=>{if(!submitting)return;submitting=false;finalWriteStarted=false;submitButton.disabled=false;submitButton.textContent='Submit Inventory';alert('Your responses have not been confirmed as saved. Please check your connection and submit again.');},30000);
+  }catch(err){submitting=false;finalWriteStarted=false;submitButton.disabled=false;submitButton.textContent='Submit Inventory';alert(err.message||'Your responses could not be prepared for submission.');console.error(err);}
 });
 function terminateInventory(){
   if(terminated)return;
   terminated=true;document.body.classList.add('inventory-terminated');
   const m=document.getElementById('qualityTerminationModal');if(m)m.classList.add('show');
-  try{terminationSubmitting=true;postPayloadDirectly(buildPayload('terminated'));}catch(err){terminationSubmitting=false;console.error(err);}
+  try{terminationSubmitting=true;finalWriteStarted=true;postPayloadDirectly(buildPayload('terminated','termination'));}catch(err){terminationSubmitting=false;console.error(err);}
 }
 function showSubmissionSuccess(){
   if(!submitting)return;
@@ -434,8 +476,15 @@ window.addEventListener('message',event=>{
     const id=document.getElementById('participantIdentifier').value.trim();if(event.data.participantIdentifier&&event.data.participantIdentifier!==id)return;
     if(terminationSubmitting){terminationSubmitting=false;return;}showSubmissionSuccess();
   }else if(event.data.type==='rise-latency-write-error'){
-    clearTimeout(submissionTimer);terminationSubmitting=false;submitting=false;submitButton.disabled=false;submitButton.textContent='Submit Inventory';alert('Your responses could not be saved. Please try again.');console.error(event.data.error||'Apps Script write failed');
+    clearTimeout(submissionTimer);terminationSubmitting=false;submitting=false;finalWriteStarted=false;submitButton.disabled=false;submitButton.textContent='Submit Inventory';alert('Your responses could not be saved. Please try again.');console.error(event.data.error||'Apps Script write failed');
   }
+});
+
+window.addEventListener('pagehide',()=>{
+  saveBackgroundCheckpoint('pagehide',true,true);
+});
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden)saveBackgroundCheckpoint('visibility_hidden',true,true);
 });
 ['participantSector','genderSelfDescribeCheck','raceOtherCheck'].forEach(id=>document.getElementById(id)?.addEventListener('change',syncSelfDescribe));
 syncSelfDescribe();

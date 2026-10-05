@@ -1,6 +1,6 @@
 window.RISE_PER_PAGE_CONFIG = {
-  endpoint: "https://script.google.com/macros/s/AKfycbzfuWOA7zbg9b8fO5XtxAcguGCh2rzv72rQnPQWeJks2CKekQ2f8t3qYRBeZSdqvuhF/exec",
-  interfaceVersion: "one-item-per-page-randomized-v2",
+  endpoint: "https://script.google.com/macros/s/AKfycbz7tqhGNAURZoUj7tuS-SkNzfgGOTGpH1VUHKiAX-7o0FokiP0HXczu9z6CF-YGGA66sQ/exec",
+  interfaceVersion: "one-item-per-page-randomized-v3-progress",
   speedWarningEnabled: false,
   speedWarningRule: "calibration_only"
 };
