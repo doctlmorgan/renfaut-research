@@ -22,7 +22,7 @@
 <header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><img alt="Renfaut™" src="https://renfaut.org/assets/logos/renfaut-wordmark.png"></a><div class="research-label">R.I.S.E. Index™ Research</div></div></header>
 <main>
 <section class="hero"><div class="container"><p class="eyebrow">R.I.S.E. Index™ Research Inventory</p><h1>Before you begin</h1><p class="lead">Please respond according to <strong>how you typically lead</strong>, not how you hope to lead or how you believe you should respond. There are no right or wrong answers.</p></div></section>
-<form action="https://script.google.com/macros/s/AKfycbzfuWOA7zbg9b8fO5XtxAcguGCh2rzv72rQnPQWeJks2CKekQ2f8t3qYRBeZSdqvuhF/exec" id="riseForm" method="POST" target="submission_iframe"><input id="researchPayload" name="payload" type="hidden">
+<form action="https://script.google.com/macros/s/AKfycbwmXwNRoHURWvAhz1qY_156cZIEI4nbbUhuFemExArFTptSRKlfPgPgwrJjJzooKXitog/exec" id="riseForm" method="POST" target="submission_iframe"><input id="researchPayload" name="payload" type="hidden">
 <section class="preflight"><div class="container">
 <div class="intro-card"><h2>How to complete the inventory</h2><div class="reward-note"><strong>Complete once. Receive credit on both platforms.</strong><span>After you submit the inventory, you will receive a SurveySwap completion code for Karma and a SurveyCircle Survey Code for points. Save both codes before leaving your results page.</span></div><ul class="instruction-list"><li>Think about your leadership across the situations you encounter most often rather than one isolated event.</li><li>Choose the response that best reflects what is consistently true of your current practice.</li><li>Trust your first reaction and avoid overthinking individual statements.</li><li>Select one response for every statement.</li><li>Allow approximately <strong>10–15 minutes</strong> and complete the inventory in one sitting when possible.</li><li>This inventory is administered in English. Please complete it independently and answer based on your own understanding of each statement.</li></ul></div>
 <div class="participant-card" id="participantInformation"><h2>Participant information</h2><p>Demographic information supports R.I.S.E. Index™ research and does not change your Leadership Profile. Create a Participant Identifier that only you know and save it if you may want to request your results later.</p><div class="demo-grid">
@@ -50,8 +50,8 @@
 <input disabled="" id="contactConsentHidden" name="entry.1084504372" type="hidden" value="I consent to be contacted for research and to receive my results"/>
 <div class="field full" id="contactEmailField"><label class="title" for="participantEmail">Email <span class="optional">Optional</span></label><input autocomplete="email" id="participantEmail" name="entry.912272113" placeholder="name@example.com" type="email"/><small>Enter an email only if you would like Renfaut to be able to contact you for research follow-up or help retrieve your results. Leave this blank if you do not wish to be contacted.</small></div>
 </div>
-<div class="consent-box"><h2>Consent</h2><p>Your responses will generate your individual Leadership Profile. Your responses and demographic information may also be used in research to evaluate and improve the reliability and validity of the R.I.S.E. Index™. Information about how you interact with the inventory may also be collected for research on the instrument. Demographic information does not affect your individual results.</p><p>By selecting <strong>Start Inventory</strong>, you confirm that you understand how your responses may be used and voluntarily agree to participate.</p></div>
-<div class="start-row"><p class="start-note">The inventory begins when you select Start Inventory. Please complete it in one sitting when possible.</p><button class="primary" id="startInventory" type="button">Start Inventory</button></div></div>
+<div class="consent-box"><h2>Consent</h2><p>Your responses will generate your individual Leadership Profile. Your responses and demographic information may also be used in research to evaluate and improve the reliability and validity of the R.I.S.E. Index™. Demographic information does not affect your individual results.</p><p>By selecting <strong>Start Inventory</strong>, you confirm that you understand how your responses may be used and voluntarily agree to participate.</p></div>
+<div class="start-row"><p class="start-note">The research timer begins when you select Start Inventory. Each statement is shown one at a time so response time can be measured from display to your first answer.</p><button class="primary" id="startInventory" type="button">Start Inventory</button></div></div>
 </div></section>
 <section class="inventory-shell" id="inventoryShell" hidden><div class="container"><div class="inventory-card">
 <div class="inventory-top"><div class="progress-meta"><span id="progressLabel">Statement 1 of 81</span><span id="progressCount">0 of 81 completed</span></div><div class="progress-track"><div id="progressBar" class="progress-bar"></div></div></div>
@@ -234,14 +234,6 @@
 <div class="quality-actions"><button class="primary" id="reviewResponsesButton" type="button">Review recent responses</button></div>
 </div>
 </div>
-<div aria-labelledby="periodicWarningTitle" aria-modal="true" class="quality-modal" id="periodicWarningModal" role="dialog">
-<div class="quality-card">
-<h2 id="periodicWarningTitle">Please check your responses</h2>
-<p>Your recent responses show a repeating pattern. This may accurately reflect your experience, but please take a moment to review your recent responses and make sure each answer reflects the individual statement.</p>
-<p class="quality-note">You may change any answers that do not reflect your intended response. This pattern warning does not automatically end the inventory.</p>
-<div class="quality-actions"><button class="primary" id="periodicReviewResponsesButton" type="button">Review recent responses</button></div>
-</div>
-</div>
 <div aria-labelledby="qualityTerminationTitle" aria-modal="true" class="quality-modal" id="qualityTerminationModal" role="dialog">
 <div class="quality-card">
 <h2 id="qualityTerminationTitle">This inventory has ended</h2>
@@ -250,5 +242,5 @@
 <p class="quality-note">The response-quality event has been recorded for review.</p>
 </div>
 </div>
-<script src="js/config.js"></script><script src="js/rise-spec.js"></script><script src="js/scoring-engine.js"></script><script src="js/latency.js"></script><script src="js/per-page-inventory.js?v=20261005-randomized-v2-pattern"></script>
+<script src="js/config.js"></script><script src="js/rise-spec.js"></script><script src="js/scoring-engine.js"></script><script src="js/latency.js"></script><script src="js/per-page-inventory.js?v=20261002-display-fix"></script>
 </body></html>

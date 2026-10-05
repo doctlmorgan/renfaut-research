@@ -23,7 +23,7 @@ function round(v,d=0){const p=10**d;return Math.round((v+Number.EPSILON)*p)/p;}
 function mean(rows){const w=rows.reduce((s,r)=>s+(r.weight||1),0);return w?rows.reduce((s,r)=>s+r.value*(r.weight||1),0)/w:null;}
 function band(score,spec){return spec.developmentBands.find(b=>score>=b.min&&score<=b.max)||spec.developmentBands[spec.developmentBands.length-1];}
 function hl(code,score,spec){return score>spec.highLowThresholds[code]?'H':'L';}
-function collectResponses(itemSteps,inventory){const answers={}; itemSteps.forEach((step,i)=>{const checked=step.querySelector('input[type=radio]:checked'); const canonical=Number(step.dataset.step||i+1); if(checked) answers[canonical]=RESPONSE_VALUES[checked.value];});
+function collectResponses(itemSteps,inventory){const answers={}; itemSteps.forEach((step,i)=>{const checked=step.querySelector('input[type=radio]:checked'); if(checked) answers[i+1]=RESPONSE_VALUES[checked.value];});
  return inventory.items.map(item=>{const raw=answers[item.displayOrder]; if(!raw) throw new Error('Missing scored response at statement '+item.displayOrder); return {...item,rawValue:raw,scoredValue:item.reverseScored?5-raw:raw};});}
 function compute(itemSteps,participant){const inventory=global.RISE_INVENTORY_SPEC,spec=global.RISE_SCORING_SPEC; if(!inventory||!spec) throw new Error('R.I.S.E. scoring specifications did not load.');
  const scored=collectResponses(itemSteps,inventory); const facets={};

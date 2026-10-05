@@ -6,18 +6,11 @@ const shell=document.getElementById('inventoryShell');
 const startBtn=document.getElementById('startInventory');
 const itemSteps=[...document.querySelectorAll('.item-step')];
 const attentionSteps=[...document.querySelectorAll('.attention-check')];
+const sequence=[...document.querySelectorAll('#questionSequence > article.item-step, #questionSequence > article.attention-check')];
 const totalItems=itemSteps.length;
 const ATTENTION_EXPECTED=['Very much like me','Somewhat like me','Not much like me'];
-const ATTENTION_AFTER_SCORED_COUNTS=[15,31,45];
 const LONGSTRING_THRESHOLD=10;
-const PATTERN_MIN_ITEMS=12;
-const PATTERN_MIN_LENGTH=2;
-const PATTERN_MAX_LENGTH=6;
 const AUTO_ADVANCE_MS=260;
-const ORDER_STORAGE_KEY='riseRandomizedPresentationOrderV1';
-let sequence=[];
-let presentationOrder=[];
-let displayPositionByStep=new Map();
 let cursor=0;
 let startedAt=null;
 let submitting=false;
@@ -30,23 +23,12 @@ let firstWarningRunLength='';
 let secondWarningItem='';
 let secondWarningType='';
 let secondWarningRunLength='';
-let patternWarningCount=0;
-let patternRepetitionDetected=false;
-let patternLength='';
-let patternRepetitions='';
-let patternStartPosition='';
-let patternEndPosition='';
-let maximumPatternRepetitions=0;
-let lastWarnedPatternEpisode=null;
-let periodicWarningToken=null;
 let runValue=null;
 let runLength=0;
 let reviewStartSequenceIndex=null;
 let reviewEndSequenceIndex=null;
 let reviewMode=false;
 const changedAfterWarning=new Set();
-const firstAnswerHistory=[];
-const firstResponseSequence=[];
 const source=(new URLSearchParams(location.search).get('source')||sessionStorage.getItem('riseSource')||'surveyswap').toLowerCase();
 sessionStorage.setItem('riseSource',source);
 
@@ -60,136 +42,21 @@ const statusEl=document.getElementById('pageStatus');
 const completeCard=document.getElementById('completeCard');
 const reviewBanner=document.getElementById('reviewBanner');
 
-function qKey(step){return 'Q'+String(step).padStart(2,'0');}
-function secureShuffle(values){
-  const a=values.slice();
-  for(let i=a.length-1;i>0;i--){
-    let j;
-    if(window.crypto?.getRandomValues){const x=new Uint32Array(1);window.crypto.getRandomValues(x);j=x[0]%(i+1);}else{j=Math.floor(Math.random()*(i+1));}
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-  return a;
-}
-function arraysEqual(a,b){
-  return a.length===b.length&&a.every((value,index)=>value===b[index]);
-}
-function canonicalPatternSignature(pattern){
-  const rotations=[];
-  for(let i=0;i<pattern.length;i++)rotations.push(pattern.slice(i).concat(pattern.slice(0,i)).join('\u241f'));
-  rotations.sort();
-  return pattern.length+':'+rotations[0];
-}
-function detectPeriodicSuffix(history){
-  if(history.length<PATTERN_MIN_ITEMS)return null;
-  const values=history.map(x=>x.value);
-  for(let period=PATTERN_MIN_LENGTH;period<=PATTERN_MAX_LENGTH;period++){
-    if(values.length<period*2)continue;
-    const motif=values.slice(values.length-period);
-    if(new Set(motif).size<2)continue; // Straightlining is handled separately.
-    let repetitions=1;
-    let blockEnd=values.length-period;
-    while(blockEnd-period>=0){
-      const block=values.slice(blockEnd-period,blockEnd);
-      if(!arraysEqual(block,motif))break;
-      repetitions++;
-      blockEnd-=period;
-    }
-    const repeatedItems=repetitions*period;
-    if(repeatedItems>=PATTERN_MIN_ITEMS){
-      const startHistoryIndex=values.length-repeatedItems;
-      const startRecord=history[startHistoryIndex];
-      const endRecord=history[history.length-1];
-      return{
-        period,repetitions,repeatedItems,startHistoryIndex,
-        startPosition:startRecord?.displayPosition||startHistoryIndex+1,
-        endPosition:endRecord?.displayPosition||history.length,
-        signature:canonicalPatternSignature(motif)
-      };
-    }
-  }
-  return null;
-}
-function maybeWarnForPeriodicPattern(){
-  const candidate=detectPeriodicSuffix(firstResponseSequence);
-  if(!candidate)return false;
-  patternRepetitionDetected=true;
-  maximumPatternRepetitions=Math.max(maximumPatternRepetitions,candidate.repetitions);
-  const continuation=lastWarnedPatternEpisode&&
-    lastWarnedPatternEpisode.signature===candidate.signature&&
-    candidate.startPosition<=lastWarnedPatternEpisode.endPosition+1;
-  if(continuation){
-    lastWarnedPatternEpisode.endPosition=Math.max(lastWarnedPatternEpisode.endPosition,candidate.endPosition);
-    lastWarnedPatternEpisode.repetitions=Math.max(lastWarnedPatternEpisode.repetitions,candidate.repetitions);
-    return false;
-  }
-  patternWarningCount++;
-  if(patternLength===''){
-    patternLength=candidate.period;
-    patternRepetitions=candidate.repetitions;
-    patternStartPosition=candidate.startPosition;
-    patternEndPosition=candidate.endPosition;
-  }
-  lastWarnedPatternEpisode={
-    signature:candidate.signature,
-    startPosition:candidate.startPosition,
-    endPosition:candidate.endPosition,
-    repetitions:candidate.repetitions
-  };
-  const startStep=firstResponseSequence[candidate.startHistoryIndex]?.step;
-  const endStep=firstResponseSequence[firstResponseSequence.length-1]?.step;
-  reviewStartSequenceIndex=sequenceIndexForScoredStep(startStep);
-  reviewEndSequenceIndex=sequenceIndexForScoredStep(endStep);
-  periodicWarningToken=window.RISE_LATENCY?.beginEvent?.('periodic_pattern_warning',{
-    patternLength:candidate.period,
-    repetitions:candidate.repetitions,
-    startPosition:candidate.startPosition,
-    endPosition:candidate.endPosition
-  },true);
-  document.getElementById('periodicWarningModal')?.classList.add('show');
-  return true;
-}
-function validStoredOrder(order){
-  if(!Array.isArray(order)||order.length!==totalItems)return false;
-  const expected=new Set(itemSteps.map(n=>qKey(Number(n.dataset.step))));
-  return order.every(k=>expected.has(k))&&new Set(order).size===totalItems;
-}
-function initializeRandomizedSequence(){
-  let stored=null;
-  try{stored=JSON.parse(sessionStorage.getItem(ORDER_STORAGE_KEY)||'null');}catch(e){}
-  presentationOrder=validStoredOrder(stored)?stored:secureShuffle(itemSteps.map(n=>qKey(Number(n.dataset.step))));
-  sessionStorage.setItem(ORDER_STORAGE_KEY,JSON.stringify(presentationOrder));
-  const byKey=new Map(itemSteps.map(n=>[qKey(Number(n.dataset.step)),n]));
-  const randomizedItems=presentationOrder.map(k=>byKey.get(k));
-  displayPositionByStep=new Map(randomizedItems.map((node,i)=>[Number(node.dataset.step),i+1]));
-  sequence=[];
-  randomizedItems.forEach((node,i)=>{
-    sequence.push(node);
-    const completed=i+1;
-    const checkIndex=ATTENTION_AFTER_SCORED_COUNTS.indexOf(completed);
-    if(checkIndex>=0&&attentionSteps[checkIndex])sequence.push(attentionSteps[checkIndex]);
-  });
-  // Defensive fallback if the attention configuration changes.
-  attentionSteps.forEach(node=>{if(!sequence.includes(node))sequence.push(node);});
-}
-initializeRandomizedSequence();
-
 function answeredCount(){return itemSteps.filter(x=>x.querySelector('input[type=radio]:checked')).length;}
 function currentNode(){return sequence[cursor]||null;}
 function sequenceIndexForScoredStep(step){return sequence.findIndex(n=>n.classList.contains('item-step')&&Number(n.dataset.step)===Number(step));}
 function nodeAnswered(node){return !!node?.querySelector('input[type=radio]:checked');}
-function displayPositionForNode(node){return node?.classList.contains('item-step')?(displayPositionByStep.get(Number(node.dataset.step))||null):null;}
 function updateProgress(node){
-  const n=answeredCount();
-  progressCount.textContent=`${n} of ${totalItems} completed`;
-  progressBar.style.width=`${Math.round(n/totalItems*100)}%`;
-  if(node?.classList.contains('item-step'))progressLabel.textContent=`Statement ${displayPositionForNode(node)} of ${totalItems}`;
-  else if(node?.classList.contains('attention-check'))progressLabel.textContent='Reading check';
+  const n=sequence.filter(nodeAnswered).length;
+  progressCount.textContent=`${n} of ${sequence.length} completed`;
+  progressBar.style.width=`${Math.round(n/sequence.length*100)}%`;
+  if(node)progressLabel.textContent=`Statement ${sequence.indexOf(node)+1} of ${sequence.length}`;
   else progressLabel.textContent='Inventory complete';
 }
 function markDisplay(node){
   if(!node)return;
-  if(node.classList.contains('item-step'))window.RISE_LATENCY?.markScoredItemShown?.(Number(node.dataset.step),displayPositionForNode(node));
-  else window.RISE_LATENCY?.markAttentionShown?.(attentionSteps.indexOf(node)+1,cursor+1);
+  if(node.classList.contains('item-step'))window.RISE_LATENCY?.markScoredItemShown?.(Number(node.dataset.step));
+  else window.RISE_LATENCY?.markAttentionShown?.(attentionSteps.indexOf(node)+1);
 }
 function render(){
   sequence.forEach(n=>n.classList.remove('current'));
@@ -209,7 +76,7 @@ function render(){
     backButton.disabled=false;
     nextButton.hidden=true;
     submitButton.hidden=false;
-    statusEl.textContent='All 81 statements and reading checks are complete.';
+    statusEl.textContent='All statements are complete.';
   }
   window.scrollTo({top:0,behavior:'instant'});
 }
@@ -272,7 +139,6 @@ startBtn.addEventListener('click',()=>{
   startedAt=new Date();
   sessionStorage.setItem('riseStartedAt',startedAt.toISOString());
   window.RISE_LATENCY?.start?.(startedAt);
-  window.RISE_LATENCY?.setPresentationOrder?.(presentationOrder);
   document.querySelector('.preflight').hidden=true;
   document.querySelector('.hero').hidden=true;
   shell.hidden=false;
@@ -291,16 +157,13 @@ form.querySelectorAll('.item-step input[type=radio]').forEach(r=>r.addEventListe
   if(terminated)return;
   const card=r.closest('.item-step');
   const step=Number(card.dataset.step);
-  const displayPosition=displayPositionByStep.get(step)||null;
   const previous=card.dataset.lastValue||'';
-  if((qualityWarningCount>=1||patternWarningCount>=1)&&previous&&previous!==r.value)changedAfterWarning.add(step);
+  if(qualityWarningCount>=1&&previous&&previous!==r.value)changedAfterWarning.add(step);
   card.dataset.lastValue=r.value;
-  window.RISE_LATENCY?.recordScoredResponse?.(step,r.value,displayPosition);
+  window.RISE_LATENCY?.recordScoredResponse?.(step,r.value);
 
   if(!card.dataset.firstAnswered){
     card.dataset.firstAnswered='true';
-    firstAnswerHistory.push(step);
-    firstResponseSequence.push({step,value:r.value,displayPosition});
     if(r.value===runValue)runLength+=1;else{runValue=r.value;runLength=1;}
     if(runLength>=LONGSTRING_THRESHOLD){
       if(qualityWarningCount===0){
@@ -308,7 +171,7 @@ form.querySelectorAll('.item-step input[type=radio]').forEach(r=>r.addEventListe
         firstWarningItem=step;
         firstWarningType='long_string';
         firstWarningRunLength=runLength;
-        const startStep=firstAnswerHistory[firstAnswerHistory.length-runLength];
+        const startStep=Math.max(1,step-runLength+1);
         reviewStartSequenceIndex=sequenceIndexForScoredStep(startStep);
         reviewEndSequenceIndex=sequenceIndexForScoredStep(step);
         runValue=null;runLength=0;
@@ -324,14 +187,13 @@ form.querySelectorAll('.item-step input[type=radio]').forEach(r=>r.addEventListe
         return;
       }
     }
-    if(maybeWarnForPeriodicPattern())return;
   }
   setTimeout(()=>advance('answer'),AUTO_ADVANCE_MS);
 }));
 
 attentionSteps.forEach((card,i)=>card.querySelectorAll('input[type=radio]').forEach(r=>r.addEventListener('change',()=>{
   if(terminated)return;
-  window.RISE_LATENCY?.recordAttentionResponse?.(i+1,r.value,cursor+1);
+  window.RISE_LATENCY?.recordAttentionResponse?.(i+1,r.value);
   setTimeout(()=>advance('attention_answer'),AUTO_ADVANCE_MS);
 })));
 
@@ -340,16 +202,6 @@ if(reviewBtn)reviewBtn.addEventListener('click',()=>{
   document.getElementById('qualityWarningModal').classList.remove('show');
   reviewMode=true;
   transitionTo(Math.max(0,reviewStartSequenceIndex||0),'quality_review');
-});
-const periodicReviewBtn=document.getElementById('periodicReviewResponsesButton');
-if(periodicReviewBtn)periodicReviewBtn.addEventListener('click',()=>{
-  document.getElementById('periodicWarningModal')?.classList.remove('show');
-  if(periodicWarningToken){
-    window.RISE_LATENCY?.endEvent?.(periodicWarningToken,{action:'review'});
-    periodicWarningToken=null;
-  }
-  reviewMode=true;
-  transitionTo(Math.max(0,reviewStartSequenceIndex||0),'periodic_pattern_review');
 });
 function attentionResult(i){const v=attentionSteps[i]?.querySelector('input[type=radio]:checked')?.value||'';return v?(v===ATTENTION_EXPECTED[i]?'pass':'fail'):'';}
 function participantData(){
@@ -378,7 +230,7 @@ function buildPayload(statusOverride){
   const end=new Date();
   const start=startedAt||new Date(sessionStorage.getItem('riseStartedAt')||end);
   const responses={};
-  itemSteps.forEach(x=>{const step=Number(x.dataset.step);responses[qKey(step)]=x.querySelector('input[type=radio]:checked')?.value||'';});
+  itemSteps.forEach((x,i)=>responses['Q'+String(i+1).padStart(2,'0')]=x.querySelector('input[type=radio]:checked')?.value||'');
   attentionSteps.forEach((x,i)=>responses['ATTN'+String(i+1).padStart(2,'0')]=x.querySelector('input[type=radio]:checked')?.value||'');
   const p=participantData();
   const latency=window.RISE_LATENCY?.snapshot?.()||{};
@@ -389,11 +241,10 @@ function buildPayload(statusOverride){
     attentionCheck1:attentionResult(0),attentionCheck2:attentionResult(1),attentionCheck3:attentionResult(2),
     qualityWarningCount,firstWarningItem,firstWarningType,firstWarningRunLength,reviewChanges:changedAfterWarning.size,
     secondWarningItem,secondWarningType,secondWarningRunLength,
-    patternRepetitionDetected,patternLength,patternRepetitions,patternStartPosition,patternEndPosition,maximumPatternRepetitions,patternWarningCount,
-    qualityStatus:statusOverride||(qualityWarningCount>0?'completed_after_warning':(patternWarningCount>0?'completed_after_pattern_warning':'clean')),
+    qualityStatus:statusOverride||(qualityWarningCount===0?'clean':'completed_after_warning'),
     terminationReason:statusOverride==='terminated'?'repeated_unusual_pattern':'',
-    interfaceVersion:cfg.interfaceVersion||'one-item-per-page-randomized-v2',speedWarningCount:0,firstSpeedWarningItem:'',speedWarningRule:cfg.speedWarningRule||'calibration_only',
-    presentationOrder:presentationOrder.slice(),responses,latency
+    interfaceVersion:cfg.interfaceVersion||'one-item-per-page-v1',speedWarningCount:0,firstSpeedWarningItem:'',speedWarningRule:cfg.speedWarningRule||'calibration_only',
+    responses,latency
   };
 }
 function endpoint(){return cfg.endpoint||'';}
@@ -423,7 +274,7 @@ function showSubmissionSuccess(){
   if(!submitting)return;
   clearTimeout(submissionTimer);submitting=false;sessionStorage.setItem('riseSubmissionStatus','saved');
   const id=document.getElementById('participantIdentifier').value.trim(),v=document.getElementById('confirmationIdentifierValue');if(v)v.textContent=id;
-  const q=document.getElementById('completionQualityResult');if(q){if(qualityWarningCount===0&&patternWarningCount===0){q.textContent='Response quality check: Passed';q.className='quality-result pass';}else{q.textContent='Response quality check: Passed after review';q.className='quality-result review';}}
+  const q=document.getElementById('completionQualityResult');if(q){if(qualityWarningCount===0){q.textContent='Response quality check: Passed';q.className='quality-result pass';}else{q.textContent='Response quality check: Passed after review';q.className='quality-result review';}}
   const link=document.getElementById('profileLink');if(link)link.href='profile.html?source='+encodeURIComponent(source);
   document.getElementById('confirmation').classList.add('show');submitButton.textContent='Saved';
 }
