@@ -62,16 +62,14 @@ function doPost(e) {
     const headers =
       getHeaders_();
 
-    ensureHeaders_(
-      sheet,
-      headers
-    );
-
     const row =
       buildRow_(
         data,
         headers
       );
+
+    splitOversizedCells_(sheet, headers, row);
+    ensureHeaders_(sheet, headers);
 
     const writeResult =
       upsertAdministration_(
@@ -347,6 +345,51 @@ function ensureHeaders_(
  * the same Administration ID update that same row so partial attempts do
  * not create duplicate rows.
  *************************************************************************/
+
+// Keep large values lossless: concatenate the original cell and its numbered parts.
+function splitOversizedCells_(sheet, headers, row) {
+  const baseCount = headers.length;
+  const marker = ' [continuation ';
+  const existingCount = sheet.getLastColumn();
+  if (existingCount > baseCount) {
+    const extra = sheet.getRange(1, baseCount + 1, 1, existingCount - baseCount).getValues()[0];
+    extra.forEach(function(header) {
+      // Refuse to overwrite unrelated columns appended manually.
+      const match = String(header).match(/^(.*) \[continuation ([2-9]|[1-9][0-9]+)\]$/);
+      if (!match || headers.slice(0, baseCount).indexOf(match[1]) < 0) {
+        throw new Error('Unexpected extra column: ' + header + '. Preserve it before adding continuation columns.');
+      }
+      headers.push(header);
+      row.push('');
+    });
+  }
+  for (let column = 0; column < baseCount; column++) {
+    const value = row[column];
+    if (typeof value !== 'string' || value.length <= 45000) continue;
+    const parts = [];
+    let start = 0;
+    while (start < value.length) {
+      let end = Math.min(start + 45000, value.length);
+      // Do not split a Unicode surrogate pair between cells.
+      if (end < value.length && /[\uD800-\uDBFF]/.test(value[end - 1])) end--;
+      parts.push(value.slice(start, end));
+      start = end;
+    }
+    row[column] = parts[0];
+    for (let part = 1; part < parts.length; part++) {
+      const name = headers[column] + marker + (part + 1) + ']';
+      let index = headers.indexOf(name);
+      if (index < 0) {
+        index = headers.length;
+        headers.push(name);
+        row.push('');
+      }
+      row[index] = parts[part];
+    }
+  }
+  const needed = headers.length - sheet.getMaxColumns();
+  if (needed > 0) sheet.insertColumnsAfter(sheet.getMaxColumns(), needed);
+}
 
 function upsertAdministration_(sheet, headers, row, data) {
   const adminId = String(data.administrationId || '').trim();
