@@ -419,15 +419,16 @@ h1{font-family:"Aptos Display",Aptos,Arial,sans-serif;font-size:clamp(30px,3.05v
         <section id="surveySwapCard" class="completion-code-card" aria-labelledby="surveySwapTitle">
           <p class="eyebrow">SurveySwap participants</p>
           <h2 id="surveySwapTitle">Your SurveySwap completion code</h2>
-          <p>If you completed this review through SurveySwap, use the code below to claim your SurveySwap Karma. You can open SurveySwap directly or copy the code and paste it manually.</p>
+          <p>The following code gives you Karma that can be used to get free research participants at SurveySwap.io. Use the link below or enter the code manually.</p>
           <div id="surveySwapCodeWrap" class="survey-code-wrap">
             <span class="survey-code-label">Completion code</span>
             <div class="survey-code-row">
-              <code id="surveySwapCode" class="survey-code" tabindex="0" aria-label="SurveySwap completion code 2RKP-N0OU-4I3F">2RKP-N0OU-4I3F</code>
+              <code id="surveySwapCode" class="survey-code" tabindex="0" aria-label="SurveySwap completion code 2CJ7-NMH8-AGX6">2CJ7-NMH8-AGX6</code>
               <button id="copySurveySwapCode" class="button secondary" type="button">Copy code</button>
             </div>
-            <p class="survey-code-help"><strong>Manual entry:</strong> 2RKP-N0OU-4I3F</p>
-            <p class="survey-code-help">If SurveySwap asks for a completion code, copy or type <strong>2RKP-N0OU-4I3F</strong> exactly as shown.</p>
+            <p class="survey-code-help"><strong>Go to:</strong> <a href="https://surveyswap.io/sr/2CJ7-NMH8-AGX6" target="_blank" rel="noopener">https://surveyswap.io/sr/2CJ7-NMH8-AGX6</a></p>
+            <p class="survey-code-help"><strong>Or enter the code manually:</strong> 2CJ7-NMH8-AGX6</p>
+            <p class="survey-code-help">If SurveySwap asks for a completion code, copy or type <strong>2CJ7-NMH8-AGX6</strong> exactly as shown.</p>
           </div>
           <button id="surveySwapButton" class="button primary" type="button" disabled>Open SurveySwap</button>
           <p id="surveySwapStatus" class="field-help">Your SurveySwap link will activate after your response is submitted successfully.</p>
@@ -448,8 +449,8 @@ window.RISE_STUDY_CONFIG = {
   studyVersion: "leadership-profile-review-v16",
   researcherModeParam: "researcher",
   profileAssessmentUrl: "https://www.renfaut.org/rise-inventory",
-  surveySwapUrl: "https://surveyswap.io/sr/2RKP-N0OU-4I3F",
-  surveySwapCode: "2RKP-N0OU-4I3F"
+  surveySwapUrl: "https://surveyswap.io/sr/2CJ7-NMH8-AGX6",
+  surveySwapCode: "2CJ7-NMH8-AGX6"
 };
 
 </script>
@@ -463,8 +464,8 @@ window.RISE_STUDY_CONFIG = {
     studyVersion:'leadership-profile-review-v16',
     minimumProfileReviewSeconds:30,
     profileAssessmentUrl:'https://www.renfaut.org/rise-inventory',
-    surveySwapUrl:'https://surveyswap.io/sr/2RKP-N0OU-4I3F',
-    surveySwapCode:'2RKP-N0OU-4I3F',
+    surveySwapUrl:'https://surveyswap.io/sr/2CJ7-NMH8-AGX6',
+    surveySwapCode:'2CJ7-NMH8-AGX6',
     researcherModeParam:'researcher'
   }, window.RISE_STUDY_CONFIG || {});
 
@@ -1054,7 +1055,7 @@ window.RISE_STUDY_CONFIG = {
     if(url)window.open(url,'_blank','noopener');
   }
   async function copySurveySwapCode(){
-    const code=(CONFIG.surveySwapCode||'2RKP-N0OU-4I3F').trim();
+    const code=(CONFIG.surveySwapCode||'2CJ7-NMH8-AGX6').trim();
     try{
       await navigator.clipboard.writeText(code);
       $('surveySwapStatus').textContent='SurveySwap code copied. You can paste it into SurveySwap manually.';
