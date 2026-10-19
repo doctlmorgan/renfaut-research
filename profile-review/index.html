@@ -4,6 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex,nofollow">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>R.I.S.E. Index™ Leadership Profile Review</title>
   <style>
 :root{
@@ -64,7 +67,7 @@ h1{font-family:"Aptos Display",Aptos,Arial,sans-serif;font-size:clamp(30px,3.2vw
 .qualitative-help{margin-top:4px}
 .qualitative-prompts{margin-bottom:16px}
 .reward-card{margin-top:22px;padding:22px;border:1px solid #dce1e9;border-radius:16px;background:#fbfaf7}
-.completion-code-card{margin-top:16px;padding:20px 22px;border:1px solid #d7e1ef;border-radius:16px;background:#f5f8fc}.completion-code-card h2{font-family:"Aptos Display",Aptos,Arial,sans-serif;font-size:22px;margin:4px 0 8px;color:#202343}.completion-code-card p{color:#565d6d;margin-bottom:12px}.completed-warning{background:#fff7e8;border:1px solid #e5c174;border-radius:14px;padding:15px 16px;margin:18px 0;color:#5b4619}.completed-warning strong{display:block;color:#49370f;margin-bottom:4px}
+.completion-code-card{margin-top:16px;padding:20px 22px;border:1px solid #d7e1ef;border-radius:16px;background:#f5f8fc}.completion-code-card h2{font-family:"Aptos Display",Aptos,Arial,sans-serif;font-size:22px;margin:4px 0 8px;color:#202343}.completion-code-card p{color:#565d6d;margin-bottom:12px}.survey-code-wrap{margin:14px 0 12px;padding:14px;border:1px solid #cbd8ea;border-radius:12px;background:#fff}.survey-code-label{display:block;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#5d6678;margin-bottom:6px}.survey-code-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.survey-code{font:700 20px/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.06em;color:#183b72;background:#eef3fa;border:1px solid #d5dfed;border-radius:9px;padding:10px 12px;user-select:all}.survey-code-help{font-size:13px;color:#666f80;margin:8px 0 0}.copy-success{color:#2e6f48;font-weight:700}.completed-warning{background:#fff7e8;border:1px solid #e5c174;border-radius:14px;padding:15px 16px;margin:18px 0;color:#5b4619}.completed-warning strong{display:block;color:#49370f;margin-bottom:4px}
 .reward-card h2{font-family:"Aptos Display",Aptos,Arial,sans-serif;font-size:24px;margin:4px 0 8px;color:#202343}
 .reward-card p{color:#565d6d}.reward-actions{margin-top:16px}
 .button[disabled]{cursor:not-allowed;opacity:.55;transform:none}
@@ -357,11 +360,20 @@ h1{font-family:"Aptos Display",Aptos,Arial,sans-serif;font-size:clamp(30px,3.2vw
           </div>
           <p id="assessmentLinkNote" class="field-help" hidden></p>
         </section>
-        <section id="surveySwapCard" class="completion-code-card" aria-labelledby="surveySwapTitle" hidden>
+        <section id="surveySwapCard" class="completion-code-card" aria-labelledby="surveySwapTitle">
           <p class="eyebrow">SurveySwap participants</p>
           <h2 id="surveySwapTitle">Retrieve your SurveySwap completion code</h2>
-          <p>If you completed this review through SurveySwap, use the button below to retrieve your completion code.</p>
-          <button id="surveySwapButton" class="button secondary" type="button">Retrieve SurveySwap code</button>
+          <p>If you completed this review through SurveySwap, you can open SurveySwap directly or copy your completion code and paste it there manually.</p>
+          <div id="surveySwapCodeWrap" class="survey-code-wrap" hidden>
+            <span class="survey-code-label">Your SurveySwap completion code</span>
+            <div class="survey-code-row">
+              <span id="surveySwapCode" class="survey-code">2RKP-N0OU-4I3F</span>
+              <button id="copySurveySwapCode" class="button secondary" type="button">Copy code</button>
+            </div>
+            <p class="survey-code-help">Manual entry code: <strong>2RKP-N0OU-4I3F</strong>. You can copy this code and paste it into SurveySwap if needed.</p>
+          </div>
+          <button id="surveySwapButton" class="button secondary" type="button" disabled>Open SurveySwap</button>
+          <p id="surveySwapStatus" class="field-help">Your SurveySwap code will be available after your response is submitted successfully.</p>
         </section>
         <div id="researcherTools" class="researcher-tools" hidden>
           <h2>Researcher tools</h2>
@@ -376,10 +388,11 @@ h1{font-family:"Aptos Display",Aptos,Arial,sans-serif;font-size:clamp(30px,3.2vw
 window.RISE_STUDY_CONFIG = {
   submissionEndpoint: "https://script.google.com/macros/s/AKfycbz3gzkQ7ww8-jAhS3JlBYgwssSauobwJHuL3UoAthT5GCJkMIhYBmaj0tWUH9cW-SaQcw/exec",
   cardsPerParticipant: 2,
-  studyVersion: "leadership-profile-review-v10",
+  studyVersion: "leadership-profile-review-v11",
   researcherModeParam: "researcher",
   profileAssessmentUrl: "https://www.renfaut.org/rise-inventory",
-  surveySwapUrl: "https://surveyswap.io/sr/2RKP-N0OU-4I3F"
+  surveySwapUrl: "https://surveyswap.io/sr/2RKP-N0OU-4I3F",
+  surveySwapCode: "2RKP-N0OU-4I3F"
 };
 
 </script>
@@ -390,17 +403,18 @@ window.RISE_STUDY_CONFIG = {
   const CONFIG = Object.assign({
     submissionEndpoint:'',
     cardsPerParticipant:2,
-    studyVersion:'leadership-profile-review-v10',
+    studyVersion:'leadership-profile-review-v11',
     minimumProfileReviewSeconds:30,
     profileAssessmentUrl:'https://www.renfaut.org/rise-inventory',
     surveySwapUrl:'https://surveyswap.io/sr/2RKP-N0OU-4I3F',
+    surveySwapCode:'2RKP-N0OU-4I3F',
     researcherModeParam:'researcher'
   }, window.RISE_STUDY_CONFIG || {});
 
-  const STORAGE_KEY = 'riseLeadershipProfileReviewV10';
-  const FINAL_KEY = 'riseLeadershipProfileReviewV10Final';
-  const LAST_PAIR_KEY = 'riseLeadershipProfileReviewLastPairV10';
-  const COMPLETION_KEY = 'riseLeadershipProfileReviewCompletedV10';
+  const STORAGE_KEY = 'riseLeadershipProfileReviewV11';
+  const FINAL_KEY = 'riseLeadershipProfileReviewV11Final';
+  const LAST_PAIR_KEY = 'riseLeadershipProfileReviewLastPairV11';
+  const COMPLETION_KEY = 'riseLeadershipProfileReviewCompletedV11';
   const $ = id => document.getElementById(id);
   const nowIso = () => new Date().toISOString();
 
@@ -952,10 +966,16 @@ window.RISE_STUDY_CONFIG = {
     const submitted=result.status==='submitted';
     if(submitted){
       localStorage.setItem(COMPLETION_KEY,JSON.stringify({completedAt:nowIso(),sessionId:completedSessionId,submissionId:result.data?.submissionId||''}));
-      $('surveySwapCard').hidden=false;
+      $('surveySwapButton').disabled=false;
+      $('surveySwapCodeWrap').hidden=false;
+      $('surveySwapStatus').textContent='Your response was submitted successfully. Your SurveySwap code is shown above.';
       clearSession();
     }else{
-      $('surveySwapCard').hidden=true;
+      $('surveySwapButton').disabled=true;
+      $('surveySwapCodeWrap').hidden=true;
+      $('surveySwapStatus').textContent=result.status==='failed'
+        ? 'Your SurveySwap code will be available after your response is transmitted successfully. Your responses are still saved on this device.'
+        : 'Your SurveySwap code will be available after your response is submitted successfully.';
     }
     $('submissionNote').textContent=submitted?'Your response was submitted successfully.':result.status==='failed'?'Your response is still saved on this device, but it could not be transmitted. Please try again later or contact the review administrator before closing this browser.':'Prototype mode: your response is saved on this device.';
     const researcher=new URLSearchParams(location.search).get(CONFIG.researcherModeParam)==='1';if(researcher){$('researcherTools').hidden=false;$('jsonPreview').textContent=JSON.stringify(finalPayload,null,2);}
@@ -976,11 +996,24 @@ window.RISE_STUDY_CONFIG = {
     const url=(CONFIG.surveySwapUrl||'').trim();
     if(url)window.open(url,'_blank','noopener');
   }
+  async function copySurveySwapCode(){
+    const code=(CONFIG.surveySwapCode||'2RKP-N0OU-4I3F').trim();
+    try{
+      await navigator.clipboard.writeText(code);
+      $('surveySwapStatus').textContent='SurveySwap code copied. You can paste it into SurveySwap manually.';
+      $('surveySwapStatus').classList.add('copy-success');
+      setTimeout(()=>$('surveySwapStatus').classList.remove('copy-success'),2200);
+    }catch(error){
+      const range=document.createRange();range.selectNodeContents($('surveySwapCode'));
+      const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);
+      $('surveySwapStatus').textContent='Copy was not available automatically. The code is selected so you can copy it manually.';
+    }
+  }
 
   function resume(){session=load();if(!session)return;startGlobalTiming();if(session.stage==='card')renderCard();else if(session.stage==='overall')renderOverall();else if(session.stage==='demographics')renderDemographics();else setScreen('introScreen');}
 
   $('startForm').addEventListener('submit',e=>{e.preventDefault();if(!e.currentTarget.checkValidity()){e.currentTarget.reportValidity();return;}session=newSession($('participantIdentifier').value.trim());save();startGlobalTiming();renderCard();});
-  $('reviewGateButton').addEventListener('click',revealQuestions);$('nextCardButton').addEventListener('click',advanceCard);$('backCardButton').addEventListener('click',backCard);$('overallForm').addEventListener('submit',validateOverall);$('backOverallButton').addEventListener('click',backOverall);$('demographicsForm').addEventListener('submit',validateDemographics);$('backDemographicsButton').addEventListener('click',backDemographics);$('downloadJson').addEventListener('click',downloadJson);$('discoverProfileButton').addEventListener('click',discoverProfile);$('notNowButton').addEventListener('click',dismissReward);$('surveySwapButton').addEventListener('click',openSurveySwap);
+  $('reviewGateButton').addEventListener('click',revealQuestions);$('nextCardButton').addEventListener('click',advanceCard);$('backCardButton').addEventListener('click',backCard);$('overallForm').addEventListener('submit',validateOverall);$('backOverallButton').addEventListener('click',backOverall);$('demographicsForm').addEventListener('submit',validateDemographics);$('backDemographicsButton').addEventListener('click',backDemographics);$('downloadJson').addEventListener('click',downloadJson);$('discoverProfileButton').addEventListener('click',discoverProfile);$('notNowButton').addEventListener('click',dismissReward);$('surveySwapButton').addEventListener('click',openSurveySwap);$('copySurveySwapCode').addEventListener('click',copySurveySwapCode);
   $('sector').addEventListener('change',()=>{$('sectorOtherWrap').hidden=$('sector').value!=='__other__';if($('sectorOtherWrap').hidden)$('sectorOther').value='';});
   setupExclusive('gender','genderPna','genderOtherCheck','genderOtherWrap','genderOther');setupExclusive('race','racePna','raceOtherCheck','raceOtherWrap','raceOther');
   document.addEventListener('visibilitychange',handleVisibility);let resizeTimer=null;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>addViewportEvent('resize'),250);});
