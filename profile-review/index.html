@@ -64,6 +64,7 @@ h1{font-family:"Aptos Display",Aptos,Arial,sans-serif;font-size:clamp(30px,3.2vw
 .qualitative-help{margin-top:4px}
 .qualitative-prompts{margin-bottom:16px}
 .reward-card{margin-top:22px;padding:22px;border:1px solid #dce1e9;border-radius:16px;background:#fbfaf7}
+.completion-code-card{margin-top:16px;padding:20px 22px;border:1px solid #d7e1ef;border-radius:16px;background:#f5f8fc}.completion-code-card h2{font-family:"Aptos Display",Aptos,Arial,sans-serif;font-size:22px;margin:4px 0 8px;color:#202343}.completion-code-card p{color:#565d6d;margin-bottom:12px}.completed-warning{background:#fff7e8;border:1px solid #e5c174;border-radius:14px;padding:15px 16px;margin:18px 0;color:#5b4619}.completed-warning strong{display:block;color:#49370f;margin-bottom:4px}
 .reward-card h2{font-family:"Aptos Display",Aptos,Arial,sans-serif;font-size:24px;margin:4px 0 8px;color:#202343}
 .reward-card p{color:#565d6d}.reward-actions{margin-top:16px}
 .button[disabled]{cursor:not-allowed;opacity:.55;transform:none}
@@ -114,7 +115,11 @@ h1{font-family:"Aptos Display",Aptos,Arial,sans-serif;font-size:clamp(30px,3.2vw
           <h2>Before you begin</h2>
           <p>You will be shown two sample leadership profiles. For each profile, answer two brief questions about what the information means.</p>
           <p>You will also respond in your own words to at least two of three short prompts about what the profile communicates, how you might use the information, or what could make it clearer. Please respond based on your own understanding of what you see.</p>
-          <p class="reward-note"><strong>After you finish:</strong> You’ll have the option to discover your own R.I.S.E. Index™ leadership profile.</p>
+          <p class="reward-note"><strong>After you finish:</strong> You’ll have the option to discover your own R.I.S.E. Index™ leadership profile. If you are participating through SurveySwap, you can also retrieve your SurveySwap completion code.</p>
+          <div id="completedWarningBox" class="completed-warning" hidden>
+            <strong>A response from this browser has already been submitted.</strong>
+            <span>If you have already completed this review, please do not submit another response. Only continue if this is a different participant or you were specifically asked to retake the review.</span>
+          </div>
           <div id="resumeBox" class="resume-box" hidden>
             <strong>Incomplete review found</strong>
             <p>You can resume the same two profiles where you left off, or start over to receive a new random pair.</p>
@@ -352,6 +357,12 @@ h1{font-family:"Aptos Display",Aptos,Arial,sans-serif;font-size:clamp(30px,3.2vw
           </div>
           <p id="assessmentLinkNote" class="field-help" hidden></p>
         </section>
+        <section id="surveySwapCard" class="completion-code-card" aria-labelledby="surveySwapTitle" hidden>
+          <p class="eyebrow">SurveySwap participants</p>
+          <h2 id="surveySwapTitle">Retrieve your SurveySwap completion code</h2>
+          <p>If you completed this review through SurveySwap, use the button below to retrieve your completion code.</p>
+          <button id="surveySwapButton" class="button secondary" type="button">Retrieve SurveySwap code</button>
+        </section>
         <div id="researcherTools" class="researcher-tools" hidden>
           <h2>Researcher tools</h2>
           <button id="downloadJson" class="button secondary" type="button">Download response JSON</button>
@@ -363,11 +374,12 @@ h1{font-family:"Aptos Display",Aptos,Arial,sans-serif;font-size:clamp(30px,3.2vw
 
   <script>
 window.RISE_STUDY_CONFIG = {
-  submissionEndpoint: "",
+  submissionEndpoint: "https://script.google.com/macros/s/AKfycbz3gzkQ7ww8-jAhS3JlBYgwssSauobwJHuL3UoAthT5GCJkMIhYBmaj0tWUH9cW-SaQcw/exec",
   cardsPerParticipant: 2,
-  studyVersion: "leadership-profile-review-v4",
+  studyVersion: "leadership-profile-review-v10",
   researcherModeParam: "researcher",
-  profileAssessmentUrl: ""
+  profileAssessmentUrl: "https://www.renfaut.org/rise-inventory",
+  surveySwapUrl: "https://surveyswap.io/sr/2RKP-N0OU-4I3F"
 };
 
 </script>
@@ -378,15 +390,17 @@ window.RISE_STUDY_CONFIG = {
   const CONFIG = Object.assign({
     submissionEndpoint:'',
     cardsPerParticipant:2,
-    studyVersion:'leadership-profile-review-v5',
+    studyVersion:'leadership-profile-review-v10',
     minimumProfileReviewSeconds:30,
     profileAssessmentUrl:'https://www.renfaut.org/rise-inventory',
+    surveySwapUrl:'https://surveyswap.io/sr/2RKP-N0OU-4I3F',
     researcherModeParam:'researcher'
   }, window.RISE_STUDY_CONFIG || {});
 
-  const STORAGE_KEY = 'riseLeadershipProfileReviewV5';
-  const FINAL_KEY = 'riseLeadershipProfileReviewV5Final';
-  const LAST_PAIR_KEY = 'riseLeadershipProfileReviewLastPairV4';
+  const STORAGE_KEY = 'riseLeadershipProfileReviewV10';
+  const FINAL_KEY = 'riseLeadershipProfileReviewV10Final';
+  const LAST_PAIR_KEY = 'riseLeadershipProfileReviewLastPairV10';
+  const COMPLETION_KEY = 'riseLeadershipProfileReviewCompletedV10';
   const $ = id => document.getElementById(id);
   const nowIso = () => new Date().toISOString();
 
@@ -922,15 +936,28 @@ window.RISE_STUDY_CONFIG = {
     if(!CONFIG.submissionEndpoint)return {status:'local-only'};
     try{
       const res=await fetch(CONFIG.submissionEndpoint,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
-      if(!res.ok)throw new Error(`HTTP ${res.status}`);return {status:'submitted'};
+      if(!res.ok)throw new Error(`HTTP ${res.status}`);
+      let data=null;
+      try{data=await res.json();}catch(_){}
+      if(data&&data.ok===false)throw new Error(data.error||'Collector rejected the submission.');
+      return {status:'submitted',data};
     }catch(error){console.error(error);return {status:'failed',error:String(error)};}
   }
 
   async function finishStudy(){
     if(globalHiddenStart){session.inactiveMs+=Date.now()-globalHiddenStart;globalHiddenStart=null;}else flushGlobalVisible();
     session.completedAt=nowIso();session.stage='complete';save();finalPayload=buildPayload();localStorage.setItem(FINAL_KEY,JSON.stringify(finalPayload));
-    const result=await submitPayload(finalPayload);setScreen('thanksScreen');clearSession();
-    $('submissionNote').textContent=result.status==='submitted'?'Your response was submitted successfully.':result.status==='failed'?'Your response is saved on this device, but it could not be transmitted. Please let us know.':'Prototype mode: your response is saved on this device. A submission endpoint can be added before this review is shared.';
+    const completedSessionId=session.sessionId;
+    const result=await submitPayload(finalPayload);setScreen('thanksScreen');
+    const submitted=result.status==='submitted';
+    if(submitted){
+      localStorage.setItem(COMPLETION_KEY,JSON.stringify({completedAt:nowIso(),sessionId:completedSessionId,submissionId:result.data?.submissionId||''}));
+      $('surveySwapCard').hidden=false;
+      clearSession();
+    }else{
+      $('surveySwapCard').hidden=true;
+    }
+    $('submissionNote').textContent=submitted?'Your response was submitted successfully.':result.status==='failed'?'Your response is still saved on this device, but it could not be transmitted. Please try again later or contact the review administrator before closing this browser.':'Prototype mode: your response is saved on this device.';
     const researcher=new URLSearchParams(location.search).get(CONFIG.researcherModeParam)==='1';if(researcher){$('researcherTools').hidden=false;$('jsonPreview').textContent=JSON.stringify(finalPayload,null,2);}
   }
 
@@ -945,17 +972,24 @@ window.RISE_STUDY_CONFIG = {
   function dismissReward(){
     $('assessmentLinkNote').hidden=false;$('assessmentLinkNote').textContent='You’re all set. Thank you again for your feedback.';
   }
+  function openSurveySwap(){
+    const url=(CONFIG.surveySwapUrl||'').trim();
+    if(url)window.open(url,'_blank','noopener');
+  }
 
   function resume(){session=load();if(!session)return;startGlobalTiming();if(session.stage==='card')renderCard();else if(session.stage==='overall')renderOverall();else if(session.stage==='demographics')renderDemographics();else setScreen('introScreen');}
 
   $('startForm').addEventListener('submit',e=>{e.preventDefault();if(!e.currentTarget.checkValidity()){e.currentTarget.reportValidity();return;}session=newSession($('participantIdentifier').value.trim());save();startGlobalTiming();renderCard();});
-  $('reviewGateButton').addEventListener('click',revealQuestions);$('nextCardButton').addEventListener('click',advanceCard);$('backCardButton').addEventListener('click',backCard);$('overallForm').addEventListener('submit',validateOverall);$('backOverallButton').addEventListener('click',backOverall);$('demographicsForm').addEventListener('submit',validateDemographics);$('backDemographicsButton').addEventListener('click',backDemographics);$('downloadJson').addEventListener('click',downloadJson);$('discoverProfileButton').addEventListener('click',discoverProfile);$('notNowButton').addEventListener('click',dismissReward);
+  $('reviewGateButton').addEventListener('click',revealQuestions);$('nextCardButton').addEventListener('click',advanceCard);$('backCardButton').addEventListener('click',backCard);$('overallForm').addEventListener('submit',validateOverall);$('backOverallButton').addEventListener('click',backOverall);$('demographicsForm').addEventListener('submit',validateDemographics);$('backDemographicsButton').addEventListener('click',backDemographics);$('downloadJson').addEventListener('click',downloadJson);$('discoverProfileButton').addEventListener('click',discoverProfile);$('notNowButton').addEventListener('click',dismissReward);$('surveySwapButton').addEventListener('click',openSurveySwap);
   $('sector').addEventListener('change',()=>{$('sectorOtherWrap').hidden=$('sector').value!=='__other__';if($('sectorOtherWrap').hidden)$('sectorOther').value='';});
   setupExclusive('gender','genderPna','genderOtherCheck','genderOtherWrap','genderOther');setupExclusive('race','racePna','raceOtherCheck','raceOtherWrap','raceOther');
   document.addEventListener('visibilitychange',handleVisibility);let resizeTimer=null;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>addViewportEvent('resize'),250);});
 
   const params=new URLSearchParams(location.search);
   const existing=load();
+  let priorCompletion=null;
+  try{priorCompletion=JSON.parse(localStorage.getItem(COMPLETION_KEY)||'null');}catch(_){}
+  if(priorCompletion&&!existing)$('completedWarningBox').hidden=false;
   if(params.get('demo')==='1'&&!existing){
     session=newSession('DEMO-001');
     const requested=params.get('card');
