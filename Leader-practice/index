@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="light" />
+<title>R.I.S.E. Index™ Leadership Practice Study</title>
+<style>
+:root {
+  --charcoal:#2B2B2B;
+  --muted:#686868;
+  --line:#D9D9D9;
+  --paper:#FFFFFF;
+  --canvas:#F5F5F3;
+  --rr:#B31217;
+  --ib:#E76F00;
+  --de:#F7B500;
+  --rr-light:#FBF0F1;
+  --ib-light:#FFF4EA;
+  --de-light:#FFF8DE;
+  --focus:#1F5A94;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0; background:var(--canvas); color:var(--charcoal);
+  font-family:Aptos, "Segoe UI", Arial, sans-serif; font-size:16px; line-height:1.5;
+}
+button,input,textarea { font:inherit; }
+.shell { max-width:940px; margin:0 auto; padding:24px 18px 60px; }
+.brandline { font-size:12px; font-weight:700; letter-spacing:.11em; text-transform:uppercase; color:#555; margin-bottom:18px; }
+.card { background:var(--paper); border:1px solid #E1E1E1; border-radius:12px; padding:28px; }
+.hero { padding:34px 32px; }
+h1,h2,h3 { font-family:"Aptos Display", Aptos, "Segoe UI", Arial, sans-serif; margin:0; line-height:1.15; }
+h1 { font-size:34px; font-weight:600; margin-bottom:10px; }
+h2 { font-size:27px; font-weight:600; }
+h3 { font-size:18px; font-weight:600; }
+.lede { font-size:18px; color:#4D4D4D; max-width:720px; margin:10px 0 0; }
+.meta { color:var(--muted); font-size:14px; margin-top:14px; }
+.intro-grid { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr); gap:24px; align-items:start; }
+.instructions { margin-top:22px; padding:18px; border:1px solid #E0E0DC; border-left:4px solid var(--rr); border-radius:10px; background:#FAFAF8; }
+.instructions h3 { margin-bottom:8px; }
+.instructions ol { margin:8px 0 0; padding-left:22px; }
+.instructions li { margin:7px 0; }
+.fact-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:20px; }
+.fact { border-top:3px solid #6C3FBF; padding-top:9px; }
+.fact strong { display:block; font-size:18px; }
+.fact span { display:block; font-size:12px; color:var(--muted); }
+.consent { display:flex; gap:9px; align-items:flex-start; margin-top:18px; font-size:14px; }
+.consent input { margin-top:4px; }
+.field { margin-top:24px; }
+label.field-label { display:block; font-weight:600; margin-bottom:8px; }
+input[type=text] { width:100%; max-width:420px; border:1px solid #BDBDBD; border-radius:8px; padding:11px 12px; background:white; }
+.btn { border:0; border-radius:8px; padding:11px 18px; font-weight:700; cursor:pointer; background:var(--charcoal); color:white; }
+.btn:hover { opacity:.92; }
+.btn.secondary { background:#EFEFED; color:var(--charcoal); border:1px solid #D7D7D2; }
+.btn:focus-visible, input:focus-visible, textarea:focus-visible { outline:3px solid rgba(31,90,148,.25); outline-offset:2px; }
+.actions { display:flex; gap:10px; justify-content:space-between; flex-wrap:wrap; margin-top:28px; }
+.progress-wrap { max-width:800px; margin:18px auto 18px; }
+.progress-row { display:flex; justify-content:space-between; gap:16px; color:var(--muted); font-size:13px; margin-bottom:7px; }
+.progress { height:7px; background:#E7E7E4; border-radius:99px; overflow:hidden; }
+.progress > div { height:100%; background:var(--charcoal); width:0%; transition:width .2s ease; }
+.practice { width:100%; max-width:800px; margin:0 auto; background:transparent; border:0; border-radius:0; padding:0; box-shadow:none; }
+.practice-display {
+  position:relative; overflow:hidden; background:#fff; border:1px solid #E3E3DF;
+  width:100%; border-radius:22px; padding:34px 36px 32px; box-shadow:0 14px 38px rgba(43,43,43,.09);
+}
+.practice-display::before { content:""; position:absolute; inset:0 0 auto 0; height:6px; background:var(--accent); }
+.practice-display::after { content:""; position:absolute; width:190px; height:190px; border-radius:50%; right:-84px; top:-92px; background:var(--light); opacity:.85; pointer-events:none; }
+.practice-heading { position:relative; z-index:1; }
+.practice .title { color:var(--accent); font-size:31px; letter-spacing:-.015em; }
+.practice .problem { position:relative; z-index:1; margin:15px 0 0; font-size:18px; line-height:1.55; max-width:680px; color:#3F3F3F; }
+.trybox { position:relative; z-index:1; margin:26px 8px 0; background:var(--light); border:1px solid color-mix(in srgb, var(--accent) 22%, #E4E4E0); border-left:5px solid var(--accent); padding:19px 21px; border-radius:12px; }
+.trybox .trylabel { color:#343434; font-weight:700; font-size:13px; letter-spacing:.09em; text-transform:uppercase; margin-bottom:9px; }
+.trybox ol { margin:0; padding-left:23px; }
+.trybox li { margin:7px 0; line-height:1.48; }
+.question-set { width:100%; margin:24px auto 0; background:#fff; border:1px solid #E1E1DE; border-radius:18px; padding:4px 28px 28px; box-shadow:0 8px 24px rgba(43,43,43,.05); }
+.question { margin-top:28px; padding-top:24px; border-top:1px solid #E4E4E2; }
+.question:first-of-type { margin-top:26px; }
+.qnum { display:inline-flex; width:28px; height:28px; border-radius:50%; background:var(--light); align-items:center; justify-content:center; font-weight:700; margin-right:8px; border:1px solid color-mix(in srgb, var(--accent) 40%, #ddd); }
+.qprompt { font-weight:600; font-size:17px; }
+.options { margin-top:13px; display:grid; gap:9px; }
+.option { display:flex; gap:10px; align-items:flex-start; border:1px solid #D8D8D6; padding:11px 12px; border-radius:8px; background:white; cursor:pointer; }
+.option:hover { border-color:#AFAFAA; }
+.option input { margin-top:4px; }
+textarea { width:100%; min-height:120px; resize:vertical; border:1px solid #BDBDBD; border-radius:8px; padding:12px; background:white; margin-top:12px; }
+.qual-help { font-size:12px; color:#A0181D; margin-top:7px; font-weight:600; }
+.qual-counter { display:none; }
+.qual-counter.complete { display:none; }
+.invalid-input { border-color:var(--rr)!important; box-shadow:0 0 0 3px rgba(179,18,23,.10)!important; }
+.qual-error { color:#A0181D; font-size:12px; font-weight:700; margin-top:7px; }
+.either { margin-top:28px; padding:18px; background:#FAFAF8; border:1px solid #E2E2DE; border-radius:8px; }
+.either-title { font-weight:700; margin-bottom:4px; }
+.either-note { font-size:13px; color:var(--muted); margin:0 0 14px; }
+.either-panel { margin-top:14px; padding-top:14px; border-top:1px solid #E5E5E1; }
+.either-panel:first-of-type { border-top:0; padding-top:0; }
+.either-label { font-weight:600; font-size:16px; }
+.validation { color:#A0181D; font-size:14px; font-weight:600; margin-top:12px; display:none; }
+.hidden { display:none !important; }
+.complete h2 { margin-bottom:10px; }
+.complete p { max-width:720px; }
+.completion-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:24px; }
+.completion-panel { border:1px solid #E0E0DC; border-radius:14px; padding:20px; background:#FAFAF8; }
+.completion-panel h3 { margin-bottom:8px; }
+.code-box { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:14px; }
+.survey-code { display:inline-block; padding:11px 14px; border:2px solid #D7D7D2; border-radius:9px; background:#fff; font:700 21px/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; letter-spacing:.06em; color:var(--charcoal); user-select:all; }
+.completion-actions { display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+.completion-actions a.btn { text-decoration:none; display:inline-flex; align-items:center; justify-content:center; }
+.profile-panel { border-top:4px solid #6C3FBF; background:#FBF9FE; }
+.small { font-size:13px; color:var(--muted); }
+
+.demographics-card { max-width:800px; margin:18px auto 0; padding:30px 32px; }
+.demographics-card .lede { font-size:16px; max-width:680px; }
+.demo-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px 22px; margin-top:24px; }
+.demo-field { min-width:0; }
+.demo-field.full { grid-column:1 / -1; }
+.demo-label { display:block; font-weight:600; margin-bottom:7px; }
+.required-note { color:#8F171B; font-size:11px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; margin-left:5px; }
+.optional-note { color:var(--muted); font-size:12px; margin-left:5px; }
+.demo-input,.demo-select { width:100%; border:1px solid #BDBDBD; border-radius:8px; padding:11px 12px; background:#fff; color:var(--charcoal); }
+.demo-input:focus-visible,.demo-select:focus-visible { outline:3px solid rgba(31,90,148,.25); outline-offset:2px; }
+.demo-help { font-size:12px; color:var(--muted); margin-top:6px; }
+.demo-group { border:0; padding:0; margin:0; }
+.demo-group legend { font-weight:600; margin-bottom:9px; }
+.check-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px 10px; }
+.check-option { display:flex; gap:8px; align-items:flex-start; border:1px solid #D8D8D6; border-radius:8px; padding:10px 11px; background:#fff; font-size:14px; }
+.check-option input { margin-top:3px; }
+.reveal { margin-top:10px; padding:12px; background:#FAFAF8; border:1px solid #E2E2DE; border-radius:8px; }
+.demo-error { color:#A0181D; font-size:12px; font-weight:700; margin-top:6px; display:none; }
+.demo-field.has-error .demo-input,.demo-field.has-error .demo-select,.demo-group.has-error { border-color:var(--rr); }
+.demo-field.has-error .demo-error,.demo-group.has-error .demo-error { display:block; }
+.demographics-actions { max-width:800px; margin:20px auto 0; display:flex; justify-content:space-between; gap:10px; }
+
+.footer { margin-top:20px; color:#757575; font-size:12px; text-align:center; }
+.rr { --accent:var(--rr); --light:var(--rr-light); }
+.ib { --accent:var(--ib); --light:var(--ib-light); }
+.de { --accent:var(--de); --light:var(--de-light); }
+@media (max-width:640px) {
+  .shell { padding:14px 10px 40px; }
+  .intro-grid,.fact-grid { grid-template-columns:1fr; }
+  .card,.hero { padding:22px 18px; border-radius:12px; }
+  .practice { padding:0; }
+  .practice-display { padding:26px 20px 23px; border-radius:17px; }
+  .trybox { margin-left:0; margin-right:0; }
+  .question-set { padding:2px 18px 22px; border-radius:15px; }
+  h1 { font-size:29px; } h2 { font-size:24px; }
+  .practice .title { font-size:27px; }
+  .actions .btn { width:100%; }
+  .completion-grid { grid-template-columns:1fr; }
+  .completion-actions .btn { width:100%; }
+  .demo-grid,.check-grid { grid-template-columns:1fr; }
+  .demographics-card { padding:24px 20px; }
+  .demographics-actions .btn { flex:1; }
+}
+@media print {
+  body { background:white; } .shell { max-width:none; } .actions,.progress-wrap,#startScreen,.footer { display:none !important; }
+  .card { border:0; border-radius:0; padding:0; }
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="brandline">RENFAUT™ &nbsp;|&nbsp; R.I.S.E. INDEX™ &nbsp;|&nbsp; LEADERSHIP PRACTICE STUDY</div>
+
+  <section id="startScreen" class="card hero">
+    <div class="intro-grid">
+      <div>
+        <div class="brandline" style="margin-bottom:10px">Leadership practice review</div>
+        <h1>Help us study how leadership practices are understood.</h1>
+        <p class="lede">You will review two leadership practices and respond to questions about what each practice is trying to accomplish, how it applies, and what change it could produce.</p>
+        <div class="fact-grid" aria-label="Study details">
+          <div class="fact"><strong>2</strong><span>leadership practices</span></div>
+          <div class="fact"><strong>6</strong><span>questions for each practice</span></div>
+          <div class="fact"><strong>Brief</strong><span>written reflection</span></div>
+        </div>
+        <div class="instructions">
+          <h3>What you will do</h3>
+          <ol>
+            <li>Read each leadership practice and its <strong>TRY THIS</strong> action.</li>
+            <li>Answer Questions 1–4 based on your understanding of the practice.</li>
+            <li>For Question 3, explain your reasoning in your own words.</li>
+            <li>For Questions 5 and 6, answer <strong>at least one</strong>. You may answer both.</li>
+          </ol>
+        </div>
+      </div>
+      <aside>
+        <h3>Before you begin</h3>
+        <p class="meta" style="margin-top:8px">Please respond based on what the leadership practice itself communicates. Do not search for an answer or use outside material while completing the review.</p>
+        <div class="field">
+          <label class="field-label" for="participantId">Participant code</label>
+          <input id="participantId" type="text" autocomplete="off" minlength="6" maxlength="20" pattern="[A-Za-z0-9-]{6,20}" placeholder="Enter or create your study code" />
+          <div class="small">Use 6–20 letters, numbers, or hyphens. Do not use your name, email address, or another identifying detail.</div>
+        </div>
+        <label class="consent"><input id="readyCheck" type="checkbox" /><span>I understand what I will be asked to do and am ready to begin.</span></label>
+        <div class="actions" style="justify-content:flex-start">
+          <button id="startBtn" class="btn" type="button">Begin study</button>
+        </div>
+        <div id="startError" class="validation">Please enter a valid participant code and confirm that you are ready to begin.</div>
+      </aside>
+    </div>
+  </section>
+
+  <div id="studyScreen" class="hidden">
+    <div class="progress-wrap">
+      <div class="progress-row"><span id="progressLabel">Practice 1 of 2</span><span id="progressPct">50%</span></div>
+      <div class="progress"><div id="progressBar"></div></div>
+    </div>
+    <section id="practiceCard" class="card practice"></section>
+  </div>
+
+
+  <section id="demographicsScreen" class="card demographics-card hidden" aria-labelledby="demographicsTitle">
+    <div class="brandline" style="margin-bottom:10px">Final step</div>
+    <h2 id="demographicsTitle">About you</h2>
+    <p class="lede">These questions help us understand how people from different backgrounds respond to the leadership practices. Every question except email requires a response; “Prefer not to answer” is available where appropriate.</p>
+
+    <form id="demographicsForm" novalidate>
+      <div class="demo-grid">
+        <div id="ageField" class="demo-field">
+          <label class="demo-label" for="ageRange">Age range <span class="required-note">Required</span></label>
+          <select id="ageRange" class="demo-select">
+            <option value="">Select one</option>
+            <option>Under 18</option><option>18–24</option><option>25–34</option><option>35–44</option><option>45–54</option><option>55–64</option><option>65 or older</option><option>Prefer not to answer</option>
+          </select>
+          <div class="demo-error">Please select a response.</div>
+        </div>
+        <div id="countryField" class="demo-field">
+          <label class="demo-label" for="country">Country <span class="required-note">Required</span></label>
+          <input id="country" class="demo-input" type="text" autocomplete="country-name" placeholder="Country where you currently live" />
+          <div class="demo-error">Please enter your country.</div>
+        </div>
+        <div id="roleField" class="demo-field full">
+          <label class="demo-label" for="professionalRole">Professional role or title <span class="required-note">Required</span></label>
+          <input id="professionalRole" class="demo-input" type="text" autocomplete="organization-title" placeholder="Your role or title" />
+          <div class="demo-error">Please enter your professional role or title.</div>
+        </div>
+        <div id="sectorField" class="demo-field">
+          <label class="demo-label" for="sector">Sector <span class="required-note">Required</span></label>
+          <select id="sector" class="demo-select">
+            <option value="">Select one</option>
+            <option>Arts / Culture / Media</option>
+            <option>Consulting / Professional Services</option>
+            <option>Faith-based / Religious Organization</option>
+            <option>Government / Public Administration</option>
+            <option>Grassroots / Advocacy / Movement Organization</option>
+            <option>Healthcare / Public Health</option>
+            <option>Higher Education / Academia</option>
+            <option>Human Services / Social Services</option>
+            <option>K–12 Education</option>
+            <option>Labor / Workforce Organization</option>
+            <option>Nonprofit / Community-based Organization</option>
+            <option>Philanthropy / Grantmaking</option>
+            <option>Private Business / Corporate</option>
+            <option value="__other__">Other / Self-describe</option>
+            <option>Prefer not to answer</option>
+          </select>
+          <div id="sectorOtherWrap" class="reveal hidden">
+            <label class="demo-label" for="sectorOther">Please self-describe your sector</label>
+            <input id="sectorOther" class="demo-input" type="text" />
+          </div>
+          <div class="demo-error">Please select a sector and complete the self-description if needed.</div>
+        </div>
+        <div id="yearsField" class="demo-field">
+          <label class="demo-label" for="leadershipYears">Years in leadership roles <span class="required-note">Required</span></label>
+          <select id="leadershipYears" class="demo-select">
+            <option value="">Select one</option>
+            <option>Less than 1 year</option><option>1–3 years</option><option>4–6 years</option><option>7–10 years</option><option>11–15 years</option><option>More than 15 years</option><option>Prefer not to answer</option>
+          </select>
+          <div class="demo-error">Please select a response.</div>
+        </div>
+
+        <fieldset id="genderField" class="demo-group demo-field full">
+          <legend>Gender identity <span class="required-note">Required · Select all that apply</span></legend>
+          <div class="check-grid">
+            <label class="check-option"><input type="checkbox" name="gender" value="Woman" /><span>Woman</span></label>
+            <label class="check-option"><input type="checkbox" name="gender" value="Man" /><span>Man</span></label>
+            <label class="check-option"><input type="checkbox" name="gender" value="Nonbinary" /><span>Nonbinary</span></label>
+            <label class="check-option"><input type="checkbox" name="gender" value="Transgender" /><span>Transgender</span></label>
+            <label class="check-option"><input type="checkbox" name="gender" value="Genderqueer / Gender non-conforming" /><span>Genderqueer / Gender non-conforming</span></label>
+            <label class="check-option"><input type="checkbox" name="gender" value="Two-Spirit" /><span>Two-Spirit</span></label>
+            <label class="check-option"><input id="genderOtherCheck" type="checkbox" name="gender" value="__other__" /><span>I prefer to self-describe</span></label>
+            <label class="check-option"><input id="genderPna" type="checkbox" name="gender" value="Prefer not to answer" /><span>Prefer not to answer</span></label>
+          </div>
+          <div id="genderOtherWrap" class="reveal hidden">
+            <label class="demo-label" for="genderOther">Please self-describe your gender identity</label>
+            <input id="genderOther" class="demo-input" type="text" />
+          </div>
+          <div class="demo-error">Please select at least one response and complete the self-description if needed.</div>
+        </fieldset>
+
+        <fieldset id="raceField" class="demo-group demo-field full">
+          <legend>Race and/or ethnicity <span class="required-note">Required · Select all that apply</span></legend>
+          <div class="check-grid">
+            <label class="check-option"><input type="checkbox" name="race" value="Black / African American" /><span>Black / African American</span></label>
+            <label class="check-option"><input type="checkbox" name="race" value="Latine / Latinx / Hispanic" /><span>Latine / Latinx / Hispanic</span></label>
+            <label class="check-option"><input type="checkbox" name="race" value="Native American / Indigenous / First Nations" /><span>Native American / Indigenous / First Nations</span></label>
+            <label class="check-option"><input type="checkbox" name="race" value="Asian (East, South, Southeast, Central)" /><span>Asian (East, South, Southeast, Central)</span></label>
+            <label class="check-option"><input type="checkbox" name="race" value="Middle Eastern or North African" /><span>Middle Eastern or North African</span></label>
+            <label class="check-option"><input type="checkbox" name="race" value="Pacific Islander / Native Hawaiian" /><span>Pacific Islander / Native Hawaiian</span></label>
+            <label class="check-option"><input type="checkbox" name="race" value="White / European descent" /><span>White / European descent</span></label>
+            <label class="check-option"><input type="checkbox" name="race" value="Multiracial or Multiethnic" /><span>Multiracial or Multiethnic</span></label>
+            <label class="check-option"><input id="raceOtherCheck" type="checkbox" name="race" value="__other__" /><span>I prefer to self-describe</span></label>
+            <label class="check-option"><input id="racePna" type="checkbox" name="race" value="Prefer not to answer" /><span>Prefer not to answer</span></label>
+          </div>
+          <div id="raceOtherWrap" class="reveal hidden">
+            <label class="demo-label" for="raceOther">Please self-describe your race or ethnicity</label>
+            <input id="raceOther" class="demo-input" type="text" />
+          </div>
+          <div class="demo-error">Please select at least one response and complete the self-description if needed.</div>
+        </fieldset>
+
+        <div id="emailField" class="demo-field full">
+          <label class="demo-label" for="email">Email <span class="optional-note">Optional</span></label>
+          <input id="email" class="demo-input" type="email" autocomplete="email" placeholder="name@example.com" />
+          <div class="demo-help">Provide an email only if you are willing to be contacted about this study. It is not required.</div>
+          <div class="demo-error">Please enter a valid email address or leave this field blank.</div>
+        </div>
+      </div>
+      <div id="demographicsError" class="validation">Please complete the highlighted demographic items before submitting.</div>
+    </form>
+  </section>
+  <div id="demographicsActions" class="demographics-actions hidden">
+    <button id="backToPracticeBtn" class="btn secondary" type="button">Back</button>
+    <button id="submitStudyBtn" class="btn" type="button">Submit to receive SurveySwap credit</button>
+  </div>
+
+
+  <section id="completeScreen" class="card complete hidden">
+    <div class="brandline" style="margin-bottom:10px">Study complete</div>
+    <h2>Thank you for completing the leadership practice study.</h2>
+    <p id="submitStatus">Your responses were submitted successfully.</p>
+
+    <div class="completion-grid">
+      <section class="completion-panel" aria-labelledby="surveySwapTitle">
+        <h3 id="surveySwapTitle">SurveySwap credit</h3>
+        <p class="small">If you are participating through SurveySwap, use the completion code below to receive credit.</p>
+        <div class="code-box">
+          <code id="surveySwapCode" class="survey-code">2CJ7-NMH8-AGX6</code>
+          <button id="copySurveySwapCode" class="btn secondary" type="button">Copy code</button>
+        </div>
+        <div class="completion-actions">
+          <a class="btn" href="https://surveyswap.io/sr/2CJ7-NMH8-AGX6" target="_blank" rel="noopener">Open SurveySwap</a>
+        </div>
+        <p id="copyStatus" class="small" aria-live="polite"></p>
+      </section>
+
+      <section class="completion-panel profile-panel" aria-labelledby="profileTitle">
+        <h3 id="profileTitle">Discover your leadership profile</h3>
+        <p class="small">Want to see your own R.I.S.E. Index™ leadership profile? You can take the R.I.S.E. Inventory now.</p>
+        <div class="completion-actions">
+          <a class="btn" href="https://www.renfaut.org/rise-inventory" target="_blank" rel="noopener">Take the R.I.S.E. Inventory</a>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <div class="footer">R.I.S.E. Index™ | Renfaut™ Praxis Paradigm | Created by T. Lee Morgan, Ph.D.</div>
+</div>
+
+<script>
+/*
+  DEPLOYMENT NOTES
+  - Balanced rotation links: append ?assignment=1 through ?assignment=12.
+  - Each assignment contains two different principles, exactly one Anchoring and one Exploring practice.
+  - Across the 12 assignments, every retained leadership practice appears twice: once in position 1 and once in position 2.
+  - If assignment is omitted, the page chooses one assignment randomly and stores it in localStorage for this browser.
+  - To collect centrally, set SUBMIT_ENDPOINT to an HTTPS endpoint accepting JSON POST. If left blank, the page only stores locally and enables CSV/JSON download.
+*/
+const SUBMIT_ENDPOINT = "https://script.google.com/macros/s/AKfycbwXdOrIyve4V0yAwVzHKvDAyH3aM39SGzKwgShLAvraAoTW5lS18EpqYTTVSR8tLOtk2g/exec";
+const studyData = [{"num": 1, "principle": "Reality Reckoning", "orientation": "Anchoring", "title": "Change What Is Shaping the Problem", "problem": "A problem can keep repeating when we address only what happened and not what is helping cause it.", "steps": ["Choose one current problem.", "Identify one rule, routine, resource decision, or past practice helping create it.", "Change one part of that condition that you can influence."], "questions": {"1": {"prompt": "Which statement best describes what this leadership practice is trying to accomplish?", "options": ["Help people respond more consistently when the same issue occurs again.", "Address an underlying factor that contributes to repeated outcomes.", "Include additional perspectives before deciding how to move forward.", "Build agreement among those involved about the next course of action."]}, "2": {"prompt": "A team has missed the same deadline several times. Each time, staff are reminded to manage their time more carefully, but the delays continue. Which response best reflects this leadership practice?", "options": ["Reinforce expectations for completing the work on time.", "Agree on a different plan for the next deadline.", "Adjust a workflow condition contributing to the delays.", "Gather more information before deciding how to respond."]}, "3": {"prompt": "What about the leadership practice led you to choose your response to Question 2?", "options": []}, "4": {"prompt": "Which statement best reflects the kind of leadership this practice is developing?", "options": ["Looking beyond an immediate issue to address conditions contributing to it.", "Staying open to different possibilities when the best direction is uncertain.", "Taking action when an established pattern needs to be interrupted.", "Shifting how voice, authority, or resources are shared with others.", "Strengthening practices that support learning, repair, and renewal over time."]}, "5": {"prompt": "If the response you selected in Question 2 were carried out successfully, what would be different afterward?", "options": []}, "6": {"prompt": "What, if anything, would still need to happen for the response you selected to make a meaningful difference?", "options": []}}, "theme": "rr"}, {"num": 2, "principle": "Reality Reckoning", "orientation": "Exploring", "title": "Put a Person in the Pattern", "problem": "A system can appear to be working while the experiences of the people inside it are signaling that something is beginning to erode.", "steps": ["Choose one recurring organizational practice, process, or decision.", "Identify one person’s experience of it.", "Ask what that experience reveals about how the system is actually working.", "Make one recommendation based on that new insight."], "questions": {"1": {"prompt": "Which statement best describes what this leadership practice is trying to accomplish?", "options": ["Determine whether one person’s experience is representative enough to justify changing an organizational practice.", "Use an individual experience to better understand how an organizational system is actually functioning.", "Make organizational decisions more responsive by prioritizing personal concerns over established performance measures.", "Identify which employees are having difficulty adapting to an organizational process."]}, "2": {"prompt": "A department uses the same scheduling process it has used for several years. Overall targets are being met, but one employee describes repeatedly having difficulty accessing important opportunities because of how assignments are made. Which response best reflects this leadership practice?", "options": ["Review whether the employee is meeting expectations before deciding whether the scheduling process needs attention.", "Ask whether other employees have reported the same concern before considering any recommendation about the process.", "Examine what the employee’s experience reveals about how the scheduling process is working, then make a recommendation based on that insight.", "Explain the purpose of the scheduling process and help the employee identify ways to navigate it more effectively."]}, "3": {"prompt": "What about the leadership practice led you to choose your response to Question 2?", "options": []}, "4": {"prompt": "Which statement best reflects the kind of leadership this practice is developing?", "options": ["Understanding how systems, structures, and organizational practices shape what people actually experience.", "Remaining open to uncertainty and allowing new possibilities to emerge before settling on a response.", "Taking direct action to interrupt an inequitable practice when harm is occurring.", "Shifting formal authority so that people affected by a decision share responsibility for making it.", "Strengthening practices that support ongoing learning, repair, and renewal over time."]}, "5": {"prompt": "If the response you selected in Question 2 were carried out successfully, what would be different afterward?", "options": []}, "6": {"prompt": "What, if anything, would still need to happen for the response you selected to make a meaningful difference?", "options": []}}, "theme": "rr"}, {"num": 3, "principle": "Reality Reckoning", "orientation": "Anchoring", "title": "Bring Impact Into the Room", "problem": "Decisions can be made without including the people who will actually experience the outcome, leading to choices that overlook important perspectives.", "steps": ["Choose one upcoming decision that will affect other people.", "Identify one person who will directly experience the outcome.", "Ask for their perspective before the decision is made.", "Let the person know how their perspective impacted your decision."], "questions": {"1": {"prompt": "Which statement best describes what this leadership practice is trying to accomplish?", "options": ["Help decision-makers gather enough information before choosing a course of action.", "Include someone affected by a decision so their perspective can influence what happens.", "Build agreement among people who have different views about a decision.", "Give people more information about why an organizational decision was made."]}, "2": {"prompt": "A department is revising its employee onboarding process after several new hires struggled during their first few months. Which response best reflects this leadership practice?", "options": ["Review completion data to determine which parts of onboarding cause the most difficulty.", "Ask supervisors which parts of the process they believe should be revised.", "Use a recent employee's experience to help shape which parts of the process are changed.", "Revise the process and ask new employees for feedback after the changes are introduced."]}, "3": {"prompt": "What about the leadership practice led you to choose your response to Question 2?", "options": []}, "4": {"prompt": "Which statement best reflects the kind of leadership this practice is developing?", "options": ["Recognizing who is affected by decisions and bringing their perspective into the decision-making process.", "Remaining open to different possibilities when the best direction is not yet clear.", "Taking purposeful action when an established way of working needs to be interrupted.", "Changing how authority and responsibility for decisions are shared among those involved.", "Strengthening practices that support learning, repair, and renewal over time."]}, "5": {"prompt": "If the response you selected in Question 2 were carried out successfully, what would be different afterward?", "options": []}, "6": {"prompt": "What, if anything, would still need to happen for the response you selected to make a meaningful difference?", "options": []}}, "theme": "rr"}, {"num": 4, "principle": "Reality Reckoning", "orientation": "Exploring", "title": "Use the Power You Have", "problem": "Recognizing that important perspectives are missing from a decision only changes the outcome when someone acts.", "steps": ["Choose one decision you can influence.", "Identify a perspective that may be missing from the decision process.", "Use your influence to ensure that perspective is included in the decision."], "questions": {"1": {"prompt": "Which statement best describes what this leadership practice is trying to accomplish?", "options": ["Help people recognize which perspectives may be missing from an important decision.", "Encourage decision-makers to gather more information before reaching a conclusion.", "Move from recognizing a missing perspective to using your influence to bring it into the decision.", "Help people reach agreement when different perspectives shape the same decision."]}, "2": {"prompt": "A committee is deciding how to allocate limited funding across several programs. During the discussion, most of the conversation reflects the priorities of people who manage the programs. Which response best reflects this leadership practice?", "options": ["Ask the program managers to explain how they determined their funding priorities.", "Review additional information about each program before the committee makes its decision.", "Raise a perspective that has not been represented and make sure it is considered as the committee decides.", "Encourage committee members to identify areas where they can reach agreement before allocating the funds."]}, "3": {"prompt": "What about the leadership practice led you to choose your response to Question 2?", "options": []}, "4": {"prompt": "Which statement best reflects the kind of leadership this practice is developing?", "options": ["Recognizing when an important perspective is absent and using your influence to bring it into a decision.", "Remaining open to different possibilities when the best direction is not yet clear.", "Taking purposeful action when an established practice needs to be interrupted.", "Changing who formally holds authority or responsibility for making a decision.", "Strengthening practices that support ongoing learning, repair, and renewal."]}, "5": {"prompt": "If the response you selected in Question 2 were carried out successfully, what would be different afterward?", "options": []}, "6": {"prompt": "What, if anything, would still need to happen for the response you selected to make a meaningful difference?", "options": []}}, "theme": "rr"}, {"num": 8, "principle": "Indeterminate Becoming", "orientation": "Exploring", "title": "Take the Next Step", "problem": "Seeing many possibilities can keep you considering what might happen without taking a step toward change.", "steps": ["Choose one challenge where uncertainty has delayed action.", "Identify one manageable step that could open opportunities for those affected.", "Take that step while some questions remain unanswered."], "questions": {"1": {"prompt": "Which statement best describes what this leadership practice is trying to accomplish?", "options": ["Narrow the possibilities until one clear direction emerges.", "Make progress without needing to settle every open question.", "Build agreement before putting a proposed approach into practice.", "Develop a complete plan that anticipates possible difficulties."]}, "2": {"prompt": "A team wants to make its professional learning program accessible to staff across different shifts. Discussions have stalled because members cannot resolve every scheduling and staffing concern. Which response best reflects this leadership practice?", "options": ["Survey all staff to establish their scheduling preferences before changing the program.", "Continue comparing delivery formats until the team agrees on a workable arrangement.", "Offer one session on an underserved shift while longer-term arrangements remain unsettled.", "Develop a full staffing proposal before introducing sessions outside the usual schedule."]}, "3": {"prompt": "What about the leadership practice led you to choose your response to Question 2?", "options": []}, "4": {"prompt": "Which statement best reflects the kind of leadership this practice is developing?", "options": ["Recognizing underlying conditions that shape people’s experiences.", "Moving forward while remaining open to what is still uncertain.", "Interrupting an established practice through purposeful action.", "Changing how authority or responsibility for decisions is shared.", "Strengthening practices that support ongoing learning, repair, and renewal."]}, "5": {"prompt": "If the response you selected in Question 2 were carried out successfully, what would be different afterward?", "options": []}, "6": {"prompt": "What, if anything, would still need to happen for the response you selected to make a meaningful difference?", "options": []}}, "theme": "ib"}, {"num": 9, "principle": "Indeterminate Becoming", "orientation": "Anchoring", "title": "Let Experience Change Your Approach", "problem": "Relying on your own perspective can keep you from recognizing what another person’s experience reveals.", "steps": ["Choose one decision or practice you can influence.", "Ask someone affected how their experience differs from your understanding.", "Make a change based on their perspective and tell them what changed."], "questions": {"1": {"prompt": "Which statement best describes what this leadership practice is trying to accomplish?", "options": ["Help others understand the reasoning behind a decision that affects them.", "Allow another person’s experience to reshape your approach and make that influence visible.", "Gather different perspectives to establish whether your original approach has support.", "Build agreement about a decision before explaining how it will be implemented."]}, "2": {"prompt": "A supervisor believes the team’s weekly planning meeting gives everyone an opportunity to contribute. An employee explains that decisions are often settled before they have time to consider the proposals. Which response best reflects this leadership practice?", "options": ["Explain how meeting decisions are made and encourage the employee to contribute earlier.", "Ask other team members whether they share the concern before considering any changes.", "Send proposals earlier and tell the employee how their experience prompted the change.", "Offer to discuss proposals privately so the employee can prepare for the existing process."]}, "3": {"prompt": "What about the leadership practice led you to choose your response to Question 2?", "options": []}, "4": {"prompt": "Which statement best reflects the kind of leadership this practice is developing?", "options": ["Recognizing underlying conditions that shape people’s experiences.", "Revising your approach when another person’s experience challenges your understanding.", "Interrupting an established practice through purposeful action.", "Changing how authority or responsibility for decisions is shared.", "Strengthening practices that support ongoing learning, repair, and renewal."]}, "5": {"prompt": "If the response you selected in Question 2 were carried out successfully, what would be different afterward?", "options": []}, "6": {"prompt": "What, if anything, would still need to happen for the response you selected to make a meaningful difference?", "options": []}}, "theme": "ib"}, {"num": 10, "principle": "Indeterminate Becoming", "orientation": "Exploring", "title": "Put Feedback Into Practice", "problem": "Continuing to gather feedback can delay making a change based on what people have already told you.", "steps": ["Choose one piece of feedback you have already received.", "Identify one concrete change you can make in response.", "Make the change before seeking additional input."], "questions": {"1": {"prompt": "Which statement best describes what this leadership practice is trying to accomplish?", "options": ["Establish which concerns are most widely shared before choosing a response.", "Turn existing feedback into a change rather than continuing to collect perspectives.", "Clarify what people meant so their recommendations can be accurately documented.", "Bring different viewpoints together to build agreement about a proposed response."]}, "2": {"prompt": "Staff have repeatedly told a program coordinator that application instructions are difficult to follow and have identified specific sections that need clarification. The next application period opens soon. Which response best reflects this leadership practice?", "options": ["Survey previous applicants to determine which sections caused the most difficulty.", "Hold a listening session to gather suggestions about improving the application process.", "Revise the identified sections using the specific feedback staff have already provided.", "Compare application materials from similar programs before deciding what to revise."]}, "3": {"prompt": "What about the leadership practice led you to choose your response to Question 2?", "options": []}, "4": {"prompt": "Which statement best reflects the kind of leadership this practice is developing?", "options": ["Recognizing underlying conditions that shape people’s experiences.", "Translating feedback already received into a concrete adjustment in practice.", "Interrupting an established practice through purposeful action.", "Changing how authority or responsibility for decisions is shared.", "Strengthening practices that support ongoing learning, repair, and renewal."]}, "5": {"prompt": "If the response you selected in Question 2 were carried out successfully, what would be different afterward?", "options": []}, "6": {"prompt": "What, if anything, would still need to happen for the response you selected to make a meaningful difference?", "options": []}}, "theme": "ib"}, {"num": 11, "principle": "Indeterminate Becoming", "orientation": "Anchoring", "title": "Let Someone Else Decide", "problem": "Making decisions yourself can keep others from developing their judgment and limit your organization’s capacity to draw on what they know.", "steps": ["Choose one decision you would normally make yourself.", "Give another person meaningful authority to make and carry out that decision.", "Support their decision, including when others question it."], "questions": {"1": {"prompt": "Which statement best describes what this leadership practice is trying to accomplish?", "options": ["Prepare others to apply your judgment consistently when making decisions independently.", "Develop others’ judgment while making room for choices different from your own.", "Distribute decision responsibilities so you can focus on more demanding priorities.", "Gather others’ recommendations to strengthen the decisions you remain responsible for making."]}, "2": {"prompt": "A manager gives a team member responsibility for planning the next staff learning session. The team member proposes an approach different from what the manager would choose, and the manager is unsure whether it will work well. Which response best reflects this leadership practice?", "options": ["Review the approaches together and jointly decide which one to take.", "Let the team member lead using the manager’s preferred approach as a starting point.", "Review the approaches together and let the team member decide which one to take.", "Have the manager lead the session using the team member’s proposed approach."]}, "3": {"prompt": "What about the leadership practice led you to choose your response to Question 2?", "options": []}, "4": {"prompt": "Which statement best reflects the kind of leadership this practice is developing?", "options": ["Recognizing underlying conditions that shape people’s experiences.", "Accepting the limits of your judgment and allowing others’ judgment to shape what happens.", "Interrupting an established practice through purposeful action.", "Redesigning how decision-making authority is distributed across the organization.", "Strengthening practices that support ongoing learning, repair, and renewal."]}, "5": {"prompt": "If the response you selected in Question 2 were carried out successfully, what would be different afterward?", "options": []}, "6": {"prompt": "What, if anything, would still need to happen for the response you selected to make a meaningful difference?", "options": []}}, "theme": "ib"}, {"num": 13, "principle": "Disruptive Engagement", "orientation": "Anchoring", "title": "Interrupt the Pattern", "problem": "Waiting to find the right response can allow an inequitable practice to continue unchallenged.", "steps": ["Notice a practice that reinforces inequity.", "Name the concern in the moment.", "Ask for the practice to change."], "questions": {"1": {"prompt": "Which statement best describes what this leadership practice is trying to accomplish?", "options": ["Understand the reasons behind a practice before deciding how to address it.", "Respond to inequity as it occurs without waiting for a fully developed response.", "Prepare others to recognize an inequitable practice before discussing possible changes.", "Build support for a different practice before raising concerns about the current one."]}, "2": {"prompt": "During a meeting, a woman’s suggestion receives little attention. A male colleague later repeats it, and the manager credits him with the idea. Which response best reflects this leadership practice?", "options": ["Speak with the manager afterward about how contributions were recognized.", "Ask the woman privately whether she wants help addressing what happened.", "Point out that she introduced the idea and ask that she receive credit.", "Suggest a future discussion about how the team recognizes people’s contributions."]}, "3": {"prompt": "What about the leadership practice led you to choose your response to Question 2?", "options": []}, "4": {"prompt": "Which statement best reflects the kind of leadership this practice is developing?", "options": ["Recognizing underlying conditions that shape people’s experiences.", "Exploring different possibilities when the best direction is uncertain.", "Intervening when an established practice reproduces inequity.", "Changing how authority or responsibility for decisions is shared.", "Strengthening practices that support ongoing learning, repair, and renewal."]}, "5": {"prompt": "If the response you selected in Question 2 were carried out successfully, what would be different afterward?", "options": []}, "6": {"prompt": "What, if anything, would still need to happen for the response you selected to make a meaningful difference?", "options": []}}, "theme": "de"}, {"num": 14, "principle": "Disruptive Engagement", "orientation": "Exploring", "title": "Keep What Works", "problem": "Moving quickly to interrupt an inequitable practice can disrupt relationships or ways of working that help people.", "steps": ["Choose one intervention you are planning.", "Identify a relationship or practice that works well.", "Adjust your intervention to preserve it while addressing the inequity.", "Tell those affected what you are changing, what you are keeping, and why."], "questions": {"1": {"prompt": "Which statement best describes what this leadership practice is trying to accomplish?", "options": ["Build support for an intervention by emphasizing what people will gain.", "Address inequity while deliberately preserving and explaining what remains valuable.", "Reduce resistance by limiting changes to those people already support.", "Establish agreement about what should change before planning an intervention."]}, "2": {"prompt": "A manager plans to replace a weekly team meeting because a few senior employees dominate the discussion. Staff also use the meeting to exchange practical help that they value. Which response best reflects this leadership practice?", "options": ["Replace the meeting and explain how the new arrangement will support broader participation.", "Keep the meeting and ask senior employees to make more room for others to contribute.", "Redesign participation, retain peer support, and explain what is changing and being preserved.", "Ask staff to choose between keeping the current meeting and adopting a different format."]}, "3": {"prompt": "What about the leadership practice led you to choose your response to Question 2?", "options": []}, "4": {"prompt": "Which statement best reflects the kind of leadership this practice is developing?", "options": ["Recognizing underlying conditions that shape people’s experiences.", "Exploring different possibilities when the best direction is uncertain.", "Interrupting inequity while deliberately preserving what supports people.", "Changing how authority or responsibility for decisions is shared.", "Strengthening practices that support ongoing learning, repair, and renewal."]}, "5": {"prompt": "If the response you selected in Question 2 were carried out successfully, what would be different afterward?", "options": []}, "6": {"prompt": "What, if anything, would still need to happen for the response you selected to make a meaningful difference?", "options": []}}, "theme": "de"}, {"num": 15, "principle": "Disruptive Engagement", "orientation": "Anchoring", "title": "Put Resources Behind Your Support", "problem": "Expressing support can leave people experiencing inequity carrying the work without resources you could contribute.", "steps": ["Identify an effort led by people experiencing inequity.", "Choose a tangible resource you can contribute—time, access, or influence.", "Put that resource to use in support of their effort."], "questions": {"1": {"prompt": "Which statement best describes what this leadership practice is trying to accomplish?", "options": ["Increase awareness of an effort so more people understand why it matters.", "Turn support into a tangible contribution while those affected continue leading.", "Strengthen an effort by offering recommendations drawn from your professional experience.", "Build agreement about an effort’s goals before deciding whether to participate."]}, "2": {"prompt": "Employees with disabilities are leading an effort to improve workplace accessibility. A colleague supports their goals and has access to meeting space the group needs for its planning sessions. Which response best reflects this leadership practice?", "options": ["Express support at the next staff meeting and encourage others to learn about the effort.", "Offer suggestions about organizing the sessions based on experience with similar projects.", "Arrange the needed meeting space while leaving the group responsible for its planning.", "Offer to lead the planning sessions so the employees have fewer responsibilities to manage."]}, "3": {"prompt": "What about the leadership practice led you to choose your response to Question 2?", "options": []}, "4": {"prompt": "Which statement best reflects the kind of leadership this practice is developing?", "options": ["Recognizing underlying conditions that shape people’s experiences.", "Revising your approach when another person’s experience challenges your understanding.", "Contributing tangible resources to work led by people experiencing inequity.", "Changing how authority or responsibility for decisions is shared.", "Strengthening practices that support ongoing learning, repair, and renewal."]}, "5": {"prompt": "If the response you selected in Question 2 were carried out successfully, what would be different afterward?", "options": []}, "6": {"prompt": "What, if anything, would still need to happen for the response you selected to make a meaningful difference?", "options": []}}, "theme": "de"}, {"num": 16, "principle": "Disruptive Engagement", "orientation": "Exploring", "title": "Let Those Affected Guide Your Contribution", "problem": "Being ready to help can lead you to contribute in ways that reflect your assumptions rather than what people need.", "steps": ["Identify an effort led by people experiencing inequity.", "Ask those most affected what contribution would be useful from you.", "Act on their direction."], "questions": {"1": {"prompt": "Which statement best describes what this leadership practice is trying to accomplish?", "options": ["Identify where your professional expertise could make the greatest contribution.", "Let those experiencing the issue shape how you participate in addressing it.", "Build shared agreement about which contribution would be easiest to organize.", "Offer several forms of support so people can select from available options."]}, "2": {"prompt": "Employees working overnight shifts are organizing to improve access to professional development. A colleague from the day shift wants to help and has ideas about what the group should do. Which response best reflects this leadership practice?", "options": ["Develop a proposal based on those ideas and invite the group to comment.", "Offer to organize a workshop using the colleague’s existing professional contacts.", "Ask the group what help would be useful and follow through on its request.", "Join the next discussion and explain which approach seems most likely to succeed."]}, "3": {"prompt": "What about the leadership practice led you to choose your response to Question 2?", "options": []}, "4": {"prompt": "Which statement best reflects the kind of leadership this practice is developing?", "options": ["Recognizing underlying conditions that shape people’s experiences.", "Revising your understanding when another person’s experience challenges it.", "Acting in solidarity under the direction of those most affected.", "Changing how formal authority for organizational decisions is distributed.", "Strengthening practices that support ongoing learning, repair, and renewal."]}, "5": {"prompt": "If the response you selected in Question 2 were carried out successfully, what would be different afterward?", "options": []}, "6": {"prompt": "What, if anything, would still need to happen for the response you selected to make a meaningful difference?", "options": []}}, "theme": "de"}];
+const assignments = {"1": [1, 8], "2": [3, 10], "3": [2, 9], "4": [4, 11], "5": [14, 1], "6": [16, 3], "7": [13, 2], "8": [15, 4], "9": [9, 14], "10": [11, 16], "11": [8, 13], "12": [10, 15]};
+const letters = ["A","B","C","D","E"];
+const byNum = Object.fromEntries(studyData.map(x => [x.num, x]));
+
+let assignmentNumber = null;
+let sequence = [];
+let currentIndex = 0;
+let participantId = "";
+let responses = {};
+let demographics = {};
+
+function getAssignment() {
+  const params = new URLSearchParams(location.search);
+  const raw = Number(params.get("assignment"));
+  if (Number.isInteger(raw) && raw >= 1 && raw <= 12) return raw;
+  const saved = Number(localStorage.getItem("rise_path_assignment"));
+  if (Number.isInteger(saved) && saved >= 1 && saved <= 12) return saved;
+  const chosen = Math.floor(Math.random()*12)+1;
+  localStorage.setItem("rise_path_assignment", String(chosen));
+  return chosen;
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+}
+
+function radioOptions(path, qNum) {
+  const q = path.questions[String(qNum)];
+  return `<div class="options">${q.options.map((opt,i)=>`
+    <label class="option"><input type="radio" name="p${path.num}q${qNum}" value="${letters[i]}" />
+    <span><strong>${letters[i]}.</strong> ${esc(opt)}</span></label>`).join('')}</div>`;
+}
+
+function qualitativeHelper(id) {
+  return `<div id="${id}Help" class="qual-help hidden" role="alert"></div>`;
+}
+
+function questionBlock(path, qNum) {
+  const q = path.questions[String(qNum)];
+  if ([1,2,4].includes(qNum)) return `
+    <div class="question">
+      <div class="qprompt"><span class="qnum">${qNum}</span>${esc(q.prompt)}</div>
+      ${radioOptions(path,qNum)}
+    </div>`;
+  if (qNum===3) return `
+    <div class="question">
+      <div class="qprompt"><span class="qnum">3</span>${esc(q.prompt)}</div>
+      <textarea id="p${path.num}q3" aria-label="Question 3 response" autocomplete="off" placeholder="Type a brief response in your own words."></textarea>
+      ${qualitativeHelper(`p${path.num}q3`)}
+    </div>`;
+  return '';
+}
+function renderPractice() {
+  const path = byNum[sequence[currentIndex]];
+  const card = document.getElementById('practiceCard');
+  card.className = `card practice ${path.theme}`;
+  document.getElementById('progressLabel').textContent = `Practice ${currentIndex+1} of 2`;
+  const pct = currentIndex===0 ? 50 : 100;
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressBar').style.width = pct + '%';
+
+  card.innerHTML = `
+    <div class="practice-display">
+      <div class="practice-heading">
+        <h2 class="title">${esc(path.title)}</h2>
+        <p class="problem">${esc(path.problem)}</p>
+      </div>
+      <div class="trybox">
+        <div class="trylabel">Try This</div>
+        <ol>${path.steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ol>
+      </div>
+    </div>
+    <div class="question-set">
+    ${questionBlock(path,1)}
+    ${questionBlock(path,2)}
+    ${questionBlock(path,3)}
+    ${questionBlock(path,4)}
+    <div class="either">
+      <div class="either-title">Questions 5 and 6</div>
+      <p class="either-note">Answer <strong>at least one</strong> of the two questions below. You are welcome to answer both.</p>
+      <div id="p${path.num}panel5" class="either-panel">
+        <div class="either-label"><strong>5.</strong> ${esc(path.questions['5'].prompt)}</div>
+        <textarea id="p${path.num}q5" aria-label="Question 5 response" autocomplete="off" placeholder="Type a brief response in your own words."></textarea>
+        ${qualitativeHelper(`p${path.num}q5`)}
+      </div>
+      <div id="p${path.num}panel6" class="either-panel">
+        <div class="either-label"><strong>6.</strong> ${esc(path.questions['6'].prompt)}</div>
+        <textarea id="p${path.num}q6" aria-label="Question 6 response" autocomplete="off" placeholder="Type a brief response in your own words."></textarea>
+        ${qualitativeHelper(`p${path.num}q6`)}
+      </div>
+      <div id="p${path.num}eitherError" class="qual-error hidden">Please answer Question 5, Question 6, or both with a brief response in your own words.</div>
+    </div>
+    <div id="validation" class="validation">Please complete the highlighted items before continuing.</div>
+    </div>
+    <div class="actions">
+      <button id="backBtn" class="btn secondary" type="button" ${currentIndex===0?'disabled':''}>Back</button>
+      <button id="nextBtn" class="btn" type="button">Continue</button>
+    </div>`;
+
+  restorePath(path.num);
+  setupQualitativeField(`p${path.num}q3`);
+  setupQualitativeField(`p${path.num}q5`);
+  setupQualitativeField(`p${path.num}q6`);
+  document.getElementById('nextBtn').addEventListener('click', saveAndContinue);
+  document.getElementById('backBtn').addEventListener('click', goBack);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function val(name) {
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  return el ? el.value : '';
+}
+
+function cleanWords(text) {
+  return (text.trim().toLowerCase().match(/[a-zà-öø-ÿ']+/gi) || []);
+}
+
+function hasUnreadableFiller(text) {
+  const clean=text.toLowerCase();
+  const compact=clean.replace(/[^a-z]/g,'');
+  const keyboardPatterns=['asdf','qwerty','sdfg','dfgh','fghj','ghjk','hjkl','zxcv','xcvb','cvbn','vbnm','lkjh','poiuy','mnbv'];
+  if(keyboardPatterns.some(p=>compact.includes(p))) return true;
+  if(/(.)\1{5,}/i.test(compact)) return true;
+  const rawTokens=clean.split(/\s+/).filter(Boolean);
+  const suspicious=rawTokens.filter(t=>{
+    const alpha=t.replace(/[^a-z]/g,'');
+    if(!alpha) return false;
+    if(/[;\\/]{1,}/.test(t) && alpha.length>=3) return true;
+    if(alpha.length>=5 && !/[aeiouy]/.test(alpha)) return true;
+    return keyboardPatterns.some(p=>alpha.includes(p));
+  });
+  if(suspicious.length>=2) return true;
+  const words=cleanWords(clean);
+  const counts={}; words.forEach(w=>counts[w]=(counts[w]||0)+1);
+  if(words.length>=4 && Math.max(...Object.values(counts))/words.length>.6) return true;
+  return false;
+}
+
+function meaningful(text, id='') {
+  const clean=text.trim();
+  const words=cleanWords(clean);
+  const unique=new Set(words);
+  const letters=(clean.match(/[a-zà-öø-ÿ]/gi)||[]).length;
+  const q3=id.endsWith('q3');
+  const minWords=q3 ? 10 : 8;
+  const minUnique=q3 ? 6 : 5;
+  const minLetters=q3 ? 35 : 30;
+  if(words.length<minWords || unique.size<minUnique || letters<minLetters) return false;
+  if(hasUnreadableFiller(clean)) return false;
+  return true;
+}
+
+function showQualitativeError(id, message) {
+  const area=document.getElementById(id); if(!area) return;
+  const help=document.getElementById(id+'Help');
+  area.classList.add('invalid-input');
+  area.setAttribute('aria-invalid','true');
+  if(help){ help.textContent=message; help.classList.remove('hidden'); }
+}
+
+function clearQualitativeError(id) {
+  const area=document.getElementById(id); if(!area) return;
+  const help=document.getElementById(id+'Help');
+  area.classList.remove('invalid-input');
+  area.removeAttribute('aria-invalid');
+  if(help){ help.textContent=''; help.classList.add('hidden'); }
+}
+
+function updateQualitativeField(id, force=false) {
+  const area=document.getElementById(id); if(!area) return true;
+  const value=area.value.trim();
+  if(!force){ clearQualitativeError(id); return !value || meaningful(value,id); }
+  if(!value){
+    showQualitativeError(id, id.endsWith('q3') ? 'Please explain your reasoning in your own words.' : 'Please enter a brief response in your own words.');
+    return false;
+  }
+  if(hasUnreadableFiller(value)){
+    showQualitativeError(id,'Please remove filler or unreadable text and respond in your own words.');
+    return false;
+  }
+  if(!meaningful(value,id)){
+    showQualitativeError(id, id.endsWith('q3') ? 'Please give a little more explanation of your reasoning.' : 'Please give a little more detail so your response can be understood.');
+    return false;
+  }
+  clearQualitativeError(id);
+  return true;
+}
+
+function setupQualitativeField(id) {
+  const area=document.getElementById(id); if(!area) return;
+  const showPasteBlocked=()=>showQualitativeError(id,'Please type your response in your own words. Copying and pasting is disabled.');
+  area.addEventListener('paste',e=>{e.preventDefault();showPasteBlocked();});
+  area.addEventListener('drop',e=>{e.preventDefault();showPasteBlocked();});
+  area.addEventListener('beforeinput',e=>{if(e.inputType==='insertFromPaste'||e.inputType==='insertFromDrop'){e.preventDefault();showPasteBlocked();}});
+  area.addEventListener('input',()=>clearQualitativeError(id));
+}
+
+function collectPath(num) {
+  const q5=document.getElementById(`p${num}q5`).value.trim();
+  const q6=document.getElementById(`p${num}q6`).value.trim();
+  const answered=[q5?'5':null,q6?'6':null].filter(Boolean);
+  return {
+    q1: val(`p${num}q1`),
+    q2: val(`p${num}q2`),
+    q3: document.getElementById(`p${num}q3`).value.trim(),
+    q4: val(`p${num}q4`),
+    either: answered.length===2?'both':(answered[0]||''),
+    q5,
+    q6
+  };
+}
+
+function validPath(r, num) {
+  let ok=true;
+  if (!r.q1 || !r.q2 || !r.q4) ok=false;
+  if (!updateQualitativeField(`p${num}q3`, true)) ok=false;
+  const q5id=`p${num}q5`, q6id=`p${num}q6`;
+  const q5ok=!!r.q5 && meaningful(r.q5,q5id);
+  const q6ok=!!r.q6 && meaningful(r.q6,q6id);
+  if (r.q5 && !updateQualitativeField(q5id, true)) ok=false;
+  if (r.q6 && !updateQualitativeField(q6id, true)) ok=false;
+  const eitherError=document.getElementById(`p${num}eitherError`);
+  if (!q5ok && !q6ok) {
+    if(eitherError) eitherError.classList.remove('hidden');
+    if(!r.q5 && !r.q6) ok=false;
+    else ok=false;
+  } else if(eitherError) eitherError.classList.add('hidden');
+  return ok;
+}
+function saveAndContinue() {
+  const num = sequence[currentIndex];
+  const r = collectPath(num);
+  const msg = document.getElementById('validation');
+  if (!validPath(r, num)) { msg.style.display='block'; const first=document.querySelector('.invalid-input'); if(first) first.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+  msg.style.display='none';
+  responses[num]=r;
+  saveLocal();
+  if (currentIndex===0) { currentIndex=1; renderPractice(); }
+  else showDemographics();
+}
+
+function goBack() {
+  if (currentIndex===0) return;
+  const num=sequence[currentIndex];
+  responses[num]=collectPath(num);
+  saveLocal();
+  currentIndex=0;
+  renderPractice();
+}
+
+function restorePath(num) {
+  const r=responses[num]; if(!r) return;
+  for (const q of [1,2,4]) {
+    if (r['q'+q]) { const e=document.querySelector(`input[name="p${num}q${q}"][value="${r['q'+q]}"]`); if(e)e.checked=true; }
+  }
+  document.getElementById(`p${num}q3`).value=r.q3||'';
+  document.getElementById(`p${num}q5`).value=r.q5||'';
+  document.getElementById(`p${num}q6`).value=r.q6||'';
+}
+function payload() {
+  return {
+    study:'R.I.S.E. Index Leadership Practice Study - 12 Practice',
+    version:'2026-11-09',
+    participant_id:participantId,
+    assignment:assignmentNumber,
+    sequence,
+    completed_at:new Date().toISOString(),
+    responses: sequence.map((num,position)=>{
+      const p=byNum[num], r=responses[num];
+      return {position:position+1,path_number:num,title:p.title,principle:p.principle,orientation:p.orientation,...r};
+    }),
+    demographics
+  };
+}
+
+function saveLocal() {
+  localStorage.setItem('rise_path_progress', JSON.stringify({participantId,assignmentNumber,sequence,currentIndex,responses,demographics}));
+}
+
+function selectedValues(name) {
+  return [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(x=>x.value);
+}
+
+function collectDemographics() {
+  return {
+    age_range: document.getElementById('ageRange').value,
+    country: document.getElementById('country').value.trim(),
+    professional_role: document.getElementById('professionalRole').value.trim(),
+    sector: document.getElementById('sector').value,
+    sector_other: document.getElementById('sectorOther').value.trim(),
+    leadership_years: document.getElementById('leadershipYears').value,
+    gender_identity: selectedValues('gender'),
+    gender_other: document.getElementById('genderOther').value.trim(),
+    race_ethnicity: selectedValues('race'),
+    race_other: document.getElementById('raceOther').value.trim(),
+    email: document.getElementById('email').value.trim()
+  };
+}
+
+function restoreDemographics() {
+  if(!demographics || !Object.keys(demographics).length) return;
+  const set=(id,v)=>{const e=document.getElementById(id); if(e && v!=null)e.value=v;};
+  set('ageRange',demographics.age_range); set('country',demographics.country); set('professionalRole',demographics.professional_role);
+  set('sector',demographics.sector); set('sectorOther',demographics.sector_other); set('leadershipYears',demographics.leadership_years);
+  set('genderOther',demographics.gender_other); set('raceOther',demographics.race_other); set('email',demographics.email);
+  document.querySelectorAll('input[name="gender"]').forEach(e=>e.checked=(demographics.gender_identity||[]).includes(e.value));
+  document.querySelectorAll('input[name="race"]').forEach(e=>e.checked=(demographics.race_ethnicity||[]).includes(e.value));
+  syncDemographicReveals();
+}
+
+function markDemo(id,bad) {
+  const e=document.getElementById(id); if(!e)return;
+  e.classList.toggle('has-error',!!bad);
+}
+
+function validateDemographics() {
+  demographics=collectDemographics();
+  let ok=true;
+  const rules={
+    ageField:!demographics.age_range,
+    countryField:!demographics.country,
+    roleField:!demographics.professional_role,
+    sectorField:!demographics.sector || (demographics.sector==='__other__' && !demographics.sector_other),
+    yearsField:!demographics.leadership_years,
+    genderField:!demographics.gender_identity.length || (demographics.gender_identity.includes('__other__') && !demographics.gender_other),
+    raceField:!demographics.race_ethnicity.length || (demographics.race_ethnicity.includes('__other__') && !demographics.race_other),
+    emailField:!!demographics.email && !document.getElementById('email').checkValidity()
+  };
+  Object.entries(rules).forEach(([id,bad])=>{markDemo(id,bad); if(bad)ok=false;});
+  document.getElementById('demographicsError').style.display=ok?'none':'block';
+  if(!ok){ const first=document.querySelector('#demographicsScreen .has-error'); if(first)first.scrollIntoView({behavior:'smooth',block:'center'}); }
+  return ok;
+}
+
+function syncDemographicReveals() {
+  document.getElementById('sectorOtherWrap').classList.toggle('hidden',document.getElementById('sector').value!=='__other__');
+  document.getElementById('genderOtherWrap').classList.toggle('hidden',!document.getElementById('genderOtherCheck').checked);
+  document.getElementById('raceOtherWrap').classList.toggle('hidden',!document.getElementById('raceOtherCheck').checked);
+}
+
+function setupCheckboxExclusivity(name,pnaId) {
+  const pna=document.getElementById(pnaId);
+  document.querySelectorAll(`input[name="${name}"]`).forEach(cb=>{
+    cb.addEventListener('change',()=>{
+      if(cb===pna && cb.checked){document.querySelectorAll(`input[name="${name}"]`).forEach(x=>{if(x!==pna)x.checked=false;});}
+      else if(cb!==pna && cb.checked){pna.checked=false;}
+      syncDemographicReveals();
+    });
+  });
+}
+
+function showDemographics() {
+  document.getElementById('studyScreen').classList.add('hidden');
+  document.getElementById('demographicsScreen').classList.remove('hidden');
+  document.getElementById('demographicsActions').classList.remove('hidden');
+  restoreDemographics();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+async function finishStudy() {
+  demographics=collectDemographics();
+  saveLocal();
+  const p=payload();
+  const submitBtn=document.getElementById('submitStudyBtn');
+  const msg=document.getElementById('demographicsError');
+  if(submitBtn){ submitBtn.disabled=true; submitBtn.textContent='Submitting…'; }
+  if(!SUBMIT_ENDPOINT){
+    if(submitBtn){ submitBtn.disabled=false; submitBtn.textContent='Submit to receive SurveySwap credit'; }
+    msg.textContent='This study is not connected to a response endpoint. Please contact the researcher.';
+    msg.style.display='block';
+    return;
+  }
+  try {
+    const resp=await fetch(SUBMIT_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(p)});
+    if(!resp.ok) throw new Error('HTTP '+resp.status);
+    localStorage.setItem('rise_path_complete', JSON.stringify(p));
+    localStorage.removeItem('rise_path_progress');
+    document.getElementById('demographicsScreen').classList.add('hidden');
+    document.getElementById('demographicsActions').classList.add('hidden');
+    document.getElementById('completeScreen').classList.remove('hidden');
+    document.getElementById('submitStatus').textContent='Your responses were submitted successfully.';
+    window.scrollTo({top:0,behavior:'smooth'});
+  } catch(err) {
+    if(submitBtn){ submitBtn.disabled=false; submitBtn.textContent='Submit to receive SurveySwap credit'; }
+    msg.textContent='Your response could not be submitted. Please check your connection and select Submit again.';
+    msg.style.display='block';
+  }
+}
+
+
+
+const copyBtn = document.getElementById('copySurveySwapCode');
+if (copyBtn) {
+  copyBtn.addEventListener('click', async () => {
+    const code = document.getElementById('surveySwapCode').textContent.trim();
+    const status = document.getElementById('copyStatus');
+    try {
+      await navigator.clipboard.writeText(code);
+      status.textContent = 'Completion code copied.';
+    } catch (e) {
+      status.textContent = 'Select the code above and copy it manually.';
+    }
+  });
+}
+
+
+
+document.getElementById('sector').addEventListener('change',syncDemographicReveals);
+setupCheckboxExclusivity('gender','genderPna');
+setupCheckboxExclusivity('race','racePna');
+document.getElementById('genderOtherCheck').addEventListener('change',syncDemographicReveals);
+document.getElementById('raceOtherCheck').addEventListener('change',syncDemographicReveals);
+
+document.getElementById('backToPracticeBtn').addEventListener('click',()=>{
+  demographics=collectDemographics(); saveLocal();
+  document.getElementById('demographicsScreen').classList.add('hidden');
+  document.getElementById('demographicsActions').classList.add('hidden');
+  document.getElementById('studyScreen').classList.remove('hidden');
+  currentIndex=1; renderPractice();
+});
+
+document.getElementById('submitStudyBtn').addEventListener('click',()=>{
+  if(!validateDemographics()) return;
+  finishStudy();
+});
+
+
+document.getElementById('startBtn').addEventListener('click',()=>{
+  participantId=document.getElementById('participantId').value.trim();
+  const ready=document.getElementById('readyCheck').checked;
+  const validCode=/^[A-Za-z0-9-]{6,20}$/.test(participantId);
+  if(!validCode || !ready) { document.getElementById('startError').style.display='block'; return; }
+  document.getElementById('startError').style.display='none';
+  assignmentNumber=getAssignment();
+  sequence=assignments[String(assignmentNumber)] || assignments[assignmentNumber];
+  const saved=localStorage.getItem('rise_path_progress');
+  if(saved) {
+    try { const s=JSON.parse(saved); if(s.participantId===participantId && s.assignmentNumber===assignmentNumber){ responses=s.responses||{}; demographics=s.demographics||{}; } } catch(e){}
+  }
+  document.getElementById('startScreen').classList.add('hidden');
+  document.getElementById('studyScreen').classList.remove('hidden');
+  renderPractice();
+});
+</script>
+</body>
+</html>
