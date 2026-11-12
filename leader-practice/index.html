@@ -329,10 +329,10 @@ textarea { width:100%; min-height:120px; resize:vertical; border:1px solid #BDBD
 <script>
 /*
   DEPLOYMENT NOTES
-  - Balanced rotation links: append ?assignment=1 through ?assignment=12.
+  - Production uses collector-managed completion quotas; see FINAL BALANCING PHASE below.
   - Each assignment contains two different principles, exactly one Anchoring and one Exploring practice.
   - Across the 12 assignments, every retained leadership practice appears twice: once in position 1 and once in position 2.
-  - New participants receive a random assignment; the same participant resumes an unfinished session. ?test=1 creates a labeled fresh test session.
+  - Resume preserves the original assignment. Test links may select ?test=1&assignment=1 through 12.
   - Requires the matching tracking collector. Completion is shown only after all records are confirmed saved.
 */
 const SUBMIT_ENDPOINT = "https://script.google.com/macros/s/AKfycbxRvyA7hq4mEmr_WxW1MthidQn3SHs1neL3E65CSaNxJ2o13EWei5y1bDkmamWoN91_fg/exec"; // Optional external hosting: paste the NEW /exec URL.
@@ -348,12 +348,35 @@ let participantId = "";
 let responses = {};
 let demographics = {};
 
+/* FINAL BALANCING PHASE — 2026-11-12
+   Authoritative design: Renfaut Visual Identity Guide v1.1 (July 2026).
+   All original CSS, study wording, practice pairs and ordering are preserved.
+   Remaining COMPLETIONS: assignment 1=1, 4=2, 8=4, 9=2 (nine total).
+   Production assignment is reserved by the matching Code.gs collector under
+   its script lock, after consent. Browser counters and random fallback are NOT used.
+   Reservations prevent simultaneous starts from consuming the same slot; only
+   committed non-test complete submissions fill quotas. Unfinished reservations
+   stay held for resume until the researcher explicitly releases them. Released
+   sessions retain their assignment but cannot submit; never silently reassign.
+   Existing saved sessions always keep their original assignment, regardless of URL.
+   ?assignment= is honored only in ?test=1; test requests never consume quotas.
+   Deploy Code.gs and initializeQuotaBalance before serving this HTML. If allocation
+   is unavailable/full, keep the participant on the opening screen with a retry message.
+   The collector validates the 51-completion baseline before enabling recruitment.
+*/
 function getAssignment() {
+  if(!isTest)return null;
   const raw=Number(params.get('assignment'));
-  if(Number.isInteger(raw)&&raw>=1&&raw<=12)return raw;
-  const saved=readSaved();
-  if(saved && saved.participantId===participantId && saved.tracking && !saved.tracking.confirmed && Number.isInteger(saved.assignmentNumber) && saved.assignmentNumber>=1 && saved.assignmentNumber<=12 && !isTest)return saved.assignmentNumber;
-  return Math.floor(Math.random()*12)+1;
+  return Number.isInteger(raw)&&raw>=1&&raw<=12?raw:1;
+}
+async function reserveAssignment() {
+  const result=await sendCheckpoint({action:'allocate',submission_id:tracking.submission_id,
+    session_id:tracking.session_id,session_token:tracking.token,participant_id:participantId,
+    consent:true,english_proficiency:tracking.english_proficiency});
+  if(!result.ok)throw Error(result.error||'We could not reserve a study place. Please try again.');
+  if(result.phase!=='final-nine-v1'||result.submissionId!==tracking.submission_id||
+    ![1,4,8,9].includes(result.assignment))throw Error('Study allocation could not be confirmed. Please try again.');
+  assignmentNumber=result.assignment;sequence=assignments[assignmentNumber];logEvent('session','assignment_reserved',{assignment:assignmentNumber,phase:result.phase});saveLocal();
 }
 
 function esc(s) {
@@ -706,12 +729,13 @@ function showComplete(result) {
   window.scrollTo({top:0,behavior:'smooth'});
 }
 let checkpointBusy=false;
+let allocationBusy=false;
 function showSaveError() { document.getElementById('saveStatus').textContent='We could not confirm the save. Your answers remain in this browser. Please try the same button again; retries do not create another submission. Editing is paused until this save is confirmed.'; }
 async function sendCheckpoint(p) {
   if(window.google && google.script && google.script.run) {
     return new Promise((resolve,reject)=>{
       const timer=setTimeout(()=>reject(new Error('timeout')),60000);
-      google.script.run.withSuccessHandler(r=>{clearTimeout(timer);resolve(r)}).withFailureHandler(e=>{clearTimeout(timer);reject(e)}).saveCheckpoint(p);
+      google.script.run.withSuccessHandler(r=>{clearTimeout(timer);resolve(r)}).withFailureHandler(e=>{clearTimeout(timer);reject(e)})[p.action==='allocate'?'allocateAssignment':'saveCheckpoint'](p);
     });
   }
   if(!SUBMIT_ENDPOINT)throw new Error('Collector not configured');
@@ -798,7 +822,7 @@ document.getElementById('submitStudyBtn').addEventListener('click',()=>{
 
 
 document.getElementById('startBtn').addEventListener('click',async()=>{
-  if(checkpointBusy)return;
+  if(checkpointBusy||allocationBusy)return;
   participantId=document.getElementById('participantId').value.trim();
   const english=document.getElementById('englishProficiency').value;
   if(!/^[A-Za-z0-9-]{6,20}$/.test(participantId)||!english||!document.getElementById('readyCheck').checked){document.getElementById('startError').style.display='block';return;}
@@ -806,7 +830,7 @@ document.getElementById('startBtn').addEventListener('click',async()=>{
   const saved=readSaved();
   const resume=saved&&saved.participantId===participantId&&saved.tracking?.consent&&saved.tracking.test===isTest;
   if(resume && saved.tracking.english_proficiency!==english){document.getElementById('saveStatus').textContent='To resume this participant code, select the English proficiency you originally provided.';return;}
-  assignmentNumber=resume?saved.assignmentNumber:getAssignment();sequence=assignments[String(assignmentNumber)];
+  assignmentNumber=resume?saved.assignmentNumber:getAssignment();sequence=assignments[String(assignmentNumber)]||[];
   browserId=storage.getItem('rise_practice_browser_id')||newId();
   if(english!=='Not very comfortable')storage.setItem('rise_practice_browser_id',browserId);
   tracking=resume?saved.tracking:newTracking();
@@ -817,6 +841,13 @@ document.getElementById('startBtn').addEventListener('click',async()=>{
   if(resume){tracking.resume_count++;logEvent('session','resumed');}else logEvent('session','started',{assignment:assignmentNumber,test:isTest});
   saveLocal();
   try {
+    if(!isTest && english!=='Not very comfortable' && !assignmentNumber) {
+      allocationBusy=true;document.getElementById('startBtn').disabled=true;
+      document.getElementById('saveStatus').textContent='Checking study availability…';
+      try {await reserveAssignment();}
+      catch(e){document.getElementById('saveStatus').textContent=e.message;return;}
+      finally {allocationBusy=false;document.getElementById('startBtn').disabled=false;}
+    }
     // Completed sessions re-confirm their original final request before showing a code.
     if(['complete','screened_out'].includes(tracking.status) && !tracking.pending)tracking.pending=tracking.lastRequest;
     const result=await checkpoint(tracking.status);
@@ -830,7 +861,7 @@ document.getElementById('startBtn').addEventListener('click',async()=>{
   } catch(e){showSaveError();}
 });
 
-const STUDY_VERSION = '2026-11-10-checkpoints-3';
+const STUDY_VERSION = '2026-11-12-quota-balanced-1';
 const QUESTION_BANK_VERSION = '2026-11-09-12-practices';
 const PROGRESS_KEY = 'rise_practice_progress_v3';
 const storage = {
