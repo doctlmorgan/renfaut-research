@@ -348,21 +348,32 @@ let participantId = "";
 let responses = {};
 let demographics = {};
 
-/* FINAL BALANCING PHASE — 2026-11-12
-   Authoritative design: Renfaut Visual Identity Guide v1.1 (July 2026).
-   All original CSS, study wording, practice pairs and ordering are preserved.
-   Remaining COMPLETIONS: assignment 1=1, 4=2, 8=4, 9=2 (nine total).
-   Production assignment is reserved by the matching Code.gs collector under
-   its script lock, after consent. Browser counters and random fallback are NOT used.
-   Reservations prevent simultaneous starts from consuming the same slot; only
-   committed non-test complete submissions fill quotas. Unfinished reservations
-   stay held for resume until the researcher explicitly releases them. Released
-   sessions retain their assignment but cannot submit; never silently reassign.
-   Existing saved sessions always keep their original assignment, regardless of URL.
-   ?assignment= is honored only in ?test=1; test requests never consume quotas.
-   Deploy Code.gs and initializeQuotaBalance before serving this HTML. If allocation
-   is unavailable/full, keep the participant on the opening screen with a retry message.
-   The collector validates the 51-completion baseline before enabling recruitment.
+/* DYNAMIC BALANCING PHASE — 2026-11-12, revision 2
+   Design authority: Renfaut Visual Identity Guide v1.1 (July 2026).
+   Existing CSS, study questions, practice pairs and ordering are unchanged.
+   The collector records an immutable server transition cutoff and session cohort
+   in its separate Session Allocation tab. ALL existing unfinished non-test
+   sessions are grandfathered: original assignments and saves remain valid, but
+   their final receipts NEVER include the SurveySwap code, even on exact retries.
+   Already-completed historical sessions retain their existing completion receipts.
+   Newly allocated non-test sessions remain credit eligible permanently, including
+   after leaving/resuming and if later grandfathered completions fill their cards.
+   Resume counts and browser resume flags NEVER determine credit eligibility.
+   New assignments use current committed non-test completed card counts, including
+   grandfathered completions, toward 10 per card. New in-flight reservations are
+   considered separately to avoid concurrent over-allocation; grandfathered unfinished
+   sessions do not hold recruitment slots. All 12 original pairs are candidates.
+   The collector favors pairs covering two remaining deficits, then larger deficits,
+   then less over-target exposure and numeric assignment order. One deficient card
+   may need a partner already at target; late grandfathered cases may exceed 10.
+   Therefore 10 is a balancing goal, not an exact cap or a fixed nine-person plan.
+   No expiry, no random fallback, and no silent reassignment on resume. Test mode
+   supports all 12 assignments, consumes no slots and never returns live credit.
+   Browser-local pre-cutoff pending starts with no committed server row may retain
+   their original assignment as NO-CREDIT grandfathered cases. A browser timestamp
+   can never grant post-transition credit; that requires a server allocation marker.
+   Deploy matching Code.gs and run initializeQuotaBalance_ once in the editor.
+   Keep the same collector URL, study origin and progress key. Do not reset markers.
 */
 function getAssignment() {
   if(!isTest)return null;
@@ -374,8 +385,8 @@ async function reserveAssignment() {
     session_id:tracking.session_id,session_token:tracking.token,participant_id:participantId,
     consent:true,english_proficiency:tracking.english_proficiency});
   if(!result.ok)throw Error(result.error||'We could not reserve a study place. Please try again.');
-  if(result.phase!=='final-nine-v1'||result.submissionId!==tracking.submission_id||
-    ![1,4,8,9].includes(result.assignment))throw Error('Study allocation could not be confirmed. Please try again.');
+  if(result.phase!=='dynamic-cards-v2'||result.submissionId!==tracking.submission_id||
+    !Number.isInteger(result.assignment)||!assignments[result.assignment])throw Error('Study allocation could not be confirmed. Please try again.');
   assignmentNumber=result.assignment;sequence=assignments[assignmentNumber];logEvent('session','assignment_reserved',{assignment:assignmentNumber,phase:result.phase});saveLocal();
 }
 
@@ -720,12 +731,12 @@ function showComplete(result) {
   tracking.confirmed=true; currentScreen='complete';saveLocal();
   for(const id of ['startScreen','studyScreen','demographicsScreen','demographicsActions'])document.getElementById(id).classList.add('hidden');
   document.getElementById('completeScreen').classList.remove('hidden');
-  document.getElementById('surveySwapCode').textContent=result.completionCode||'No credit code configured';
+  document.getElementById('surveySwapCode').textContent=result.completionCode||(result.grandfathered?'No completion code for this pre-transition session':isTest?'Test session — no completion code':'No credit code configured');
   const link=document.getElementById('surveySwapLink');
-  if(result.completionCode)link.href='https://surveyswap.io/sr/'+encodeURIComponent(result.completionCode);
-  else link.classList.add('hidden');
+  if(result.completionCode){link.href='https://surveyswap.io/sr/'+encodeURIComponent(result.completionCode);link.classList.remove('hidden');}
+  else {link.classList.add('hidden');link.removeAttribute('href');}
   document.getElementById('copySurveySwapCode').disabled=!result.completionCode;
-  document.getElementById('submitStatus').textContent=isTest?'Test submission saved. No SurveySwap credit is issued.':'Your responses were submitted successfully.';
+  document.getElementById('submitStatus').textContent=isTest?'Test submission saved. No SurveySwap credit is issued.':result.grandfathered?'Your responses were saved. This session began before the quota-balancing transition and is not eligible for a SurveySwap completion code.':'Your responses were submitted successfully.';
   window.scrollTo({top:0,behavior:'smooth'});
 }
 let checkpointBusy=false;
@@ -861,7 +872,7 @@ document.getElementById('startBtn').addEventListener('click',async()=>{
   } catch(e){showSaveError();}
 });
 
-const STUDY_VERSION = '2026-11-12-quota-balanced-1';
+const STUDY_VERSION = '2026-11-12-dynamic-quota-2';
 const QUESTION_BANK_VERSION = '2026-11-09-12-practices';
 const PROGRESS_KEY = 'rise_practice_progress_v3';
 const storage = {
