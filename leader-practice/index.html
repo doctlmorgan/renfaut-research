@@ -340,7 +340,7 @@ body.modal-open { overflow:hidden; }
     </div>
   </section>
 
-  <div id="buildLabel" class="small" style="text-align:center;margin-top:24px">Study build: 2026-11-13 · Simplified recruitment · ES background</div>
+  <div id="buildLabel" class="small" style="text-align:center;margin-top:24px">Study build: 2026-11-13 · Fixed Assignment 1 · Practices 1 + 8 · ES background</div>
   <div class="footer">R.I.S.E. Index™ | Renfaut™ Praxis Paradigm | Created by T. Lee Morgan, Ph.D.</div>
 </div>
 
@@ -370,9 +370,9 @@ let demographics = {};
 /* OPEN RECRUITMENT — 2026-11-13
    Design authority: Renfaut Visual Identity Guide v1.1 (July 2026).
    Existing CSS, study questions, practice pairs and ordering are unchanged.
-   Production recruitment is nonblocking: every new eligible participant receives
-   one of the 12 original assignments. Incomplete sessions do not reserve practice
-   targets and cannot cause the study to report that it is full.
+   This standalone page is fixed to Assignment 1 (Practice 1 + Practice 8).
+   It bypasses the rotating production allocator and saves directly to the current
+   collector using the original assignment map.
    Existing grandfathered sessions keep their original assignments and no-credit
    status. Previously completed historical sessions and existing allocation markers
    remain unchanged. New production sessions remain SurveySwap-credit eligible,
@@ -382,10 +382,9 @@ let demographics = {};
    Keep the same collector URL, study origin and progress key. Do not reset markers.
 */
 function getAssignment() {
-  if(!isTest)return null;
-  const raw=Number(params.get('assignment'));
-  return Number.isInteger(raw)&&raw>=1&&raw<=12?raw:1;
+  return 1; // Fixed production assignment: Practice 1 + Practice 8.
 }
+
 async function reserveAssignment() {
   const result=await sendCheckpoint({action:'allocate',submission_id:tracking.submission_id,
     session_id:tracking.session_id,session_token:tracking.token,participant_id:participantId,
@@ -871,13 +870,6 @@ document.getElementById('startBtn').addEventListener('click',async()=>{
   logEvent('session','started',{assignment:assignmentNumber,test:isTest});
 
   try {
-    if(!isTest && english!=='Not very comfortable') {
-      allocationBusy=true;document.getElementById('startBtn').disabled=true;
-      document.getElementById('saveStatus').textContent='Starting study…';
-      try {await reserveAssignment();}
-      catch(e){showSystemError('We couldn\'t start the study',e.message||'We could not confirm a study assignment. Please return and try again.');return;}
-      finally {allocationBusy=false;document.getElementById('startBtn').disabled=false;}
-    }
     const result=await checkpoint(tracking.status);
     document.getElementById('startScreen').classList.add('hidden');
     if(result.status==='screened_out'){currentScreen='screened_out';document.getElementById('screenOutScreen').classList.remove('hidden');return;}
@@ -886,7 +878,7 @@ document.getElementById('startBtn').addEventListener('click',async()=>{
   } catch(e){showSaveError();}
 });
 
-const STUDY_VERSION = '2026-11-13-simple-recruitment-2';
+const STUDY_VERSION = '2026-11-13-fixed-assignment-1';
 const QUESTION_BANK_VERSION = '2026-11-09-12-practices';
 function newId() {
   if (crypto.randomUUID) return crypto.randomUUID();
