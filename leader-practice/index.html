@@ -11,7 +11,7 @@
   --muted:#686868;
   --line:#D9D9D9;
   --paper:#FFFFFF;
-  --canvas:#F6D6D7;
+  --canvas:#D7F1F6;
   --rr:#B31217;
   --ib:#E76F00;
   --de:#F7B500;
@@ -109,6 +109,13 @@ textarea { width:100%; min-height:120px; resize:vertical; border:1px solid #BDBD
 .profile-panel { border-top:4px solid #6C3FBF; background:#FBF9FE; }
 .small { font-size:13px; color:var(--muted); }
 
+.resume-modal-backdrop { position:fixed; inset:0; background:rgba(43,43,43,.42); display:flex; align-items:center; justify-content:center; padding:20px; z-index:1000; }
+.resume-modal { width:min(520px,100%); background:#fff; border:1px solid #D9D9D9; border-top:5px solid var(--es); border-radius:14px; padding:24px; box-shadow:0 18px 48px rgba(43,43,43,.22); }
+.resume-modal h3 { font-size:21px; margin-bottom:10px; }
+.resume-modal p { margin:0; color:#4D4D4D; }
+.resume-modal .actions { margin-top:20px; justify-content:flex-end; }
+body.modal-open { overflow:hidden; }
+
 .demographics-card { max-width:800px; margin:18px auto 0; padding:30px 32px; }
 .demographics-card .lede { font-size:16px; max-width:680px; }
 .demo-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px 22px; margin-top:24px; }
@@ -202,6 +209,17 @@ textarea { width:100%; min-height:120px; resize:vertical; border:1px solid #BDBD
       </aside>
     </div>
   </section>
+
+
+  <div id="resumeWarningModal" class="resume-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="resumeWarningTitle" aria-describedby="resumeWarningText">
+    <div class="resume-modal">
+      <h3 id="resumeWarningTitle">Choose the same English proficiency response</h3>
+      <p id="resumeWarningText">To continue your saved study session, select the same English proficiency response you chose when you first began.</p>
+      <div class="actions">
+        <button id="resumeWarningClose" class="btn" type="button">Return to selection</button>
+      </div>
+    </div>
+  </div>
 
   <section id="screenOutScreen" class="card hidden"><h2>Thank you for your interest.</h2><p>This study requires comfort reading and writing in English. Based on your response, you are not eligible to continue.</p><p>Your screening response has been saved. No completion code is available.</p></section>
   <p id="saveStatus" class="small" role="status" aria-live="polite"></p>
@@ -322,7 +340,7 @@ textarea { width:100%; min-height:120px; resize:vertical; border:1px solid #BDBD
     </div>
   </section>
 
-  <div id="buildLabel" class="small" style="text-align:center;margin-top:24px">Study build: 2026-11-13 · Checkpoints 3 · IB background · Targeted remaining-practice recruitment</div>
+  <div id="buildLabel" class="small" style="text-align:center;margin-top:24px">Study build: 2026-11-13 · Checkpoints 3 · ES background · Targeted remaining-practice recruitment</div>
   <div class="footer">R.I.S.E. Index™ | Renfaut™ Praxis Paradigm | Created by T. Lee Morgan, Ph.D.</div>
 </div>
 
@@ -819,6 +837,23 @@ document.getElementById('submitStudyBtn').addEventListener('click',()=>{
 });
 
 
+
+function showResumeWarning(){
+  const modal=document.getElementById('resumeWarningModal');
+  modal.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+  document.getElementById('resumeWarningClose').focus();
+}
+function hideResumeWarning(){
+  const modal=document.getElementById('resumeWarningModal');
+  modal.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  document.getElementById('englishProficiency').focus();
+}
+document.getElementById('resumeWarningClose').addEventListener('click',hideResumeWarning);
+document.getElementById('resumeWarningModal').addEventListener('click',e=>{if(e.target.id==='resumeWarningModal')hideResumeWarning();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.getElementById('resumeWarningModal').classList.contains('hidden'))hideResumeWarning();});
+
 document.getElementById('startBtn').addEventListener('click',async()=>{
   if(checkpointBusy||allocationBusy)return;
   const enteredParticipantId=document.getElementById('participantId').value.trim();
@@ -832,7 +867,7 @@ document.getElementById('startBtn').addEventListener('click',async()=>{
   const canResume=saved&&saved.tracking?.consent&&saved.tracking.test===isTest&&(!enteredParticipantId||saved.participantId===enteredParticipantId);
   participantId=canResume?saved.participantId:(enteredParticipantId||('P-'+newId().replace(/-/g,'').slice(0,12)));
   const resume=!!canResume;
-  if(resume && saved.tracking.english_proficiency!==english){document.getElementById('saveStatus').textContent='To resume this participant code, select the English proficiency you originally provided.';return;}
+  if(resume && saved.tracking.english_proficiency!==english){showResumeWarning();return;}
   assignmentNumber=resume?saved.assignmentNumber:getAssignment();sequence=assignments[String(assignmentNumber)]||[];
   browserId=storage.getItem('rise_practice_browser_id')||newId();
   if(english!=='Not very comfortable')storage.setItem('rise_practice_browser_id',browserId);
@@ -858,13 +893,24 @@ document.getElementById('startBtn').addEventListener('click',async()=>{
     document.getElementById('startScreen').classList.add('hidden');
     if(result.status==='screened_out'){currentScreen='screened_out';document.getElementById('screenOutScreen').classList.remove('hidden');saveLocal();return;}
     document.getElementById('studyScreen').classList.remove('hidden');
-    if(resume && saved.currentScreen?.startsWith('practice:'))renderPractice();
-    else if(result.status==='practices_complete')showDemographics();
-    else {if(result.status==='practice_1_complete')currentIndex=1;renderPractice();}
+    if(result.status==='practices_complete'){
+      showDemographics();
+    } else if(result.status==='practice_1_complete'){
+      currentIndex=1;
+      currentScreen='practice:'+sequence[1];
+      saveLocal();
+      renderPractice();
+    } else if(resume && saved.currentScreen?.startsWith('practice:')){
+      currentIndex=saved.currentIndex===1?1:0;
+      renderPractice();
+    } else {
+      currentIndex=0;
+      renderPractice();
+    }
   } catch(e){showSaveError();}
 });
 
-const STUDY_VERSION = '2026-11-13-target-sequence-2';
+const STUDY_VERSION = '2026-11-13-target-sequence-4';
 const QUESTION_BANK_VERSION = '2026-11-09-12-practices';
 const PROGRESS_KEY = 'rise_practice_progress_v3';
 const storage = {
