@@ -11,7 +11,7 @@
   --muted:#686868;
   --line:#D9D9D9;
   --paper:#FFFFFF;
-  --canvas:#FBE2C7;
+  --canvas:#F6D6D7;
   --rr:#B31217;
   --ib:#E76F00;
   --de:#F7B500;
@@ -187,9 +187,9 @@ textarea { width:100%; min-height:120px; resize:vertical; border:1px solid #BDBD
         <h3>Before you begin</h3>
         <p class="meta" style="margin-top:8px">Please respond based on what the leadership practice itself communicates. Do not search for an answer or use outside material while completing the review.</p>
         <div class="field">
-          <label class="field-label" for="participantId">Create a participant code</label>
-          <input id="participantId" type="text" autocomplete="off" minlength="6" maxlength="20" pattern="[A-Za-z0-9-]{6,20}" placeholder="Create a code" />
-          <div class="small">Create a code using 6–20 letters, numbers, or hyphens only. Do not use spaces or other special characters.</div>
+          <label class="field-label" for="participantId">Create a participant code <span class="optional-note">Optional</span></label>
+          <input id="participantId" type="text" autocomplete="off" minlength="6" maxlength="20" pattern="[A-Za-z0-9-]{6,20}" placeholder="Create a code (optional)" />
+          <div class="small">If you create a code, use 6–20 letters, numbers, or hyphens only. Do not use spaces or other special characters. If you leave this blank, a code will be created automatically so you can continue.</div>
         </div>
         <p class="small">Along with your answers, this study records review time, activity and navigation events, answer changes, validation attempts, recruitment-link details, and browser/device information. A random browser identifier helps flag repeat submissions. No keystroke log or IP address is collected. </p>
         <div class="field"><label class="field-label" for="englishProficiency">How comfortable are you reading and writing in English?</label>
@@ -198,7 +198,7 @@ textarea { width:100%; min-height:120px; resize:vertical; border:1px solid #BDBD
         <div class="actions" style="justify-content:flex-start">
           <button id="startBtn" class="btn" type="button">Begin study</button>
         </div>
-        <div id="startError" class="validation">Please create a valid participant code, select your English proficiency, and consent to participate.</div>
+        <div id="startError" class="validation" role="alert"></div>
       </aside>
     </div>
   </section>
@@ -322,7 +322,7 @@ textarea { width:100%; min-height:120px; resize:vertical; border:1px solid #BDBD
     </div>
   </section>
 
-  <div id="buildLabel" class="small" style="text-align:center;margin-top:24px">Study build: 2026-11-10 · Checkpoints 3 · Blue background</div>
+  <div id="buildLabel" class="small" style="text-align:center;margin-top:24px">Study build: 2026-11-13 · Checkpoints 3 · IB background · Targeted remaining-practice recruitment</div>
   <div class="footer">R.I.S.E. Index™ | Renfaut™ Praxis Paradigm | Created by T. Lee Morgan, Ph.D.</div>
 </div>
 
@@ -348,31 +348,18 @@ let participantId = "";
 let responses = {};
 let demographics = {};
 
-/* DYNAMIC BALANCING PHASE — 2026-11-12, revision 2
+/* OPEN RECRUITMENT — 2026-11-13
    Design authority: Renfaut Visual Identity Guide v1.1 (July 2026).
    Existing CSS, study questions, practice pairs and ordering are unchanged.
-   The collector records an immutable server transition cutoff and session cohort
-   in its separate Session Allocation tab. ALL existing unfinished non-test
-   sessions are grandfathered: original assignments and saves remain valid, but
-   their final receipts NEVER include the SurveySwap code, even on exact retries.
-   Already-completed historical sessions retain their existing completion receipts.
-   Newly allocated non-test sessions remain credit eligible permanently, including
-   after leaving/resuming and if later grandfathered completions fill their cards.
-   Resume counts and browser resume flags NEVER determine credit eligibility.
-   New assignments use current committed non-test completed card counts, including
-   grandfathered completions, toward 10 per card. New in-flight reservations are
-   considered separately to avoid concurrent over-allocation; grandfathered unfinished
-   sessions do not hold recruitment slots. All 12 original pairs are candidates.
-   The collector favors pairs covering two remaining deficits, then larger deficits,
-   then less over-target exposure and numeric assignment order. One deficient card
-   may need a partner already at target; late grandfathered cases may exceed 10.
-   Therefore 10 is a balancing goal, not an exact cap or a fixed nine-person plan.
-   No expiry, no random fallback, and no silent reassignment on resume. Test mode
-   supports all 12 assignments, consumes no slots and never returns live credit.
-   Browser-local pre-cutoff pending starts with no committed server row may retain
-   their original assignment as NO-CREDIT grandfathered cases. A browser timestamp
-   can never grant post-transition credit; that requires a server allocation marker.
-   Deploy matching Code.gs and run initializeQuotaBalance_ once in the editor.
+   Production recruitment is nonblocking: every new eligible participant receives
+   one of the 12 original assignments. Incomplete sessions do not reserve practice
+   targets and cannot cause the study to report that it is full.
+   Existing grandfathered sessions keep their original assignments and no-credit
+   status. Previously completed historical sessions and existing allocation markers
+   remain unchanged. New production sessions remain SurveySwap-credit eligible,
+   including after leaving and resuming.
+   Resume preserves the original assignment. Test mode supports all 12 assignments,
+   consumes no production recruitment capacity and never returns live credit.
    Keep the same collector URL, study origin and progress key. Do not reset markers.
 */
 function getAssignment() {
@@ -385,7 +372,7 @@ async function reserveAssignment() {
     session_id:tracking.session_id,session_token:tracking.token,participant_id:participantId,
     consent:true,english_proficiency:tracking.english_proficiency});
   if(!result.ok)throw Error(result.error||'We could not reserve a study place. Please try again.');
-  if(result.phase!=='dynamic-cards-v2'||result.submissionId!==tracking.submission_id||
+  if(result.phase!=='target-sequence-v1'||result.submissionId!==tracking.submission_id||
     !Number.isInteger(result.assignment)||!assignments[result.assignment])throw Error('Study allocation could not be confirmed. Please try again.');
   assignmentNumber=result.assignment;sequence=assignments[assignmentNumber];logEvent('session','assignment_reserved',{assignment:assignmentNumber,phase:result.phase});saveLocal();
 }
@@ -834,12 +821,17 @@ document.getElementById('submitStudyBtn').addEventListener('click',()=>{
 
 document.getElementById('startBtn').addEventListener('click',async()=>{
   if(checkpointBusy||allocationBusy)return;
-  participantId=document.getElementById('participantId').value.trim();
+  const enteredParticipantId=document.getElementById('participantId').value.trim();
   const english=document.getElementById('englishProficiency').value;
-  if(!/^[A-Za-z0-9-]{6,20}$/.test(participantId)||!english||!document.getElementById('readyCheck').checked){document.getElementById('startError').style.display='block';return;}
-  document.getElementById('startError').style.display='none';
+  const startError=document.getElementById('startError');
+  if(enteredParticipantId && !/^[A-Za-z0-9-]{6,20}$/.test(enteredParticipantId)){startError.textContent='If you create a participant code, use 6–20 letters, numbers, or hyphens. Do not use spaces or other special characters.';startError.style.display='block';return;}
+  if(!english){startError.textContent='Please select your English proficiency.';startError.style.display='block';return;}
+  if(!document.getElementById('readyCheck').checked){startError.textContent='Please confirm your consent to participate.';startError.style.display='block';return;}
+  startError.textContent='';startError.style.display='none';
   const saved=readSaved();
-  const resume=saved&&saved.participantId===participantId&&saved.tracking?.consent&&saved.tracking.test===isTest;
+  const canResume=saved&&saved.tracking?.consent&&saved.tracking.test===isTest&&(!enteredParticipantId||saved.participantId===enteredParticipantId);
+  participantId=canResume?saved.participantId:(enteredParticipantId||('P-'+newId().replace(/-/g,'').slice(0,12)));
+  const resume=!!canResume;
   if(resume && saved.tracking.english_proficiency!==english){document.getElementById('saveStatus').textContent='To resume this participant code, select the English proficiency you originally provided.';return;}
   assignmentNumber=resume?saved.assignmentNumber:getAssignment();sequence=assignments[String(assignmentNumber)]||[];
   browserId=storage.getItem('rise_practice_browser_id')||newId();
@@ -872,7 +864,7 @@ document.getElementById('startBtn').addEventListener('click',async()=>{
   } catch(e){showSaveError();}
 });
 
-const STUDY_VERSION = '2026-11-12-dynamic-quota-2';
+const STUDY_VERSION = '2026-11-13-target-sequence-2';
 const QUESTION_BANK_VERSION = '2026-11-09-12-practices';
 const PROGRESS_KEY = 'rise_practice_progress_v3';
 const storage = {
